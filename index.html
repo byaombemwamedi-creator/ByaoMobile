@@ -2,12 +2,18 @@
 <html lang="sw" class="dark">
 
 <head>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#ef4444">
-<link rel="apple-touch-icon" href="Byao Pro-logo.png">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>BYAO App Ecosystem - Master Hub</title>
+
+<!-- PWA & Mobile Icons Configuration -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ef4444">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BYAO Pro">
+<link rel="apple-touch-icon" href="Byao Pro-logo.png">
+<link rel="icon" type="image/png" href="Byao Pro-logo.png">
 
 <!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com"></script>
@@ -406,7 +412,7 @@
         }
         onyeshaTaarifaFundi();
 
-        // SERVICE WORKER REGISTRATION
+        // SERVICE WORKER REGISTRATION (Inafanya PWA ifanye kazi kamili kwenye Browser)
         if('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('./sw.js')
