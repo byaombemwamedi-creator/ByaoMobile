@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mipangilio - BYAO Pro</title>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    darkBg: '#05070b',
+                    cardBg: '#0f172a',
+                    accentRed: '#ef4444'
+                }
+            }
+        }
+    }
+</script>
+</head>
+
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col font-sans p-4 sm:p-6 m-0 overflow-x-hidden">
+
+    <!-- Toast Notification ya Kisasa -->
+    <div id="toastNotification" class="fixed top-5 z-50 hidden bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold shadow-2xl backdrop-blur-md">
+        Ujumbe wa Mfumo
+    </div>
+
+    <!-- Kitufe cha Menu na Overlay ya Sidebar -->
+    <button id="menuBtn" class="fixed top-4 left-4 z-50 bg-slate-800 hover:bg-slate-700 text-white font-bold p-2.5 rounded-xl border border-slate-700 shadow-lg transition">
+        ☰ Menu
+    </button>
+    <div id="overlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-40"></div>
+
+    <!-- Sidebar ya Pamoja ya Kibabe -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-cardBg border-r border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+            <div class="flex items-center space-x-2">
+                <span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">BYAO Pro</span>
+                <span class="text-sm font-bold text-white">Navigation</span>
+            </div>
+            <button id="closeSidebar" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-1.5 text-xs">
+            <a href="index.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🏠 Mwanzo</a>
+            <a href="studio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💻 Studio Kubwa</a>
+            <a href="ide.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚡ Master IDE</a>
+            <a href="masterfinishproject.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🛠️ Zana za Mwisho</a>
+            <a href="profile.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📄 Utambulisho & Mwongozo</a> 
+            <a href="repair.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📱 Pokea Simu</a>
+            <a href="phones.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📋 Simu Zangu</a>
+            <a href="spares.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📦 Spares & Stock</a>
+            <a href="payments.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💰 Payments Tracker</a>
+            <a href="tools.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Quick Tools</a>
+            <a href="wateja.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">👥 Wateja</a>
+            <a href="report.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📈 Master Report</a>
+            <a href="mipangilio.html" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-800 text-white font-bold transition">⚙️ Mipangilio</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-2xl mx-auto space-y-6 pt-12 sm:pt-4">
+
+        <!-- HEADER -->
+        <div class="bg-cardBg border border-slate-800 p-6 sm:p-8 rounded-2xl shadow-2xl text-center space-y-3">
+            <div class="w-16 h-16 bg-slate-950 p-2 rounded-2xl border border-slate-800 mx-auto flex items-center justify-center shadow-inner overflow-hidden">
+                <img src="Byao-logo.jpg" alt="BYAO Logo" class="w-full h-full object-contain rounded-xl">
+            </div>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-white">BYAO MOBILE SOLUTIONS</h1>
+            <p class="text-xs sm:text-sm text-slate-400">Mipangilio ya Mfumo na Usalama</p>
+            <div class="w-20 h-1 bg-red-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- WASIFU WA FUNDI -->
+        <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-4">
+            <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">👨‍🔧 Wasifu wa Fundi</h3>
+            <p class="text-xs text-slate-400">Jaza taarifa zako ili BYAO Mobile Solutions ikujue kwenye ripoti na stakabadhi.</p>
+            
+            <div class="space-y-3 text-xs">
+                <input type="text" id="jinaFundi" placeholder="Jina la Fundi" class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+                <input type="text" id="duka" placeholder="Jina la Duka" class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+                <input type="text" id="simuFundi" placeholder="Namba ya Simu" class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+            </div>
+
+            <button onclick="hifadhiMipangilio()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-red-900/25">💾 Hifadhi Wasifu</button>
+        </div>
+
+        <!-- PROFILE DISPLAY BOX -->
+        <div id="profileBox"></div>
+
+        <!-- BADILISHA PIN -->
+        <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-4">
+            <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">🔐 Badilisha PIN ya Mfumo</h3>
+            
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-300">PIN ya sasa</label>
+                    <input type="password" id="pinYaSasa" placeholder="Ingiza PIN ya sasa" class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-300">PIN mpya</label>
+                    <input type="password" id="pinMpya" placeholder="Ingiza PIN mpya" class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-300">Rudia PIN mpya</label>
+                    <input type="password" id="rudiaPin" placeholder="Rudia PIN mpya" class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+                </div>
+            </div>
+
+            <button onclick="badilishaPIN()" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold py-3 rounded-xl text-xs transition">💾 Hifadhi PIN Mpya</button>
+            <p id="ujumbePIN" class="text-xs text-center font-bold"></p>
+        </div>
+
+        <!-- USALAMA / LOGOUT -->
+        <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-3">
+            <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">🚪 Usalama wa Mfumo</h3>
+            <p class="text-xs text-slate-400">Ondoka kwenye akaunti yako ya BYAO Mobile Solutions kwa usalama.</p>
+            <button onclick="logoutBYAO()" class="w-full bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 font-bold py-3 rounded-xl text-xs transition">Toka kwenye Mfumo (Logout)</button>
+        </div>
+
+        <!-- KUHUSU BYAO -->
+        <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl text-center space-y-4">
+            <div class="w-16 h-16 bg-slate-950 p-2 rounded-2xl border border-slate-800 mx-auto flex items-center justify-center shadow-inner overflow-hidden">
+                <img src="Byao-logo.jpg" alt="BYAO Logo" class="w-full h-full object-contain rounded-xl">
+            </div>
+            <h3 class="text-white font-bold text-sm">ℹ️ Kuhusu BYAO</h3>
+            <p class="text-xs text-slate-300 leading-relaxed">
+                <b>BYAO Mobile Solutions</b> ni mfumo wa kisasa wa kusaidia mafundi wa simu kusimamia biashara zao kwa urahisi.
+            </p>
+            <div class="text-xs text-slate-400 space-y-1 bg-slate-950 p-3 rounded-xl border border-slate-800 text-left">
+                <div>🔧 Kupokea simu za wateja</div>
+                <div>📱 Kufuatilia matengenezo</div>
+                <div>👥 Kusimamia taarifa za wateja</div>
+                <div>🧾 Kuhifadhi historia za kazi</div>
+                <div class="text-red-400 pt-2 font-bold">🤖 BYAO AI Technician Assistant (Active)</div>
+                <div class="text-red-400 font-bold">🌐 BYAO Cloud System (Active)</div>
+            </div>
+            <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-[11px] text-slate-400">
+                BYAO Mobile Solutions<br>
+                Smart Repair Management System<br>
+                <b class="text-white">Version 2.0 Pro</b>
+            </div>
+        </div>
+
+        <a href="index.html" class="block text-center bg-cardBg hover:bg-slate-800 border border-slate-800 text-slate-300 font-bold p-3.5 rounded-xl text-xs transition shadow-xl">⬅️ Rudi kwenye Mwanzo (Ecosystem Hub)</a>
+    </main>
+
+    <!-- Script ya Uendeshaji -->
+    <script>
+        // BYAO SECURITY CHECK
+        let ameLogin = localStorage.getItem("byaoLogin");
+        if(ameLogin !== "ndiyo"){
+            localStorage.setItem("ukurasaUliotaka", window.location.pathname.split("/").pop());
+            window.location.href="login.html";
+        }
+
+        function showNotification(msg, isError = false) {
+            let toast = document.getElementById('toastNotification');
+            toast.innerText = msg;
+            toast.className = `fixed top-5 z-50 px-4 py-2 rounded-xl text-xs font-bold shadow-2xl backdrop-blur-md border ${isError ? 'bg-red-500/10 border-red-500/30 text-red-400' : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400'}`;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 3000);
+        }
+
+        function hifadhiMipangilio(){
+            let jina = document.getElementById("jinaFundi").value.trim();
+            let duka = document.getElementById("duka").value.trim();
+            let simu = document.getElementById("simuFundi").value.trim();
+
+            if(!jina){
+                showNotification("⚠️ Tafadhali andika jina la fundi kwanza", true);
+                return;
+            }
+
+            if(!simu){
+                showNotification("⚠️ Tafadhali weka namba ya simu", true);
+                return;
+            }
+
+            let data = { jina: jina, duka: duka, simu: simu };
+            localStorage.setItem("mipangilio", JSON.stringify(data));
+            onyeshaFundi();
+            showNotification("✅ Taarifa za fundi zimehifadhiwa vizuri");
+        }
+
+        function onyeshaFundi(){
+            let data = JSON.parse(localStorage.getItem("mipangilio"));
+            let box = document.getElementById("profileBox");
+
+            if(data && data.jina){
+                box.className = "bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-3";
+                box.innerHTML = `
+                    <div class="flex items-center space-x-3 border-b border-slate-800 pb-3">
+                        <div class="w-12 h-12 bg-slate-950 p-1.5 rounded-xl border border-slate-800 flex items-center justify-center overflow-hidden">
+                            <img src="Byao-logo.jpg" alt="Logo" class="w-full h-full object-contain rounded-lg">
+                        </div>
+                        <div>
+                            <h3 class="text-white font-bold text-sm">👨‍🔧 Wasifu Uliohifadhiwa</h3>
+                            <p class="text-[11px] text-emerald-400">BYAO Mobile Solutions inakutambua</p>
+                        </div>
+                    </div>
+                    <div class="space-y-1 text-xs text-slate-300">
+                        <div>👤 Jina: <b class="text-white">${data.jina}</b></div>
+                        <div>🏪 Duka: <b class="text-white">${data.duka || "Haijawekwa"}</b></div>
+                        <div>📞 Simu: <b class="text-white">${data.simu || "Haijawekwa"}</b></div>
+                    </div>
+                    <button onclick="haririFundi()" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold py-2.5 rounded-xl text-xs transition">✏️ Hariri Taarifa</button>
+                `;
+            } else {
+                box.className = "";
+                box.innerHTML = "";
+            }
+        }
+
+        onyeshaFundi();
+
+        function haririFundi(){
+            let data = JSON.parse(localStorage.getItem("mipangilio"));
+            if(data){
+                document.getElementById("jinaFundi").value = data.jina || "";
+                document.getElementById("duka").value = data.duka || "";
+                document.getElementById("simuFundi").value = data.simu || "";
+
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                showNotification("✏️ Unaweza kurekebisha taarifa na kubonyeza Hifadhi tena.");
+            }
+        }
+
+        function logoutBYAO(){
+            if(confirm("Una uhakika unataka kutoka kwenye mfumo?")){
+                localStorage.removeItem("byaoLogin");
+                window.location.href = "login.html";
+            }
+        }
+
+        function badilishaPIN(){
+            let yaSasa = document.getElementById("pinYaSasa").value;
+            let mpya = document.getElementById("pinMpya").value;
+            let rudia = document.getElementById("rudiaPin").value;
+            let pinIliyopo = localStorage.getItem("byaoPIN") || "1234";
+            let ujumbe = document.getElementById("ujumbePIN");
+
+            if(yaSasa !== pinIliyopo){
+                ujumbe.innerHTML = "⚠️ PIN ya sasa siyo sahihi";
+                ujumbe.className = "text-xs text-center font-bold text-red-400";
+                return;
+            }
+
+            if(mpya.length < 4){
+                ujumbe.innerHTML = "⚠️ PIN mpya lazima iwe na angalau tarakimu 4";
+                ujumbe.className = "text-xs text-center font-bold text-red-400";
+                return;
+            }
+
+            if(mpya !== rudia){
+                ujumbe.innerHTML = "⚠️ PIN mpya hazifanani";
+                ujumbe.className = "text-xs text-center font-bold text-red-400";
+                return;
+            }
+
+            localStorage.setItem("byaoPIN", mpya);
+            localStorage.removeItem("byaoLogin");
+            
+            ujumbe.innerHTML = "✅ PIN imebadilishwa vizuri. Unarudishwa...";
+            ujumbe.className = "text-xs text-center font-bold text-emerald-400";
+
+            document.getElementById("pinYaSasa").value = "";
+            document.getElementById("pinMpya").value = "";
+            document.getElementById("rudiaPin").value = "";
+
+            setTimeout(function(){
+                window.location.href = "login.html";
+            }, 1500);
+        }
+
+        // SIDEBAR TOGGLE
+        let menuBtn = document.getElementById("menuBtn");
+        let closeSidebar = document.getElementById("closeSidebar");
+        let sidebar = document.getElementById("sidebar");
+        let overlay = document.getElementById("overlay");
+
+        function toggleMenu(){
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+
+        menuBtn.addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", toggleMenu);
+    </script>
+</body>
+</html>

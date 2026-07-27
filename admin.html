@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BYAO Master Ecosystem & Admin Hub</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#05070b',
+                        cardBg: '#0f172a',
+                        accentRed: '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col font-sans p-4 sm:p-6 m-0 overflow-x-hidden">
+
+    <!-- SEHEMU YA CONFIGURATION YA IDENTITÉ ZA MAJUKWAA -->
+    <!-- Weka taarifa zako hapa chini kwenye mabano ya toka -->
+    <script>
+        const BYAO_CONFIG = {
+            ADMIN_PIN: "7777",                   // 1. Weka PIN yako ya siri hapa
+            AIRTABLE_API_URL: "WEKA_AIRTABLE_API_LINK_YAKO_HAPA", // 2. Kiungo cha Airtable API
+            MAKE_WEBHOOK_URL: "WEKA_MAKE_WEBHOOK_URL_YAKO_HAPA",   // 3. Kiungo cha Make Webhook kwa ajili ya Make/ByaoIA
+            HUGGINGFACE_KEY: "WEKA_HUGGINGFACE_API_KEY_YAKO_HAPA"  // 4. Funguo yako ya Hugging Face AI
+        };
+    </script>
+
+    <!-- Kitufe cha Menu na Sidebar -->
+    <button id="menuBtn" class="fixed top-4 left-4 z-50 bg-slate-800 hover:bg-slate-700 text-white font-bold p-2.5 rounded-xl border border-slate-700 shadow-lg transition">
+        ☰ Menu
+    </button>
+    <div id="overlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-40"></div>
+
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-cardBg border-r border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+            <div class="flex items-center space-x-2">
+                <span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">BYAO Pro</span>
+                <span class="text-sm font-bold text-white">Ecosystem</span>
+            </div>
+            <button id="closeSidebar" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-1.5 text-xs">
+            <a href="#" onclick="badiliTab('dashboard')" class="flex items-center space-x-3 p-2.5 rounded-xl bg-red-600/20 border border-red-500/30 text-red-400 font-bold transition">🛡️ Master Dashboard</a>
+            <a href="#" onclick="badiliTab('byaoia')" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🤖 ByaoIA & AI Hub</a>
+            <a href="#" onclick="badiliTab('tools')" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚡ Zana na QR Generator</a>
+            <a href="#" onclick="badiliTab('settings')" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Mipangilio & Identité</a>
+        </div>
+    </div>
+
+    <!-- PIN Modal ya Kulinda Mfumo -->
+    <div id="pinModal" class="fixed inset-0 bg-slate-950/90 z-50 flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-slate-800 p-6 sm:p-8 rounded-2xl shadow-2xl max-w-sm w-full text-center space-y-4">
+            <div class="text-4xl">🔐</div>
+            <h2 class="text-lg font-bold text-white">Ulinzi wa Mfumo wa BYAO</h2>
+            <p class="text-xs text-slate-400">Ingiza PIN yako kuu ili kufungua dashibodi na zana zako.</p>
+            <input type="password" id="adminPinInput" placeholder="Weka PIN (Mf. 7777)" class="w-full bg-slate-950 border border-slate-800 text-white text-center tracking-widest text-lg p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+            <button onclick="thibitishaPin()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-red-900/20">
+                Fungua Mfumo
+            </button>
+            <p id="errorMsg" class="text-red-500 text-xs hidden">PIN si sahihi! Jaribu tena.</p>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <main class="w-full max-w-4xl mx-auto space-y-6 pt-12 sm:pt-4">
+        
+        <!-- HEADER KUU -->
+        <div class="bg-cardBg border border-slate-800 border-t-4 border-t-red-600 p-6 sm:p-8 rounded-2xl shadow-2xl text-center space-y-3">
+            <span class="bg-red-600/20 text-red-400 border border-red-500/30 text-[10px] font-extrabold px-3 py-1 rounded-full uppercase">BYAO Mobile Solution Ecosystem</span>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Kitovu Kikuu cha Udhibiti</h1>
+            <p class="text-xs sm:text-sm text-slate-400">Dashibodi safi iliyounganishwa na majukwaa yako yote bila migongano.</p>
+            <div class="w-24 h-1 bg-red-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- SEHEMU YA 1: DASHBOARD YA KAWAIDA -->
+        <div id="section-dashboard" class="space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="bg-cardBg border border-slate-800 p-5 rounded-2xl shadow-xl space-y-2 text-center">
+                    <span class="text-2xl">📊</span>
+                    <h3 class="text-xs text-slate-400 font-bold uppercase">Jumla ya Kumbukumbu</h3>
+                    <p id="totalDataCount" class="text-2xl font-extrabold text-white">0</p>
+                </div>
+                <div class="bg-cardBg border border-slate-800 p-5 rounded-2xl shadow-xl space-y-2 text-center">
+                    <span class="text-2xl">🌍</span>
+                    <h3 class="text-xs text-slate-400 font-bold uppercase">Hali ya Unganisho</h3>
+                    <p class="text-xs font-bold text-emerald-400 pt-2">Tayari Kupokea Data</p>
+                </div>
+                <div class="bg-cardBg border border-slate-800 p-5 rounded-2xl shadow-xl space-y-2 text-center">
+                    <span class="text-2xl">🛡️</span>
+                    <h3 class="text-xs text-slate-400 font-bold uppercase">Usalama</h3>
+                    <p class="text-xs font-bold text-emerald-400 pt-2">PIN Imelindwa</p>
+                </div>
+            </div>
+
+            <!-- Udhibiti wa Data -->
+            <div class="bg-cardBg border border-slate-800 p-6 rounded-2xl shadow-2xl space-y-4">
+                <h2 class="text-sm font-bold text-red-500 uppercase tracking-wider">⚙️ Vitendo vya Mfumo</h2>
+                <div class="flex flex-wrap gap-3">
+                    <button onclick="fanyaBackup()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition border border-slate-700 shadow-lg">
+                        📥 Pakua Backup (JSON)
+                    </button>
+                    <button onclick="futaDataZote()" class="bg-red-600/20 hover:bg-red-600/30 text-red-400 border border-red-500/30 font-bold py-2.5 px-4 rounded-xl text-xs transition">
+                        ⚠️ Safisha Mfumo (Reset)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEHEMU YA 2: BYAOIA & AI HUB -->
+        <div id="section-byaoia" class="bg-cardBg border border-slate-800 p-6 rounded-2xl shadow-2xl space-y-4 hidden">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider flex items-center space-x-2">
+                <span>🤖 ByaoIA - Kituo cha Akili Bandia</span>
+            </h2>
+            <p class="text-xs text-slate-300">Tumia kituo hiki kuunganisha maombi yako moja kwa moja na Make/Hugging Face kupitia identité ulizoweka juu.</p>
+            <textarea id="aiPrompt" placeholder="Andika ujumbe au swali lako hapa..." class="w-full bg-slate-950 border border-slate-800 text-white p-3 rounded-xl text-xs focus:outline-none focus:border-red-500 h-24"></textarea>
+            <button onclick="tumaOmbiAI()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition">
+                Tuma Ombi kwa ByaoIA
+            </button>
+            <div id="aiResponse" class="p-4 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-300 hidden"></div>
+        </div>
+
+        <!-- SEHEMU YA 3: ZANA NA QR CODE GENERATOR -->
+        <div id="section-tools" class="bg-cardBg border border-slate-800 p-6 rounded-2xl shadow-2xl space-y-4 hidden">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider">📱 Kizalishaji cha QR Code</h2>
+            <input type="text" id="qrText" placeholder="Andika kiungo (link) au maandishi hapa..." class="w-full bg-slate-950 border border-slate-800 text-white p-3 rounded-xl text-xs focus:outline-none focus:border-red-500">
+            <button onclick="generateQR()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition">
+                Zalisha QR Code
+            </button>
+            <div id="qrcode" class="flex justify-center pt-3"></div>
+        </div>
+
+        <!-- SEHEMU YA 4: MIPANGILIO NA IDENTITÉ -->
+        <div id="section-settings" class="bg-cardBg border border-slate-800 p-6 rounded-2xl shadow-2xl space-y-4 hidden">
+            <h2 class="text-sm font-bold text-white uppercase tracking-wider">⚙️ Mipangilio ya Identité za Majukwaa</h2>
+            <p class="text-xs text-slate-300">Hapa unaweza kuona na kuhakiki kama identité zako zimesomeka kwa usahihi kwenye mfumo:</p>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="text-slate-400 font-bold block mb-1">Airtable API URL:</label>
+                    <input type="text" id="viewAirtable" class="w-full bg-slate-950 border border-slate-800 text-slate-300 p-2.5 rounded-xl" readonly>
+                </div>
+                <div>
+                    <label class="text-slate-400 font-bold block mb-1">Make Webhook URL:</label>
+                    <input type="text" id="viewMake" class="w-full bg-slate-950 border border-slate-800 text-slate-300 p-2.5 rounded-xl" readonly>
+                </div>
+                <div>
+                    <label class="text-slate-400 font-bold block mb-1">Hugging Face API Key:</label>
+                    <input type="text" id="viewHf" class="w-full bg-slate-950 border border-slate-800 text-slate-300 p-2.5 rounded-xl" readonly>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Maktaba ya QR Code -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        // Uhakiki wa PIN
+        function thibitishaPin() {
+            let userInput = document.getElementById("adminPinInput").value;
+            if (userInput === BYAO_CONFIG.ADMIN_PIN) {
+                document.getElementById("pinModal").classList.add("hidden");
+                ingizaTaarifaZaMipangilio();
+            } else {
+                document.getElementById("errorMsg").classList.remove("hidden");
+            }
+        }
+
+        // Kubadili Tab kwenye Sidebar
+        function badiliTab(tabName) {
+            document.getElementById("section-dashboard").classList.add("hidden");
+            document.getElementById("section-byaoia").classList.add("hidden");
+            document.getElementById("section-tools").classList.add("hidden");
+            document.getElementById("section-settings").classList.add("hidden");
+
+            document.getElementById("section-" + tabName).classList.remove("hidden");
+            toggleMenu(); // Funga sidebar ikibonyezwa
+        }
+
+        // Sidebar Toggle Controls
+        let menuBtn = document.getElementById("menuBtn");
+        let closeSidebar = document.getElementById("closeSidebar");
+        let sidebar = document.getElementById("sidebar");
+        let overlay = document.getElementById("overlay");
+
+        function toggleMenu() {
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+
+        if (menuBtn) menuBtn.addEventListener("click", toggleMenu);
+        if (closeSidebar) closeSidebar.addEventListener("click", toggleMenu);
+        if (overlay) overlay.addEventListener("click", toggleMenu);
+
+        // Kujaza taarifa kwenye ukurasa wa mipangilio
+        function ingizaTaarifaZaMipangilio() {
+            document.getElementById("viewAirtable").value = BYAO_CONFIG.AIRTABLE_API_URL;
+            document.getElementById("viewMake").value = BYAO_CONFIG.MAKE_WEBHOOK_URL;
+            document.getElementById("viewHf").value = BYAO_CONFIG.HUGGINGFACE_KEY;
+            
+            let simuZote = JSON.parse(localStorage.getItem("simuZote")) || [];
+            document.getElementById("totalDataCount").textContent = simuZote.length;
+        }
+
+        // Kizalishaji cha QR
+        function generateQR() {
+            let container = document.getElementById("qrcode");
+            container.innerHTML = "";
+            let text = document.getElementById("qrText").value;
+            if (!text) {
+                alert("Tafadhali andika maandishi au kiungo kwanza!");
+                return;
+            }
+            new QRCode(container, {
+                text: text,
+                width: 128,
+                height: 128,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
+            });
+        }
+
+        // Kuiga utumaji wa ombi la AI kwa kutumia Webhook yako ya Make
+        function tumaOmbiAI() {
+            let promptText = document.getElementById("aiPrompt").value;
+            let responseBox = document.getElementById("aiResponse");
+            if(!promptText) {
+                alert("Andika ujumbe kwanza!");
+                return;
+            }
+            responseBox.classList.remove("hidden");
+            responseBox.innerHTML = "Inatuma ombi kupitia Make Webhook yako...";
+            
+            // Hapa ndipo muunganisho wa Make/ByaoIA unaposoma BYAO_CONFIG.MAKE_WEBHOOK_URL
+            if(BYAO_CONFIG.MAKE_WEBHOOK_URL.startsWith("WEKA_")) {
+                setTimeout(() => {
+                    responseBox.innerHTML = "<b>Onyo:</b> Bado hujabadilisha <span class='text-red-400'>MAKE_WEBHOOK_URL</span> kwenye mipangilio ya juu ya msimbo. Tafadhali weka kiungo chako halisi cha Make!";
+                }, 1000);
+            } else {
+                fetch(BYAO_CONFIG.MAKE_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt: promptText })
+                }).then(res => res.text()).then(data => {
+                    responseBox.innerHTML = "<b>Jibu kutoka Make/AI:</b> " + data;
+                }).catch(err => {
+                    responseBox.innerHTML = "Imeshindikana kuunganisha na Make Webhook. Hakikisha kiungo chako kiko sahihi.";
+                });
+            }
+        }
+
+        function fanyaBackup() {
+            let allData = {
+                simuZote: JSON.parse(localStorage.getItem("simuZote")) || [],
+                config: BYAO_CONFIG,
+                date: new Date().toISOString()
+            };
+            let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(allData, null, 2));
+            let downloadAnchor = document.createElement('a');
+            downloadAnchor.setAttribute("href", dataStr);
+            downloadAnchor.setAttribute("download", "BYAO_Master_Backup.json");
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            downloadAnchor.remove();
+        }
+
+        function futaDataZote() {
+            if (confirm("ONYO: Je, una hakika unataka kufuta kumbukumbu za mfumo?")) {
+                localStorage.removeItem("simuZote");
+                alert("Imefutwa kikamilifu.");
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

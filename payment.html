@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BYAO Payments Tracker Pro</title>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    darkBg: '#05070b',
+                    cardBg: '#0f172a',
+                    accentRed: '#ef4444'
+                }
+            }
+        }
+    }
+</script>
+</head>
+
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col font-sans p-4 sm:p-6 m-0 overflow-x-hidden">
+
+    <!-- Toast Notification ya Kisasa -->
+    <div id="toastNotification" class="fixed top-5 z-50 hidden bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold shadow-2xl backdrop-blur-md">
+        Ujumbe wa Mfumo
+    </div>
+
+    <!-- Kitufe cha Menu na Overlay ya Sidebar -->
+    <button id="menuBtn" class="fixed top-4 left-4 z-50 bg-slate-800 hover:bg-slate-700 text-white font-bold p-2.5 rounded-xl border border-slate-700 shadow-lg transition">
+        ☰ Menu
+    </button>
+    <div id="overlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-40"></div>
+
+    <!-- Sidebar ya Pamoja ya Kibabe -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-cardBg border-r border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+            <div class="flex items-center space-x-2">
+                <span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">BYAO Pro</span>
+                <span class="text-sm font-bold text-white">Navigation</span>
+            </div>
+            <button id="closeSidebar" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-1.5 text-xs">
+            <a href="index.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🏠 Mwanzo</a>
+            <a href="studio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💻 Studio Kubwa</a>
+            <a href="ide.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚡ Master IDE</a>
+            <a href="masterfinishproject.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🛠️ Zana za Mwisho</a>
+            <a href="profile.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📄 Utambulisho & Mwongozo</a> 
+            <a href="repair.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📱 Pokea Simu</a>
+            <a href="phones.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📋 Simu Zangu</a>
+            <a href="spares.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📦 Spares & Stock</a>
+            <a href="payments.html" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-800 text-white font-bold transition">💰 Payments Tracker</a>
+            <a href="tools.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Quick Tools</a>
+            <a href="wateja.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">👥 Wateja</a>
+            <a href="report.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📈 Master Report</a>
+            <a href="mipangilio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Mipangilio</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-2xl mx-auto space-y-6 pt-12 sm:pt-4">
+
+        <!-- HEADER -->
+        <div class="bg-cardBg border border-slate-800 p-6 sm:p-8 rounded-2xl shadow-2xl text-center space-y-3">
+            <div class="w-16 h-16 bg-slate-950 p-2 rounded-2xl border border-slate-800 mx-auto flex items-center justify-center shadow-inner">
+                <span class="text-2xl">💰</span>
+            </div>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-white">BYAO PAYMENTS TRACKER PRO</h1>
+            <p class="text-xs sm:text-sm text-slate-400">Ufuatiliaji wa Miamala, Pesa Taslimu na Malipo ya Wateja</p>
+            <div class="w-20 h-1 bg-red-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Kiteuzi cha Sarafu -->
+        <div class="bg-cardBg border border-slate-800 p-4 rounded-2xl shadow-xl flex items-center justify-between">
+            <label class="font-bold text-xs sm:text-sm text-slate-300">Chagua Sarafu (Currency):</label>
+            <select id="currencySymbol" onchange="onyeshaMiamala()" class="bg-slate-950 border border-slate-800 text-red-400 font-bold p-2.5 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-red-500 transition">
+                <option value="FC">FC (Franc ya Kongo)</option>
+                <option value="TZS">TZS (Shilingi ya Tanzania)</option>
+                <option value="KES">KES (Shilingi ya Kenya)</option>
+                <option value="UGX">UGX (Shilingi ya Uganda)</option>
+                <option value="XOF">XOF/XAF (CFA - Afr. ya Magharibi/Kati)</option>
+                <option value="USD">USD ($ Dola ya Marekani)</option>
+                <option value="EUR">EUR (€ Euro)</option>
+            </select>
+        </div>
+
+        <!-- Fomu ya Kuongeza Muamala Mpya -->
+        <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-4">
+            <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">➕ Rekodi Muamala Mpya</h3>
+            
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-300">Jina la Mteja / Maelezo ya Malipo</label>
+                    <input type="text" id="payClient" placeholder="Mf. Juma Ally - Malipo ya Kioo" class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-300">Kiasi Kilicholipwa (Amount)</label>
+                    <input type="number" id="payAmount" placeholder="Mf. 25000" class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-300">Njia ya Malipo (Payment Method)</label>
+                    <select id="payMethod" class="w-full bg-slate-950 border border-slate-800 text-white p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+                        <option value="Mobile Money (M-Pesa / Airtel / Orange / MTN)">Mobile Money (M-Pesa / Airtel / Orange / MTN)</option>
+                        <option value="Pesa Taslimu (Cash)">Pesa Taslimu (Cash)</option>
+                        <option value="Benki (Bank Transfer)">Benki (Bank Transfer)</option>
+                    </select>
+                </div>
+            </div>
+
+            <button onclick="ongezaMuamala()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-red-900/20">Hifadhi Muamala Huu</button>
+        </div>
+
+        <!-- Orodha ya Miamala -->
+        <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">📋 Miamala Iliyoingia</h3>
+                <input type="search" id="tafutamiamala" placeholder="🔍 Tafuta muamala..." oninput="onyeshaMiamala()" class="w-full sm:w-48 bg-slate-950 border border-slate-800 text-white placeholder-slate-600 px-3 py-2 rounded-xl text-xs focus:outline-none focus:border-red-500 transition">
+            </div>
+            
+            <div id="paymentContainer" class="space-y-3">
+                <p class="text-xs text-slate-400 text-center py-4">Bado hakuna miamala iliyowekwa.</p>
+            </div>
+        </div>
+
+        <a href="index.html" class="block text-center bg-cardBg hover:bg-slate-800 border border-slate-800 text-slate-300 font-bold p-3.5 rounded-xl text-xs transition shadow-xl">⬅️ Rudi kwenye Mwanzo (Ecosystem Hub)</a>
+    </main>
+
+    <!-- Script ya Uendeshaji -->
+    <script>
+        // BYAO SECURITY CHECK
+        let ameLogin = localStorage.getItem("byaoLogin");
+        if(ameLogin !== "ndiyo"){
+            localStorage.setItem("ukurasaUliotaka", window.location.pathname.split("/").pop());
+            window.location.href="login.html";
+        }
+
+        let paymentsList = JSON.parse(localStorage.getItem('byao_payments') || '[]');
+
+        function showNotification(msg) {
+            let toast = document.getElementById('toastNotification');
+            toast.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 2500);
+        }
+
+        function onyeshaMiamala() {
+            let curr = document.getElementById('currencySymbol').value;
+            let container = document.getElementById('paymentContainer');
+            let neno = document.getElementById('tafutamiamala') ? document.getElementById('tafutamiamala'].value.toLowerCase() : "";
+
+            if(paymentsList.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Bado hakuna miamala iliyowekwa.</p>`;
+                return;
+            }
+
+            let html = "";
+            for(let i = 0; i < paymentsList.length; i++) {
+                let item = paymentsList[i];
+                let searchString = (item.client + " " + item.method + " " + item.amount).toLowerCase();
+                if(neno && !searchString.includes(neno)) continue;
+
+                let originalIndex = i;
+
+                html += `
+                    <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl flex items-center justify-between text-xs">
+                        <div class="space-y-1">
+                            <b class="text-emerald-400 text-sm">${curr} ${Number(item.amount).toLocaleString()}</b>
+                            <div class="text-slate-300">Mteja: <b class="text-white">${item.client}</b></div>
+                            <div class="text-slate-400">Njia: <span class="text-slate-300">${item.method}</span></div>
+                        </div>
+                        <button onclick="futaMuamala(${originalIndex})" class="bg-red-600/20 hover:bg-red-600/30 text-red-400 font-bold p-2.5 rounded-xl transition border border-red-500/30">🗑️ Futa</button>
+                    </div>
+                `;
+            }
+            
+            if(html === "") {
+                container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Hakuna muamala uliopatikana.</p>`;
+            } else {
+                container.innerHTML = html;
+            }
+        }
+
+        function ongezaMuamala() {
+            let client = document.getElementById('payClient').value.trim();
+            let amount = document.getElementById('payAmount').value.trim();
+            let method = document.getElementById('payMethod').value;
+
+            if(!client || !amount) {
+                showNotification("⚠️ Tafadhali jaza jina la mteja na kiasi cha fedha!");
+                return;
+            }
+
+            let newPayment = {
+                client: client,
+                amount: amount,
+                method: method
+            };
+
+            paymentsList.unshift(newPayment);
+            localStorage.setItem('byao_payments', JSON.stringify(paymentsList));
+
+            document.getElementById('payClient').value = '';
+            document.getElementById('payAmount').value = '';
+
+            onyeshaMiamala();
+            showNotification("Muamala umehifadhiwa kikamilifu!");
+        }
+
+        function futaMuamala(index) {
+            if(confirm("Una uhakika unataka kufuta muamala huu?")) {
+                paymentsList.splice(index, 1);
+                localStorage.setItem('byao_payments', JSON.stringify(paymentsList));
+                onyeshaMiamala();
+                showNotification("Muamala umefutwa!");
+            }
+        }
+
+        window.onload = function() {
+            onyeshaMiamala();
+        };
+
+        // SIDEBAR TOGGLE
+        let menuBtn = document.getElementById("menuBtn");
+        let closeSidebar = document.getElementById("closeSidebar");
+        let sidebar = document.getElementById("sidebar");
+        let overlay = document.getElementById("overlay");
+
+        function toggleMenu(){
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+
+        menuBtn.addEventListener("click", toggleMenu);
+        closeSidebar.addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", toggleMenu);
+    </script>
+</body>
+</html>

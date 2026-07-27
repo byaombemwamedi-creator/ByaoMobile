@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ef4444">
+<link rel="apple-touch-icon" href="Byao Pro-logo.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BYAO App Ecosystem - Master Hub</title>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    darkBg: '#05070b',
+                    cardBg: '#0f172a',
+                    accentRed: '#ef4444'
+                }
+            }
+        }
+    }
+</script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col font-sans p-4 sm:p-6 m-0 overflow-x-hidden">
+
+    <!-- Toast Notification ya Kisasa -->
+    <div id="toastNotification" class="fixed top-5 z-50 hidden bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold shadow-2xl backdrop-blur-md">
+        Ujumbe wa Mfumo uko tayari!
+    </div>
+
+    <!-- Kitufe cha Menu na Overlay ya Sidebar -->
+    <button id="menuBtn" class="fixed top-4 left-4 z-50 bg-slate-800 hover:bg-slate-700 text-white font-bold p-2.5 rounded-xl border border-slate-700 shadow-lg transition">
+        ☰ Menu
+    </button>
+    <div id="overlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-40"></div>
+
+    <!-- Sidebar Kamili ya Pamoja -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-cardBg border-r border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+            <div class="flex items-center space-x-2">
+                <span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">BYAO Pro</span>
+                <span class="text-sm font-bold text-white">Navigation</span>
+            </div>
+            <button id="closeSidebar" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-1.5 text-xs">
+            <a href="index.html" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-800 text-white font-bold transition">🏠 Mwanzo (Hub)</a>
+            <a href="anza kazi.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🚀 Anza Kazi</a>
+            <a href="repair.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📱 Pokea Simu</a>
+            <a href="phones.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📋 Simu Zangu</a>
+            <a href="byaoia.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🎨 ByaoIA Generator</a>
+            <a href="ai-generator.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🖼️ Image Converter</a>
+            <a href="BYAO Developer Suite.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🛠️ Developer Suite</a>
+            <a href="studio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💻 Studio Kubwa</a>
+            <a href="ide.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚡ Master IDE</a>
+            <a href="masterfinishproject.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🛠️ Zana za Mwisho</a>
+            <a href="spares.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📦 Spares & Stock</a>
+            <a href="payments.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💰 Payments Tracker</a>
+            <a href="clients.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">👥 Clients Directory</a>
+            <a href="analytics.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📈 Analytics & Report</a>
+            <a href="profile.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📄 Utambulisho & Guide</a> 
+            <a href="mipangilio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Mipangilio</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-xl mx-auto space-y-6 pt-12 sm:pt-6">
+
+        <!-- UJUMBE WA UKARIBISHO -->
+        <div class="bg-gradient-to-r from-red-950 via-cardBg to-slate-900 border border-red-500/40 p-5 rounded-2xl shadow-xl space-y-1.5 text-white">
+            <h2 id="karibuFundi" class="text-base sm:text-lg font-extrabold flex items-center space-x-2">
+                <span>Karibu kwenye BYAO App Ecosystem !</span>
+                <span class="text-xl">👋</span>
+            </h2>
+            <p id="maelezoFundi" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Chagua huduma au app unayotaka hapa chini au anza kazi za ufundi moja kwa moja.
+            </p>
+        </div>
+
+        <!-- KITUFE KIREFU CHA ANZA KAZI -->
+        <div class="bg-cardBg border border-red-500/40 p-4 rounded-2xl shadow-2xl space-y-3 relative overflow-hidden">
+            <div class="absolute top-0 right-0 bg-red-600 text-white text-[9px] font-extrabold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
+                Quick Action
+            </div>
+            <div class="flex items-center space-x-3">
+                <div class="w-12 h-12 bg-slate-950 border border-slate-800 flex items-center justify-center text-2xl rounded-xl shadow-inner">👨‍🔧</div>
+                <div>
+                    <h3 class="text-sm font-bold text-white">Dawati la Ufundi wa Simu</h3>
+                    <p class="text-[11px] text-slate-400">Pokea simu, fuatilia na usimamie matengenezo</p>
+                </div>
+            </div>
+
+            <div class="space-y-2 pt-1">
+                <a href="anza kazi.html" class="block w-full group">
+                    <button class="w-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold py-3.5 px-4 rounded-xl text-xs sm:text-sm transition shadow-lg shadow-red-900/30 flex items-center justify-center space-x-2 border border-red-400/30">
+                        <span>🚀 Anza Kazi Sasa (Fungua Kitivo)</span>
+                        <span class="group-hover:translate-x-2 transition-transform text-base">➡️</span>
+                    </button>
+                </a>
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <a href="repair.html" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-red-500/40 rounded-xl text-xs font-bold text-slate-300 flex items-center justify-between transition group">
+                        <span class="flex items-center space-x-1.5">
+                            <span>📱</span>
+                            <span>Repair Panel</span>
+                        </span>
+                        <span class="text-red-500 group-hover:translate-x-1 transition-transform">➔</span>
+                    </a>
+                    <a href="phones.html" class="p-2.5 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-red-500/40 rounded-xl text-xs font-bold text-slate-300 flex items-center justify-between transition group">
+                        <span class="flex items-center space-x-1.5">
+                            <span>📋</span>
+                            <span>Simu Zangu</span>
+                        </span>
+                        <span class="text-red-500 group-hover:translate-x-1 transition-transform">➔</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- HALI YA BIASHARA & MUHTASARI -->
+        <div class="bg-cardBg border border-slate-800 p-5 rounded-2xl shadow-2xl space-y-3">
+            <h3 class="text-xs font-bold text-red-500 uppercase tracking-wider text-center">📊 Hali ya Biashara & Muhtasari</h3>
+            <div class="grid grid-cols-3 gap-2 text-center">
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                    <span class="text-[10px] text-slate-400 block">Mapato Jumla</span>
+                    <b id="mapato" class="text-xs sm:text-sm text-emerald-400 font-bold block mt-1">0 FC</b>
+                </div>
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                    <span class="text-[10px] text-slate-400 block">Zinazosubiri</span>
+                    <b id="zinazosubiri" class="text-xs sm:text-sm text-amber-400 font-bold block mt-1">0</b>
+                </div>
+                <div class="p-3 bg-slate-950 rounded-xl border border-slate-800">
+                    <span class="text-[10px] text-slate-400 block">Kazi za Leo</span>
+                    <b id="kaziLeo" class="text-xs sm:text-sm text-white font-bold block mt-1">0</b>
+                </div>
+            </div>
+        </div>
+
+        <!-- SEARCH BAR YA KUTAFUTA HUDUMA -->
+        <div class="relative">
+            <input type="text" id="searchService" placeholder="Tafuta app au huduma yoyote..." class="w-full bg-cardBg border border-slate-800 rounded-2xl px-4 py-3 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-red-500 shadow-inner transition">
+        </div>
+
+        <!-- KICHWA CHA SEHEMU YA HUDUMA -->
+        <div class="flex items-center justify-between px-1">
+            <h3 class="text-base sm:text-lg font-extrabold text-white">Services Disponibles</h3>
+            <span class="text-[10px] font-bold bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full border border-slate-700">Master Hub</span>
+        </div>
+
+        <!-- APPS GRID -->
+        <div id="servicesGrid" class="grid grid-cols-2 gap-3 sm:gap-4">
+            
+            <!-- 1. Anza Kazi -->
+            <div class="bg-cardBg border border-slate-800 hover:border-red-500/50 p-4 rounded-2xl shadow-xl flex flex-col justify-between space-y-3 transition duration-300 group">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xl sm:text-2xl p-2 bg-slate-950 rounded-xl border border-slate-800 group-hover:scale-110 transition">🚀</span>
+                        <span class="bg-red-500/10 text-red-400 text-[9px] font-bold px-1.5 py-0.5 rounded border border-red-500/20">Start</span>
+                    </div>
+                    <h3 class="text-white font-bold text-xs sm:text-sm">Anza Kazi</h3>
+                    <p class="text-[11px] text-slate-400 leading-relaxed line-clamp-2">Anzisha shughuli za ufundi na ufuatiliaji.</p>
+                </div>
+                <a href="anza kazi.html" class="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-xl text-[11px] transition shadow-md shadow-red-900/20">Fungua</a>
+            </div>
+
+            <!-- 2. BYAO Repair Shop -->
+            <div class="bg-cardBg border border-slate-800 hover:border-red-500/50 p-4 rounded-2xl shadow-xl flex flex-col justify-between space-y-3 transition duration-300 group">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xl sm:text-2xl p-2 bg-slate-950 rounded-xl border border-slate-800 group-hover:scale-110 transition">📱</span>
+                        <span class="bg-emerald-500/10 text-emerald-400 text-[9px] font-bold px-1.5 py-0.5 rounded border border-emerald-500/20">Active</span>
+                    </div>
+                    <h3 class="text-white font-bold text-xs sm:text-sm">BYAO Repair Shop</h3>
+                    <p class="text-[11px] text-slate-400 leading-relaxed line-clamp-2">Mfumo mkuu wa kupokea simu na kutoa risiti.</p>
+                </div>
+                <a href="repair.html" class="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-xl text-[11px] transition shadow-md shadow-red-900/20">Fungua</a>
+            </div>
+
+            <!-- 3. ByaoIA Generator -->
+            <div class="bg-cardBg border border-slate-800 hover:border-red-500/50 p-4 rounded-2xl shadow-xl flex flex-col justify-between space-y-3 transition duration-300 group">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xl sm:text-2xl p-2 bg-slate-950 rounded-xl border border-slate-800 group-hover:scale-110 transition">🎨</span>
+                        <span class="bg-purple-500/10 text-purple-400 text-[9px] font-bold px-1.5 py-0.5 rounded border border-purple-500/20">AI</span>
+                    </div>
+                    <h3 class="text-white font-bold text-xs sm:text-sm">ByaoIA Generator</h3>
+                    <p class="text-[11px] text-slate-400 leading-relaxed line-clamp-2">Kizalishaji cha picha na miundo ya AI.</p>
+                </div>
+                <a href="byaoia.html" class="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-xl text-[11px] transition shadow-md shadow-red-900/20">Fungua</a>
+            </div>
+
+            <!-- 4. Developer Suite -->
+            <div class="bg-cardBg border border-slate-800 hover:border-red-500/50 p-4 rounded-2xl shadow-xl flex flex-col justify-between space-y-3 transition duration-300 group">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xl sm:text-2xl p-2 bg-slate-950 rounded-xl border border-slate-800 group-hover:scale-110 transition">🛠️</span>
+                        <span class="bg-rose-500/10 text-rose-400 text-[9px] font-bold px-1.5 py-0.5 rounded border border-rose-500/20">Dev</span>
+                    </div>
+                    <h3 class="text-white font-bold text-xs sm:text-sm">Developer Suite</h3>
+                    <p class="text-[11px] text-slate-400 leading-relaxed line-clamp-2">Zana za ziada za utengenezaji programu.</p>
+                </div>
+                <a href="BYAO Developer Suite.html" class="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-xl text-[11px] transition shadow-md shadow-red-900/20">Fungua</a>
+            </div>
+
+            <!-- 5. Spares & Stock -->
+            <div class="bg-cardBg border border-slate-800 hover:border-red-500/50 p-4 rounded-2xl shadow-xl flex flex-col justify-between space-y-3 transition duration-300 group">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xl sm:text-2xl p-2 bg-slate-950 rounded-xl border border-slate-800 group-hover:scale-110 transition">📦</span>
+                        <span class="bg-blue-500/10 text-blue-400 text-[9px] font-bold px-1.5 py-0.5 rounded border border-blue-500/20">Stock</span>
+                    </div>
+                    <h3 class="text-white font-bold text-xs sm:text-sm">Spares & Stoku</h3>
+                    <p class="text-[11px] text-slate-400 leading-relaxed line-clamp-2">Usimamizi wa vifaa na vipuri vya simu.</p>
+                </div>
+                <a href="spares.html" class="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-xl text-[11px] transition shadow-md shadow-red-900/20">Fungua</a>
+            </div>
+
+            <!-- 6. Payments Tracker -->
+            <div class="bg-cardBg border border-slate-800 hover:border-red-500/50 p-4 rounded-2xl shadow-xl flex flex-col justify-between space-y-3 transition duration-300 group">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xl sm:text-2xl p-2 bg-slate-950 rounded-xl border border-slate-800 group-hover:scale-110 transition">💰</span>
+                        <span class="bg-amber-500/10 text-amber-400 text-[9px] font-bold px-1.5 py-0.5 rounded border border-amber-500/20">Finance</span>
+                    </div>
+                    <h3 class="text-white font-bold text-xs sm:text-sm">Payments Tracker</h3>
+                    <p class="text-[11px] text-slate-400 leading-relaxed line-clamp-2">Ufuatiliaji wa miamala na malipo.</p>
+                </div>
+                <a href="payments.html" class="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-xl text-[11px] transition shadow-md shadow-red-900/20">Fungua</a>
+            </div>
+
+            <!-- 7. Master IDE -->
+            <div class="bg-cardBg border border-slate-800 hover:border-red-500/50 p-4 rounded-2xl shadow-xl flex flex-col justify-between space-y-3 transition duration-300 group">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xl sm:text-2xl p-2 bg-slate-950 rounded-xl border border-slate-800 group-hover:scale-110 transition">⚡</span>
+                        <span class="bg-indigo-500/10 text-indigo-400 text-[9px] font-bold px-1.5 py-0.5 rounded border border-indigo-500/20">Code</span>
+                    </div>
+                    <h3 class="text-white font-bold text-xs sm:text-sm">Master IDE</h3>
+                    <p class="text-[11px] text-slate-400 leading-relaxed line-clamp-2">Kuandika na kuhariri mafaili ya kodi.</p>
+                </div>
+                <a href="ide.html" class="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-xl text-[11px] transition shadow-md shadow-red-900/20">Fungua</a>
+            </div>
+
+            <!-- 8. Clients Directory -->
+            <div class="bg-cardBg border border-slate-800 hover:border-red-500/50 p-4 rounded-2xl shadow-xl flex flex-col justify-between space-y-3 transition duration-300 group">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xl sm:text-2xl p-2 bg-slate-950 rounded-xl border border-slate-800 group-hover:scale-110 transition">👥</span>
+                        <span class="bg-teal-500/10 text-teal-400 text-[9px] font-bold px-1.5 py-0.5 rounded border border-teal-500/20">Clients</span>
+                    </div>
+                    <h3 class="text-white font-bold text-xs sm:text-sm">Client Directory</h3>
+                    <p class="text-[11px] text-slate-400 leading-relaxed line-clamp-2">Kitabu cha kumbukumbu za wateja.</p>
+                </div>
+                <a href="clients.html" class="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-xl text-[11px] transition shadow-md shadow-red-900/20">Fungua</a>
+            </div>
+
+            <!-- 9. Analytics & Master Report -->
+            <div class="bg-cardBg border border-slate-800 hover:border-red-500/50 p-4 rounded-2xl shadow-xl flex flex-col justify-between space-y-3 transition duration-300 group">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xl sm:text-2xl p-2 bg-slate-950 rounded-xl border border-slate-800 group-hover:scale-110 transition">📈</span>
+                        <span class="bg-yellow-500/10 text-yellow-400 text-[9px] font-bold px-1.5 py-0.5 rounded border border-yellow-500/20">Analytics</span>
+                    </div>
+                    <h3 class="text-white font-bold text-xs sm:text-sm">Analytics & Report</h3>
+                    <p class="text-[11px] text-slate-400 leading-relaxed line-clamp-2">Ripoti kamili na takwimu za biashara.</p>
+                </div>
+                <a href="analytics.html" class="block text-center bg-red-600 hover:bg-red-700 text-white font-bold py-2 rounded-xl text-[11px] transition shadow-md shadow-red-900/20">Fungua</a>
+            </div>
+
+        </div>
+
+        <div class="text-center pt-2 pb-6">
+            <a href="mipangilio.html" class="inline-block bg-cardBg hover:bg-slate-800 border border-slate-800 text-slate-300 font-bold px-6 py-2.5 rounded-xl text-xs transition shadow-xl">⚙️ Nenda kwenye Mipangilio ya Mfumo</a>
+        </div>
+    </main>
+
+    <!-- Kizuizi cha Error za Mtandao (Custom Offline & Loading Shield) -->
+    <div id="networkErrorShield" class="fixed inset-0 bg-[#05070b] z-[99999] flex flex-col items-center justify-center p-6 transition-opacity duration-300 hidden">
+        <div class="relative flex items-center justify-center mb-4">
+            <div class="w-14 h-14 border-4 border-red-600/20 border-t-red-600 rounded-full animate-spin"></div>
+            <div class="absolute text-xs font-bold text-red-500">BYAO</div>
+        </div>
+        <h2 id="networkStatusTitle" class="text-white font-bold text-base tracking-wide mb-1">Inaunganisha na Mtandao...</h2>
+        <p id="networkStatusDesc" class="text-slate-400 text-xs text-center max-w-xs mb-6">Tafadhali thibitisha kama intaneti yako inafanya kazi vizuri. Tunajaribu kuunganisha upya.</p>
+        <button onclick="window.location.reload()" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-5 py-2.5 rounded-xl transition shadow-lg">Jaribu Tena</button>
+    </div>
+
+    <!-- Script ya Uendeshaji & Utafutaji wa Huduma -->
+    <script>
+        // FIREBASE REALTIME DATABASE CONFIGURATION
+        const firebaseConfig = {
+            databaseURL: "https://byaomobilesolutions-default-rtdb.firebaseio.com/"
+        };
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database();
+
+        // BYAO SECURITY CHECK
+        let ameLogin = localStorage.getItem("byaoLogin");
+        if(ameLogin !== "ndiyo"){
+            localStorage.setItem("ukurasaUliotaka", window.location.pathname.split("/").pop());
+            window.location.href="login.html";
+        }
+
+        // SIDEBAR TOGGLE
+        let menuBtn = document.getElementById("menuBtn");
+        let closeSidebar = document.getElementById("closeSidebar");
+        let sidebar = document.getElementById("sidebar");
+        let overlay = document.getElementById("overlay");
+
+        function toggleMenu(){
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+
+        menuBtn.addEventListener("click", toggleMenu);
+        closeSidebar.addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", toggleMenu);
+
+        // LIVE SEARCH KWA AJILI YA HUDUMA
+        let searchInput = document.getElementById("searchService");
+        let servicesGrid = document.getElementById("servicesGrid");
+        let cards = servicesGrid.getElementsByClassName("bg-cardBg");
+
+        searchInput.addEventListener("input", function(e){
+            let term = e.target.value.toLowerCase();
+            Array.from(cards).forEach(card => {
+                let text = card.innerText.toLowerCase();
+                if(text.includes(term)){
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+
+        // SARAFU INAYOTUMIKA (Currency Selector)
+        function pataSarafuInayotumika() {
+            let mipangilioLocal = JSON.parse(localStorage.getItem("mipangilio")) || {};
+            return mipangilioLocal.sarafu || "FC";
+        }
+
+        // TAKWIMU NA HALI YA BIASHARA (Zinazosoma Sarafu Sahihi)
+        function takwimuBiashara(){
+            let simuZote = JSON.parse(localStorage.getItem("simuZote")) || [];
+            let mapato = 0;
+            let zinazosubiri = 0;
+            let kaziLeo = 0;
+            let sarafu = pataSarafuInayotumika();
+            
+            let leoDate = new Date();
+            let mwaka = leoDate.getFullYear();
+            let mwezi = String(leoDate.getMonth() + 1).padStart(2, '0');
+            let siku = String(leoDate.getDate()).padStart(2, '0');
+            let leo = `${mwaka}-${mwezi}-${siku}`;
+
+            simuZote.forEach(function(simu){
+                if(simu.status === "Imekamilika"){
+                    mapato += Number(simu.bei) || 0;
+                }
+                if(simu.status !== "Imekamilika"){
+                    zinazosubiri++;
+                }
+                if(simu.tarehe === leo){
+                    kaziLeo++;
+                }
+            });
+
+            document.getElementById("mapato").innerHTML = mapato + " " + sarafu;
+            document.getElementById("zinazosubiri").innerHTML = zinazosubiri;
+            document.getElementById("kaziLeo").innerHTML = kaziLeo;
+        }
+        takwimuBiashara();
+
+        // ONSHESHA TAARIFA ZA FUNDI KUTOKA FIREBASE NA LOCALSTORAGE
+        function onyeshaTaarifaFundi(){
+            let dataLocal = JSON.parse(localStorage.getItem("mipangilio"));
+            if(dataLocal && dataLocal.jina){
+                document.getElementById("karibuFundi").innerHTML = `Karibu ${dataLocal.jina} kwenye BYAO App Ecosystem ! 👋`;
+                document.getElementById("maelezoFundi").innerHTML = `Duka: <b>${dataLocal.duka || 'BYAO Mobile'}</b>. Chagua huduma au anza kazi za ukarabati hapa chini.`;
+            }
+
+            db.ref("mipangilio").once("value").then(function(snapshot) {
+                let dataFirebase = snapshot.val();
+                if(dataFirebase){
+                    localStorage.setItem("mipangilio", JSON.stringify(dataFirebase));
+                    if(dataFirebase.jina){
+                        document.getElementById("karibuFundi").innerHTML = `Karibu ${dataFirebase.jina} kwenye BYAO App Ecosystem ! 👋`;
+                        document.getElementById("maelezoFundi").innerHTML = `Duka: <b>${dataFirebase.duka || 'BYAO Mobile'}</b>. Chagua huduma au anza kazi za ukarabati hapa chini.`;
+                        takwimuBiashara();
+                    }
+                }
+            }).catch(function(error){
+                console.log("Imetumia LocalStorage kutokana na mtandao:", error);
+            });
+        }
+        onyeshaTaarifaFundi();
+
+        // SERVICE WORKER REGISTRATION
+        if('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((reg) => { console.log('BYAO Service Worker Imesajiliwa:', reg.scope); })
+                    .catch((err) => { console.log('Hitilafu ya Service Worker:', err); });
+            });
+        }
+
+        // KUSIMAMIA MTANDAO (OFFLINE SHIELD)
+        function checkNetworkStatus() {
+            const shield = document.getElementById('networkErrorShield');
+            const title = document.getElementById('networkStatusTitle');
+            const desc = document.getElementById('networkStatusDesc');
+
+            if (!navigator.onLine) {
+                shield.classList.remove('hidden');
+                title.innerText = "Hakuna Mtandao!";
+                desc.innerText = "Inaonekana intaneti imekatika kwenye kifaa chako. Tafadhali angalia mtandao wako.";
+            } else {
+                shield.classList.add('hidden');
+            }
+        }
+
+        window.addEventListener('online', checkNetworkStatus);
+        window.addEventListener('offline', checkNetworkStatus);
+
+        if (!navigator.onLine) {
+            checkNetworkStatus();
+        }
+
+        window.addEventListener('unhandledrejection', function(event) {
+            if (!navigator.onLine) {
+                checkNetworkStatus();
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

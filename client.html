@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BYAO Client Directory Pro</title>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    darkBg: '#05070b',
+                    cardBg: '#0f172a',
+                    accentRed: '#ef4444'
+                }
+            }
+        }
+    }
+</script>
+</head>
+
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col font-sans p-4 sm:p-6 m-0 overflow-x-hidden">
+
+    <!-- Toast Notification ya Kisasa -->
+    <div id="toastNotification" class="fixed top-5 z-50 hidden bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold shadow-2xl backdrop-blur-md">
+        Ujumbe wa Mfumo
+    </div>
+
+    <!-- Kitufe cha Menu na Overlay ya Sidebar -->
+    <button id="menuBtn" class="fixed top-4 left-4 z-50 bg-slate-800 hover:bg-slate-700 text-white font-bold p-2.5 rounded-xl border border-slate-700 shadow-lg transition">
+        ☰ Menu
+    </button>
+    <div id="overlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-40"></div>
+
+    <!-- Sidebar ya Pamoja ya Kibabe -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-cardBg border-r border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+            <div class="flex items-center space-x-2">
+                <span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">BYAO Pro</span>
+                <span class="text-sm font-bold text-white">Navigation</span>
+            </div>
+            <button id="closeSidebar" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-1.5 text-xs">
+            <a href="index.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🏠 Mwanzo</a>
+            <a href="studio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💻 Studio Kubwa</a>
+            <a href="ide.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚡ Master IDE</a>
+            <a href="masterfinishproject.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🛠️ Zana za Mwisho</a>
+            <a href="profile.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📄 Utambulisho & Mwongozo</a> 
+            <a href="repair.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📱 Pokea Simu</a>
+            <a href="phones.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📋 Simu Zangu</a>
+            <a href="spares.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📦 Spares & Stock</a>
+            <a href="payments.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💰 Payments Tracker</a>
+            <a href="tools.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Quick Tools</a>
+            <a href="wateja.html" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-800 text-white font-bold transition">👥 Wateja</a>
+            <a href="report.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📈 Master Report</a>
+            <a href="mipangilio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Mipangilio</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-2xl mx-auto space-y-6 pt-12 sm:pt-4">
+
+        <!-- HEADER -->
+        <div class="bg-cardBg border border-slate-800 p-6 sm:p-8 rounded-2xl shadow-2xl text-center space-y-3">
+            <div class="w-16 h-16 bg-slate-950 p-2 rounded-2xl border border-slate-800 mx-auto flex items-center justify-center shadow-inner">
+                <span class="text-2xl">📇</span>
+            </div>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-white">BYAO CLIENT DIRECTORY</h1>
+            <p class="text-xs sm:text-sm text-slate-400">Kitabu cha Kumbukumbu za Wateja na Historia ya Vifaa</p>
+            <div class="w-20 h-1 bg-red-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Fomu ya Kuongeza Mteja Mpya -->
+        <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-4">
+            <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">➕ Sajili Mteja Mpya</h3>
+            
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-300">Jina Kamili la Mteja</label>
+                    <input type="text" id="clientName" placeholder="Mf. Juma Ally" class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-300">Namba ya Simu ya Mteja (WhatsApp)</label>
+                    <input type="text" id="clientPhone" placeholder="Mf. 255712345678" class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-300">Aina ya Simu Iliyotengenezwa</label>
+                    <input type="text" id="clientDevice" placeholder="Mf. Tecno Spark 8 / iPhone X" class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+                </div>
+            </div>
+
+            <button onclick="ongezaMteja()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-red-900/20">Hifadhi Mteja Kwenye Orodha</button>
+        </div>
+
+        <!-- Orodha ya Wateja Waliohifadhiwa -->
+        <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-4">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-slate-800 pb-3">
+                <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">👥 Wateja Waliowahi Kuhudumiwa</h3>
+                <input type="search" id="tafutamteja" placeholder="🔍 Tafuta mteja..." oninput="onyeshaWateja()" class="w-full sm:w-48 bg-slate-950 border border-slate-800 text-white placeholder-slate-600 px-3 py-2 rounded-xl text-xs focus:outline-none focus:border-red-500 transition">
+            </div>
+            
+            <div id="clientContainer" class="space-y-3">
+                <p class="text-xs text-slate-400 text-center py-4">Bado hakuna wateja waliowekwa kwenye orodha.</p>
+            </div>
+        </div>
+
+        <a href="index.html" class="block text-center bg-cardBg hover:bg-slate-800 border border-slate-800 text-slate-300 font-bold p-3.5 rounded-xl text-xs transition shadow-xl">⬅️ Rudi kwenye Mwanzo (Ecosystem Hub)</a>
+    </main>
+
+    <!-- Script ya Uendeshaji -->
+    <script>
+        // BYAO SECURITY CHECK
+        let ameLogin = localStorage.getItem("byaoLogin");
+        if(ameLogin !== "ndiyo"){
+            localStorage.setItem("ukurasaUliotaka", window.location.pathname.split("/").pop());
+            window.location.href="login.html";
+        }
+
+        let clientsList = JSON.parse(localStorage.getItem('byao_clients') || '[]');
+
+        function showNotification(msg) {
+            let toast = document.getElementById('toastNotification');
+            toast.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 2500);
+        }
+
+        function onyeshaWateja() {
+            let container = document.getElementById('clientContainer');
+            let neno = document.getElementById('tafutamteja') ? document.getElementById('tafutamteja').value.toLowerCase() : "";
+
+            if(clientsList.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Bado hakuna wateja waliowekwa kwenye orodha.</p>`;
+                return;
+            }
+
+            let html = "";
+            for(let i = 0; i < clientsList.length; i++) {
+                let item = clientsList[i];
+                let searchString = (item.name + " " + item.phone + " " + item.device).toLowerCase();
+                if(neno && !searchString.includes(neno)) continue;
+
+                let originalIndex = i;
+
+                html += `
+                    <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                        <div class="space-y-1">
+                            <b class="text-white text-sm">${item.name}</b> <span class="text-slate-400">(${item.phone})</span>
+                            <div class="text-slate-300">Kifaa: <b class="text-red-400">${item.device}</b></div>
+                        </div>
+                        <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                            <button onclick="tumiaWhatsApp('${item.phone}', '${item.name}', '${item.device}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-2 rounded-xl transition shadow-lg">💬 WhatsApp</button>
+                            <button onclick="futaMteja(${originalIndex})" class="bg-red-600/20 hover:bg-red-600/30 text-red-400 font-bold px-3 py-2 rounded-xl transition border border-red-500/30">🗑️ Futa</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            if(html === "") {
+                container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">Hakuna mteja aliyepatikana.</p>`;
+            } else {
+                container.innerHTML = html;
+            }
+        }
+
+        function ongezaMteja() {
+            let name = document.getElementById('clientName').value.trim();
+            let phone = document.getElementById('clientPhone').value.trim();
+            let device = document.getElementById('clientDevice').value.trim();
+
+            if(!name || !phone || !device) {
+                showNotification("⚠️ Tafadhali jaza taarifa zote za mteja!");
+                return;
+            }
+
+            let newClient = {
+                name: name,
+                phone: phone,
+                device: device
+            };
+
+            clientsList.unshift(newClient);
+            localStorage.setItem('byao_clients', JSON.stringify(clientsList));
+
+            document.getElementById('clientName').value = '';
+            document.getElementById('clientPhone').value = '';
+            document.getElementById('clientDevice').value = '';
+
+            onyeshaWateja();
+            showNotification("Mteja amehifadhiwa kikamilifu!");
+        }
+
+        function futaMteja(index) {
+            if(confirm("Una uhakika unataka kumfuta mteja huyu?")) {
+                clientsList.splice(index, 1);
+                localStorage.setItem('byao_clients', JSON.stringify(clientsList));
+                onyeshaWateja();
+                showNotification("Mteja amefutwa!");
+            }
+        }
+
+        function tumiaWhatsApp(phone, name, device) {
+            let msg = `Habari yako ${name}! Tunapenda kukushukuru tena kwa kuleta simu yako (${device}) kutengenezwa BYAO Mobile Solutions. Tunatumai inafanya kazi vizuri kabisa!`;
+            let url = `https://api.whatsapp.com/send?phone=${phone}&text=` + encodeURIComponent(msg);
+            window.open(url, '_blank');
+        }
+
+        window.onload = function() {
+            onyeshaWateja();
+        };
+
+        // SIDEBAR TOGGLE
+        let menuBtn = document.getElementById("menuBtn");
+        let closeSidebar = document.getElementById("closeSidebar");
+        let sidebar = document.getElementById("sidebar");
+        let overlay = document.getElementById("overlay");
+
+        function toggleMenu(){
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+
+        menuBtn.addEventListener("click", toggleMenu);
+        closeSidebar.addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", toggleMenu);
+    </script>
+</body>
+</html>

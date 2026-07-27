@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="sw" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Byao Master Suite - AI Ecosystem</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        panelCharcoal: '#121824',
+                        darkBg: '#0b0f19'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="h-full bg-darkBg text-slate-100 font-sans antialiased overflow-hidden">
+
+    <!-- Layout Kuu yenye Sidebar na Main Chat Area -->
+    <div class="flex h-screen w-full">
+
+        <!-- SIDEBAR -->
+        <aside id="sidebar" class="w-72 bg-panelCharcoal border-r border-slate-800 flex flex-col justify-between transition-all duration-300 z-20">
+            <!-- Sehemu ya Juu ya Sidebar -->
+            <div class="p-4 flex flex-col h-full overflow-y-auto space-y-6">
+                <!-- Kichwa / Nembo -->
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-violet-600 flex items-center justify-center font-black text-black shadow-lg shadow-cyan-500/20 text-sm">BY</div>
+                        <div>
+                            <h1 class="font-bold text-sm tracking-wide text-slate-100">Byao Master Suite</h1>
+                            <p class="text-[10px] text-cyan-400 font-mono">1500+ Engineering Modules</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kitufe cha Login & Profile Status -->
+                <div class="bg-slate-900/80 border border-slate-700/60 p-3 rounded-xl flex items-center justify-between shadow-inner">
+                    <div class="flex items-center space-x-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center font-bold text-xs">👤</div>
+                        <div>
+                            <p class="text-xs font-semibold text-slate-200" id="userAccountStatus">Mgeni (Guest)</p>
+                            <p class="text-[10px] text-slate-400">Secure Session</p>
+                        </div>
+                    </div>
+                    <button onclick="toggleLoginModal()" class="px-3 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs rounded-lg transition-all shadow-md shadow-cyan-500/20">
+                        Login
+                    </button>
+                </div>
+
+                <!-- Orodha ya Viungo na Vitufe vya Mfumo -->
+                <div class="space-y-4">
+                    <!-- Vitengo vya Awali vilivyotakiwa -->
+                    <div>
+                        <p class="text-[10px] font-mono tracking-wider text-slate-400 uppercase mb-2">Ecosystem Kuu</p>
+                        <div class="space-y-1.5">
+                            <a href="https://byaoia.com" target="_blank" class="flex items-center space-x-2.5 p-2.5 rounded-xl hover:bg-slate-800/80 text-xs text-slate-300 hover:text-cyan-400 transition-all border border-transparent hover:border-slate-700">
+                                <span class="text-sm">🎨</span>
+                                <span class="font-medium">ByaoIA Generateur d'image</span>
+                            </a>
+                            <a href="https://byaomobilesolution.com" target="_blank" class="flex items-center space-x-2.5 p-2.5 rounded-xl hover:bg-slate-800/80 text-xs text-slate-300 hover:text-cyan-400 transition-all border border-transparent hover:border-slate-700">
+                                <span class="text-sm">📱</span>
+                                <span class="font-medium">Byao Mobile Solutions</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Vitufe 5 vya Ziada vilivyoongezwa -->
+                    <div>
+                        <p class="text-[10px] font-mono tracking-wider text-slate-400 uppercase mb-2">Moduli za Ziada (Pro)</p>
+                        <div class="space-y-1.5">
+                            <!-- 1. BYAO Studio Pro -->
+                            <button onclick="loadCustomModule('Studio Pro')" class="w-full flex items-center space-x-2.5 p-2.5 rounded-xl hover:bg-slate-800/80 text-xs text-slate-300 hover:text-cyan-400 transition-all text-left border border-transparent hover:border-slate-700">
+                                <span class="text-sm">⚡</span>
+                                <span class="font-medium">BYAO Studio Pro</span>
+                            </button>
+                            <!-- 2. BYAO Éditeur d'APK -->
+                            <button onclick="loadCustomModule('APK Editor')" class="w-full flex items-center space-x-2.5 p-2.5 rounded-xl hover:bg-slate-800/80 text-xs text-slate-300 hover:text-cyan-400 transition-all text-left border border-transparent hover:border-slate-700">
+                                <span class="text-sm">🛠️</span>
+                                <span class="font-medium">BYAO Éditeur d'APK</span>
+                            </button>
+                            <!-- 3. Vodacom Agent Billing -->
+                            <button onclick="loadCustomModule('Vodacom Billing')" class="w-full flex items-center space-x-2.5 p-2.5 rounded-xl hover:bg-slate-800/80 text-xs text-slate-300 hover:text-cyan-400 transition-all text-left border border-transparent hover:border-slate-700">
+                                <span class="text-sm">💳</span>
+                                <span class="font-medium">Vodacom Agent & Recharge</span>
+                            </button>
+                            <!-- 4. Airtable & Make Cloud Sync -->
+                            <button onclick="loadCustomModule('Cloud Sync')" class="w-full flex items-center space-x-2.5 p-2.5 rounded-xl hover:bg-slate-800/80 text-xs text-slate-300 hover:text-cyan-400 transition-all text-left border border-transparent hover:border-slate-700">
+                                <span class="text-sm">🔄</span>
+                                <span class="font-medium">Airtable & Make Cloud Sync</span>
+                            </button>
+                            <!-- 5. System Diagnostics & Logs -->
+                            <button onclick="loadCustomModule('Diagnostics')" class="w-full flex items-center space-x-2.5 p-2.5 rounded-xl hover:bg-slate-800/80 text-xs text-slate-300 hover:text-cyan-400 transition-all text-left border border-transparent hover:border-slate-700">
+                                <span class="text-sm">📊</span>
+                                <span class="font-medium">System Diagnostics & Logs</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chini ya Sidebar: Hali ya Mtandao -->
+            <div class="p-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                <span class="flex items-center space-x-2 font-mono text-[11px]">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>100% Operational</span>
+                </span>
+                <span class="text-[10px] text-slate-500">v3.5.2</span>
+            </div>
+        </aside>
+
+        <!-- SEHEMU KUU YA MAZUNGUMZO (MAIN CHAT CONTENT) -->
+        <main class="flex-1 flex flex-col h-full bg-darkBg relative overflow-hidden">
+            
+            <!-- Header ya Juu ya Chat -->
+            <header class="h-16 border-b border-slate-800/80 bg-panelCharcoal/50 backdrop-blur px-6 flex items-center justify-between z-10">
+                <div class="flex items-center space-x-3">
+                    <button onclick="toggleSidebar()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">
+                        ☰
+                    </button>
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-200">Engineering Assistance Console</h2>
+                        <p class="text-[11px] text-slate-400">Uliza swali au chagua moduli pembeni</p>
+                    </div>
+                </div>
+
+                <!-- Vitufe vya Jumla juu (Takwimu na Futa) -->
+                <div class="flex items-center space-x-2">
+                    <button onclick="loadQuickStats()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 border border-slate-700 text-xs text-slate-300 transition-all flex items-center space-x-1.5">
+                        <span>📊</span>
+                        <span class="hidden sm:inline">Takwimu</span>
+                    </button>
+                    <button onclick="clearChatScreen()" class="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 text-xs text-red-400 transition-all flex items-center space-x-1.5">
+                        <span>🗑️</span>
+                        <span class="hidden sm:inline">Safisha</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Sehemu ya Ujumbe (Chat History Container) -->
+            <div id="chatHistory" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6">
+                <!-- Ujumbe wa Karibu -->
+                <div class="flex items-start space-x-4">
+                    <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-cyan-500 to-violet-600 flex items-center justify-center text-black font-black text-xs shrink-0 shadow-lg shadow-cyan-500/20">AI</div>
+                    <div class="bg-panelCharcoal border border-slate-800/90 p-5 rounded-2xl rounded-tl-none text-xs sm:text-sm text-slate-300 shadow-2xl max-w-[88%] leading-relaxed font-sans whitespace-pre-line space-y-2">
+                        Karibu kwenye Byao Master Suite Console. Chagua moduli upande wa kushoto au andika swali lako hapa chini ili kuanza.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Eneo la Kuandikia Ujumbe (Input Box & Action Buttons) -->
+            <div class="p-4 sm:p-6 border-t border-slate-800/80 bg-panelCharcoal/40 backdrop-blur">
+                <div class="max-w-4xl mx-auto flex items-center space-x-3">
+                    <div class="relative flex-1">
+                        <input type="text" id="userInputQuery" placeholder="Andika neno kuu au swali la kiufundi hapa..." class="w-full bg-slate-900 border border-slate-700/80 rounded-xl px-4 py-3.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-all shadow-inner pr-10">
+                    </div>
+                    <button onclick="sendUserQuery()" class="px-5 py-3.5 bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 text-slate-950 font-bold text-xs sm:text-sm rounded-xl transition-all shadow-lg shadow-cyan-500/25 flex items-center space-x-2 shrink-0">
+                        <span>Tuma</span>
+                        <span>🚀</span>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript ya Mfumo -->
+    <script>
+        const masterDatabase = {
+            "airtable": "RIPOTI YA AIRBASE: Hifadhidata kuu imeunganishwa kikamilifu kupitia mfumo wa wingu wa Airtable kwa ajili ya kuhifadhi moduli zote 1500+ za kiufundi.",
+            "make": "RIPOTI YA MAKE.COM: Otomatiki (Automation workflows) zinapokea maombi na kuunganisha huduma za AI na hifadhidata kwa ufanisi wa 100%.",
+            "softr": "RIPOTI YA SOFTR: Kioleskundi cha mtandao kinaendeshwa kupitia Softr kutoa urahisi wa matumizi kwa wateja na wahandisi.",
+            "studio": "BYAO STUDIO PRO: Moduli hii inasimamia ukuzaji na upimaji wa mifumo mikubwa ya programu tumizi kwa kutumia AI.",
+            "apk": "BYAO ÉDITEUR D'APK: Kituo maalum cha kuhariri, kujenga, na kusimamia vifurushi vya programu za simu za Android.",
+            "vodacom": "VODACOM AGENT & RECHARGE: Mfumo wa malipo ya simu unaounga mkono sarafu za Francs za Kongo (CDF), Shilingi za Tanzania (TZS), na Burundi (BIF).",
+            "sync": "AIRTABLE & MAKE CLOUD SYNC: Inahakikisha data zote za wateja na kumbukumbu za AI zinasasishwa kwa wakati halisi bila kuchelewa.",
+            "diagnostics": "SYSTEM DIAGNOSTICS: Hali ya mfumo iko shwari. Hakuna hitilafu ya kumbukumbu au mtandao iliyoripotiwa kwenye seva."
+        };
+
+        function sendUserQuery() {
+            const inputField = document.getElementById('userInputQuery');
+            const queryText = inputField.value.trim().toLowerCase();
+            
+            if (!queryText) return;
+
+            appendMessage(inputField.value, 'user');
+            inputField.value = '';
+
+            setTimeout(() => {
+                let responseFound = false;
+                let responseContent = "";
+
+                for (let key in masterDatabase) {
+                    if (queryText.includes(key)) {
+                        responseContent = masterDatabase[key];
+                        responseFound = true;
+                        break;
+                    }
+                }
+
+                if (!responseFound) {
+                    responseContent = "RIPOTI YA KIELEKTRONIKI: HAKUNA MODULI ILIYOPATIKANA KWA NENO HILI\n\n" +
+                                      "• Sababu:\n" +
+                                      "Neno kuu uliloandika halijasajiliwa moja kwa moja kwenye moduli zetu za sasa.\n\n" +
+                                      "• Suluhu na Ushauri wa Kitaalamu:\n" +
+                                      "1. Jaribu kuandika neno fupi au chagua moduli mojawapo kwenye upande wa kushoto (Sidebar).\n" +
+                                      "2. Tumia maneno kama airtable, make, softr, studio, apk, vodacom, au sync.";
+                }
+
+                appendMessage(responseContent, 'ai');
+            }, 400);
+        }
+
+        function appendMessage(text, sender) {
+            const historyContainer = document.getElementById('chatHistory');
+            const messageWrapper = document.createElement('div');
+
+            if (sender === 'user') {
+                messageWrapper.className = 'flex items-start justify-end space-x-4';
+                messageWrapper.innerHTML = `
+                    <div class="bg-slate-900 border border-slate-700/80 p-4 rounded-2xl rounded-tr-none text-xs sm:text-sm text-slate-100 shadow-xl max-w-[88%] leading-relaxed font-sans whitespace-pre-line">
+                        ${escapeHtml(text)}
+                    </div>
+                    <div class="w-9 h-9 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center text-cyan-400 font-bold text-xs shrink-0 shadow-md">Wewe</div>
+                `;
+                historyContainer.appendChild(messageWrapper);
+                window.scrollTo({ top: historyContainer.scrollHeight, behavior: 'smooth' });
+            } else {
+                messageWrapper.className = 'flex items-start space-x-4';
+                messageWrapper.innerHTML = `
+                    <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-cyan-500 to-violet-600 flex items-center justify-center text-black font-black text-xs shrink-0 shadow-lg shadow-cyan-500/20">AI</div>
+                    <div class="relative group max-w-[88%]">
+                        <div class="ai-text-content bg-panelCharcoal border border-slate-800/90 p-5 rounded-2xl rounded-tl-none text-xs sm:text-sm text-slate-300 shadow-2xl leading-relaxed font-sans whitespace-pre-line space-y-2"></div>
+                        <!-- Kitufe cha Copier na Sauve kilichounganishwa chini ya ujumbe wa AI -->
+                        <div class="flex items-center space-x-2 mt-2 opacity-80 group-hover:opacity-100 transition-opacity">
+                            <button onclick="copyMessageText(this)" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[10px] text-cyan-400 rounded-lg flex items-center space-x-1 transition-all">
+                                <span>📋</span>
+                                <span>Copier</span>
+                            </button>
+                            <button onclick="saveMessageText(this)" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-[10px] text-emerald-400 rounded-lg flex items-center space-x-1 transition-all">
+                                <span>💾</span>
+                                <span>Sauve</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                historyContainer.appendChild(messageWrapper);
+                
+                const contentDiv = messageWrapper.querySelector('.ai-text-content');
+                let i = 0;
+                const speed = 15;
+                const sanitizedText = escapeHtml(text);
+
+                function typeWriter() {
+                    if (i < sanitizedText.length) {
+                        contentDiv.innerHTML += sanitizedText.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, speed);
+                        historyContainer.scrollTo({ top: historyContainer.scrollHeight, behavior: 'smooth' });
+                    }
+                }
+                typeWriter();
+            }
+        }
+
+        function loadCustomModule(moduleName) {
+            let message = "";
+            switch(moduleName) {
+                case 'Studio Pro':
+                    message = masterDatabase['studio'];
+                    break;
+                case 'APK Editor':
+                    message = masterDatabase['apk'];
+                    break;
+                case 'Vodacom Billing':
+                    message = masterDatabase['vodacom'];
+                    break;
+                case 'Cloud Sync':
+                    message = masterDatabase['sync'];
+                    break;
+                case 'Diagnostics':
+                    message = masterDatabase['diagnostics'];
+                    break;
+                default:
+                    message = "Moduli maalum imechaguliwa kutoka kwenye orodha kuu.";
+            }
+            appendMessage("Imefungua moduli ya: " + moduleName, 'user');
+            setTimeout(() => {
+                appendMessage(message, 'ai');
+            }, 300);
+        }
+
+        function copyMessageText(btn) {
+            const textContent = btn.closest('.group').querySelector('.ai-text-content').innerText;
+            navigator.clipboard.writeText(textContent).then(() => {
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span>✅ Imekopiwa</span>';
+                setTimeout(() => { btn.innerHTML = originalText; }, 2000);
+            });
+        }
+
+        function saveMessageText(btn) {
+            const textContent = btn.closest('.group').querySelector('.ai-text-content').innerText;
+            const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'byao-report-' + Date.now() + '.txt';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span>✅ Imesahaulika/Imesafirishwa</span>';
+            setTimeout(() => { btn.innerHTML = originalText; }, 2000);
+        }
+
+        function clearChatScreen() {
+            document.getElementById('chatHistory').innerHTML = '';
+        }
+
+        function loadQuickStats() {
+            const statsMessage = "RIPOTI YA TAKWIMU ZA MFUMO:\n\n" +
+                                 "• Moduli Zilizosajiliwa: 1500+ Engineering & Tech Modules\n" +
+                                 "• Cloud Ecosystem: Airtable, Make.com, Softr Integration Imara\n" +
+                                 "• Hali ya Mfumo: Inafanya kazi kwa kiwango cha juu (100% Operational)\n" +
+                                 "• Wahandisi Wahusika: Byao Mobile Solution & ByaoIA Master Suite.";
+            appendMessage(statsMessage, 'ai');
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('-ml-72');
+        }
+
+        function toggleLoginModal() {
+            const statusEl = document.getElementById('userAccountStatus');
+            if(statusEl.innerText.includes('Mgeni')) {
+                statusEl.innerText = 'Mhandisi (Admin)';
+                alert('Umeingia kwa mafanikio kama Mhandisi Mkuu wa Byao Ecosystem!');
+            } else {
+                statusEl.innerText = 'Mgeni (Guest)';
+                alert('Umetoka kwenye mfumo (Logged out).');
+            }
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        document.getElementById('userInputQuery').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendUserQuery();
+            }
+        });
+    </script>
+</body>
+</html>

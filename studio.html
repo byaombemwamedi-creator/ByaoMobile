@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BYAO Pro Studio & IDE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#05070b',
+                        cardBg: '#0f172a',
+                        accentRed: '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col font-sans overflow-x-hidden m-0 p-0">
+
+    <!-- Header Bar -->
+    <header class="w-full bg-cardBg/90 backdrop-blur-md border-b border-slate-800 px-4 py-4 flex items-center justify-between sticky top-0 z-50 shadow-lg">
+        <div class="flex items-center space-x-2">
+            <span class="bg-red-600 text-white text-xs font-extrabold px-2.5 py-1 rounded-lg uppercase tracking-wider">BYAO</span>
+            <h1 class="text-base sm:text-lg font-bold tracking-tight text-white">Pro Studio & IDE</h1>
+        </div>
+        <div class="flex items-center space-x-3">
+            <div id="toastNotification" class="hidden bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-full text-[10px] font-bold tracking-wide shadow-sm">
+                Imetekelezwa
+            </div>
+            <a href="ide.html" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition shadow-md flex items-center space-x-1">
+                <span>⚡ Nenda Master IDE</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 w-full max-w-4xl mx-auto p-4 sm:p-6 flex flex-col space-y-6">
+        
+        <!-- Welcome Banner -->
+        <div class="bg-gradient-to-r from-red-950/40 via-cardBg to-cardBg border border-red-500/20 p-5 rounded-2xl shadow-xl flex justify-between items-center">
+            <div>
+                <h2 class="text-lg sm:text-xl font-extrabold text-white">Kitovu Kikuu cha Ubunifu (Master Studio)</h2>
+                <p class="text-slate-400 text-xs sm:text-sm mt-1">Andika maelezo, tengeneza kodi, endesha IDE, fungua kwenye browser, na save mafaili au picha.</p>
+            </div>
+        </div>
+
+        <!-- Input Section -->
+        <div class="bg-cardBg border border-slate-800 p-4 sm:p-6 rounded-2xl shadow-xl space-y-4">
+            <div class="flex justify-between items-center">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400">Andika Maelekezo (Prompt) au Kodi ya IDE:</label>
+                <button type="button" onclick="startVoiceRecognition()" id="micBtn" class="bg-slate-800 hover:bg-slate-700 text-red-400 border border-slate-700 text-xs font-bold px-3 py-1.5 rounded-xl transition flex items-center space-x-1">
+                    <span>🎙️ Sauti</span>
+                </button>
+            </div>
+            
+            <textarea id="userPrompt" rows="4" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-4 text-xs sm:text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-red-500 transition shadow-inner font-mono" placeholder="Mf: Nataka animation ya duara, fomu ya usajili, auandike HTML/CSS yako moja kwa moja hapa..."></textarea>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button onclick="generateCodeFromPrompt()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-3 rounded-xl transition shadow-lg text-xs tracking-wide">
+                    🤖 Zalisha na AI
+                </button>
+                <button onclick="runCustomIDECode()" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-bold py-3 px-3 rounded-xl transition text-xs tracking-wide">
+                    ⚡ Endesha IDE
+                </button>
+                <button onclick="saveCodeAsFile()" class="w-full bg-emerald-800 hover:bg-emerald-700 text-white font-bold py-3 px-3 rounded-xl transition text-xs tracking-wide">
+                    💾 Save Faili (.html)
+                </button>
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div id="outputSection" class="hidden space-y-6 pb-10">
+            
+            <!-- Code View Box -->
+            <div class="bg-cardBg border border-slate-800 p-4 sm:p-6 rounded-2xl shadow-xl space-y-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Msimbo Halisi (Source Code):</span>
+                    <button onclick="copyGeneratedCode()" class="text-xs bg-slate-800 hover:bg-slate-700 text-white font-semibold px-3 py-1.5 rounded-lg transition border border-slate-700">Nakili Kodi</button>
+                </div>
+                <pre class="bg-slate-950 p-4 rounded-xl border border-slate-900 overflow-x-auto text-xs text-emerald-300 font-mono max-h-48"><code id="codeOutput"></code></pre>
+            </div>
+
+            <!-- Live Preview, Browser View & Image Capture Studio -->
+            <div class="bg-cardBg border border-slate-800 p-4 sm:p-6 rounded-2xl shadow-xl space-y-4">
+                <div class="flex flex-wrap justify-between items-center gap-2">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Onyesho, Browser & Picha Studio:</h3>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="openInNewBrowserTab()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition shadow-md">
+                            🌐 Fungua kwenye Browser
+                        </button>
+                        <button onclick="downloadPreviewAsImage()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1.5 rounded-xl text-xs transition shadow-md">
+                            📷 Save kama Picha
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="captureArea" class="bg-gradient-to-br from-slate-900 to-slate-950 p-6 rounded-2xl border border-slate-700 shadow-2xl w-full flex items-center justify-center min-h-[180px]">
+                    <div id="livePreview" class="w-full flex items-center justify-center">
+                        <!-- Muonekano wa matokeo -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer Bar -->
+    <footer class="w-full text-center py-4 text-slate-500 text-xs border-t border-slate-800/60 bg-cardBg">
+        BYAO Pro Ecosystem &bull; Ultimate Studio & IDE
+    </footer>
+
+    <!-- Script Kuu ya Mfumo -->
+    <script>
+        function showNotification(msg) {
+            let toast = document.getElementById('toastNotification');
+            toast.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 2500);
+        }
+
+        function startVoiceRecognition() {
+            try {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if(!SpeechRecognition) {
+                    showNotification('Kivinjari hakihimili sauti.');
+                    return;
+                }
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'sw-TZ';
+                document.getElementById('micBtn').innerText = '🎙️ Sikiliza...';
+                
+                recognition.onresult = function(event) {
+                    let speechText = event.results[0][0].transcript;
+                    document.getElementById('userPrompt').value = speechText;
+                    document.getElementById('micBtn').innerText = '🎙️ Sauti';
+                    generateCodeFromPrompt();
+                };
+                recognition.onerror = () => { document.getElementById('micBtn').innerText = '🎙️ Sauti'; };
+                recognition.onend = () => { document.getElementById('micBtn').innerText = '🎙️ Sauti'; };
+                recognition.start();
+            } catch(e) {
+                showNotification('Imeshindwa kuwasha kipaza sauti.');
+            }
+        }
+
+        function generateCodeFromPrompt() {
+            let prompt = document.getElementById('userPrompt').value.trim().toLowerCase();
+            if(!prompt) {
+                showNotification('Tafadhali andika maelekezo kwanza!');
+                return;
+            }
+
+            let generatedCode = '';
+            let previewHtml = '';
+
+            if (prompt.includes('animation') || prompt.includes('zunguka') || prompt.includes('spin')) {
+                generatedCode = `<div class="flex flex-col items-center justify-center p-6 space-y-3">\n    <div class="w-12 h-12 border-4 border-red-500 border-t-transparent rounded-full animate-spin"></div>\n    <p class="text-xs text-slate-300 font-mono">Animation Inayocheka...</p>\n</div>`;
+                previewHtml = generatedCode;
+            }
+            else if (prompt.includes('kitufe') || prompt.includes('button') || prompt.includes('link')) {
+                let btnText = prompt.includes('vodacom') ? 'Vodacom Access' : 'Bonyeza Hapa Kiongozi';
+                generatedCode = `<div class="p-4 text-center">\n  <a href="#" class="inline-block bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold py-3 px-8 rounded-xl shadow-xl">${btnText}</a>\n</div>`;
+                previewHtml = generatedCode;
+            } 
+            else if (prompt.includes('kadi') || prompt.includes('card') || prompt.includes('taarifa')) {
+                generatedCode = `<div class="bg-slate-900 text-white p-6 rounded-2xl border border-red-500/40 shadow-xl w-full">\n    <h3 class="text-base font-bold text-red-400 mb-2">Ripoti Rasmi ya BYAO</h3>\n    <p class="text-xs text-slate-300">Imetengenezwa moja kwa moja kupitia BYAO Pro Studio.</p>\n</div>`;
+                previewHtml = `<div class="bg-slate-900 text-white p-5 rounded-2xl border border-red-500/40 shadow-xl w-full"><div class="flex items-center space-x-2 mb-2"><span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span><h3 class="text-sm font-bold text-red-400">Ripoti Rasmi ya BYAO</h3></div><p class="text-xs text-slate-300 leading-relaxed">Imetengenezwa moja kwa moja kupitia BYAO Pro Studio.</p></div>`;
+            } 
+            else {
+                let safeTitle = prompt.charAt(0).toUpperCase() + prompt.slice(1);
+                generatedCode = `<div class="p-5 bg-slate-900 border border-red-500/30 rounded-2xl text-white w-full">\n    <h4 class="font-bold text-red-400 text-sm">${safeTitle}</h4>\n    <p class="text-xs text-slate-400 mt-1">Matokeo ya Studio yaliyochakatwa.</p>\n</div>`;
+                previewHtml = generatedCode;
+            }
+
+            document.getElementById('codeOutput').innerText = generatedCode;
+            document.getElementById('livePreview').innerHTML = previewHtml;
+            document.getElementById('outputSection').classList.remove('hidden');
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+            showNotification('Msimbo umezalishwa kikamilifu!');
+        }
+
+        function runCustomIDECode() {
+            let code = document.getElementById('userPrompt').value.trim();
+            if(!code) {
+                showNotification('Weka kodi kwenye boksi kwanza!');
+                return;
+            }
+            document.getElementById('codeOutput').innerText = code;
+            document.getElementById('livePreview').innerHTML = code;
+            document.getElementById('outputSection').classList.remove('hidden');
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+            showNotification('IDE imeendesha msimbo!');
+        }
+
+        function saveCodeAsFile() {
+            let codeText = document.getElementById('codeOutput').innerText || document.getElementById('userPrompt').value;
+            if(!codeText) {
+                showNotification('Hakuna kodi ya kuhifadhi!');
+                return;
+            }
+            let fullHtml = `<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><title>BYAO Export</title><script src="https://cdn.tailwindcss.com"><\/script></head><body class="bg-slate-900 text-white p-6">${codeText}</body></html>`;
+            let blob = new Blob([fullHtml], { type: 'text/html' });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = 'byao-project.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showNotification('Faili limepakuliwa!');
+        }
+
+        function openInNewBrowserTab() {
+            let codeText = document.getElementById('codeOutput').innerText || document.getElementById('userPrompt').value;
+            let fullHtml = `<!DOCTYPE html><html lang="sw" class="dark"><head><meta charset="UTF-8"><title>BYAO Browser Preview</title><script src="https://cdn.tailwindcss.com"><\/script></head><body class="bg-[#05070b] text-slate-100 p-6 flex items-center justify-center min-h-screen">${codeText}</body></html>`;
+            let win = window.open();
+            win.document.write(fullHtml);
+            win.document.close();
+            showNotification('Imefungua kwenye browser!');
+        }
+
+        function copyGeneratedCode() {
+            let codeText = document.getElementById('codeOutput').innerText;
+            navigator.clipboard.writeText(codeText);
+            showNotification('Msimbo umenakiliwa!');
+        }
+
+        function downloadPreviewAsImage() {
+            let captureElement = document.getElementById('captureArea');
+            html2canvas(captureElement, {
+                scale: 3,
+                backgroundColor: '#0f172a',
+                logging: false
+            }).then(canvas => {
+                let imageURL = canvas.toDataURL('image/png');
+                let a = document.createElement('a');
+                a.href = imageURL;
+                a.download = 'byao-studio-image.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                showNotification('Picha imehifadhiwa!');
+            }).catch(() => {
+                showNotification('Imeshindwa kupakua picha.');
+            });
+        }
+    </script>
+</body>
+</html>

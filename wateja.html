@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Wateja - BYAO Mobile Solutions</title>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    darkBg: '#05070b',
+                    cardBg: '#0f172a',
+                    accentRed: '#ef4444'
+                }
+            }
+        }
+    }
+</script>
+</head>
+
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col font-sans p-4 sm:p-6 m-0 overflow-x-hidden">
+
+    <!-- Toast Notification ya Kisasa -->
+    <div id="toastNotification" class="fixed top-5 z-50 hidden bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold shadow-2xl backdrop-blur-md">
+        Ujumbe wa Mfumo
+    </div>
+
+    <!-- Kitufe cha Menu na Overlay ya Sidebar -->
+    <button id="menuBtn" class="fixed top-4 left-4 z-50 bg-slate-800 hover:bg-slate-700 text-white font-bold p-2.5 rounded-xl border border-slate-700 shadow-lg transition">
+        ☰ Menu
+    </button>
+    <div id="overlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-40"></div>
+
+    <!-- Sidebar ya Pamoja ya Kibabe -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-cardBg border-r border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+            <div class="flex items-center space-x-2">
+                <span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">BYAO Pro</span>
+                <span class="text-sm font-bold text-white">Navigation</span>
+            </div>
+            <button id="closeSidebar" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-1.5 text-xs">
+            <a href="index.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🏠 Mwanzo</a>
+            <a href="studio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💻 Studio Kubwa</a>
+            <a href="ide.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚡ Master IDE</a>
+            <a href="masterfinishproject.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🛠️ Zana za Mwisho</a>
+            <a href="profile.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📄 Utambulisho & Mwongozo</a> 
+            <a href="repair.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📱 Pokea Simu</a>
+            <a href="phones.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📋 Simu Zangu</a>
+            <a href="tools.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Quick Tools</a>
+            <a href="wateja.html" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-800 text-white font-bold transition">👥 Wateja</a>
+            <a href="mipangilio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Mipangilio</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-2xl mx-auto space-y-6 pt-12 sm:pt-4">
+
+        <!-- HEADER -->
+        <div class="bg-cardBg border border-slate-800 p-6 sm:p-8 rounded-2xl shadow-2xl text-center space-y-3">
+            <div class="w-16 h-16 bg-slate-950 p-2 rounded-2xl border border-slate-800 mx-auto flex items-center justify-center shadow-inner">
+                <span class="text-2xl">👥</span>
+            </div>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-white">WATEJA - BYAO MOBILE SOLUTIONS</h1>
+            <p class="text-xs sm:text-sm text-slate-400">Usimamizi wa taarifa na historia za wateja</p>
+            <div class="w-20 h-1 bg-red-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- SEARCH MTEJA -->
+        <div class="bg-cardBg border border-slate-800 p-4 rounded-2xl shadow-xl space-y-2">
+            <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">🔍 Tafuta Mteja</h3>
+            <input id="tafutaMtejaInput" type="search" placeholder="Andika jina la mteja..." onkeyup="tafutaMteja()" class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-red-500 transition">
+        </div>
+
+        <!-- ANGALIA NAMBA YA MTEJA -->
+        <div class="bg-cardBg border border-slate-800 p-5 rounded-2xl shadow-xl space-y-3">
+            <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">📱 Angalia Namba ya Mteja</h3>
+            <input id="namba" type="number" placeholder="07xxxxxxxx" onkeyup="angaliaMteja()" class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-red-500 transition">
+            <div id="taarifaMteja" class="hidden p-3 rounded-xl text-xs font-bold"></div>
+        </div>
+
+        <!-- ORODHA YA WATEJA -->
+        <div id="wateja" class="space-y-4"></div>
+    </main>
+
+    <!-- MODAL YA HISTORIA YA MTEJA -->
+    <div id="dirishaHistoria" class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-slate-800 w-full max-w-sm p-6 rounded-2xl shadow-2xl text-slate-100 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-sm font-bold text-white">👤 Historia ya Mteja</h3>
+                <button onclick="fungaHistoria()" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+            </div>
+            <div id="maelezoHistoria" class="space-y-3"></div>
+            <button onclick="fungaHistoria()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 rounded-xl text-xs transition border border-slate-700">❌ Funga</button>
+        </div>
+    </div>
+
+    <!-- Script ya Uendeshaji -->
+    <script>
+        // BYAO SECURITY CHECK
+        let ameLogin = localStorage.getItem("byaoLogin");
+        if(ameLogin !== "ndiyo"){
+            localStorage.setItem("ukurasaUliotaka", window.location.pathname.split("/").pop());
+            window.location.href="login.html";
+        }
+
+        function showNotification(msg) {
+            let toast = document.getElementById('toastNotification');
+            toast.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 2500);
+        }
+
+        let simuZote = JSON.parse(localStorage.getItem("simuZote")) || [];
+        let eneo = document.getElementById("wateja");
+        let wateja = {};
+
+        simuZote.forEach(function(simu){
+            if(!wateja[simu.jina]){
+                wateja[simu.jina] = {
+                    jina: simu.jina,
+                    namba: simu.namba,
+                    simu: []
+                };
+            }
+            wateja[simu.jina].simu.push(simu);
+        });
+
+        if(Object.keys(wateja).length > 0){
+            Object.values(wateja).forEach(function(mteja){
+                let orodhaSimu = "";
+                mteja.simu.forEach(function(simu){
+                    orodhaSimu += `
+                        <li class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-0.5">
+                            <span class="text-white">📱 ${simu.brand || ""} ${simu.model || ""}</span><br>
+                            <span class="text-slate-400">⚠️ Tatizo: ${simu.tatizo || ""}</span><br>
+                            <span class="text-emerald-400 font-bold">📌 Hali: ${simu.status || ""}</span>
+                        </li>
+                    `;
+                });
+
+                eneo.innerHTML += `
+                    <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-4 mteja-card">
+                        <div class="border-b border-slate-800 pb-3">
+                            <h3 class="text-sm sm:text-base font-bold text-white flex items-center space-x-2">
+                                <span>👤</span>
+                                <span>${mteja.jina}</span>
+                            </h3>
+                        </div>
+                        <div class="text-xs space-y-2 text-slate-300">
+                            <p>📞 <b>Namba:</b> <span class="text-slate-400">${mteja.namba}</span></p>
+                            <p>📱 <b>Jumla ya simu:</b> <span class="text-white font-bold">${mteja.simu.length}</span></p>
+                            <div class="space-y-1.5 pt-2">
+                                <p class="font-bold text-slate-400 uppercase tracking-wider">Historia ya simu:</p>
+                                <ul class="space-y-2">${orodhaSimu}</ul>
+                            </div>
+                        </div>
+                        <button onclick="historiaMteja('${mteja.jina}')" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition border border-slate-700">👁️ Angalia Historia Kamili</button>
+                    </div>
+                `;
+            });
+        } else {
+            eneo.innerHTML = `
+                <div class="bg-cardBg border border-slate-800 p-6 rounded-2xl text-center space-y-2">
+                    <h3 class="text-sm font-bold text-white">Hakuna wateja bado</h3>
+                    <p class="text-xs text-slate-400">Wateja wataonekana baada ya kupokea simu kupitia mfumo.</p>
+                </div>
+            `;
+        }
+
+        function tafutaMteja(){
+            let neno = document.getElementById("tafutaMtejaInput").value.toLowerCase();
+            let cards = document.querySelectorAll(".mteja-card");
+
+            cards.forEach(function(card){
+                let maandishi = card.innerText.toLowerCase();
+                if(maandishi.includes(neno)){
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        function historiaMteja(jina){
+            let simuZaMteja = simuZote.filter(function(simu){
+                return simu.jina === jina;
+            });
+
+            let taarifa = "";
+            simuZaMteja.forEach(function(simu){
+                taarifa += `
+                    <div class="bg-slate-950 border border-slate-800 p-3 rounded-xl text-xs space-y-1">
+                        <p class="text-white font-bold">📱 ${simu.brand || ""} ${simu.model || ""}</p>
+                        <p class="text-slate-400">⚠️ Tatizo: ${simu.tatizo || ""}</p>
+                        <p class="text-emerald-400">📌 Hali: ${simu.status || ""}</p>
+                        <p class="text-slate-500">📅 Tarehe: ${simu.tarehe || ""}</p>
+                    </div>
+                `;
+            });
+
+            document.getElementById("maelezoHistoria").innerHTML = taarifa;
+            document.getElementById("dirishaHistoria").classList.remove("hidden");
+        }
+
+        function fungaHistoria(){
+            document.getElementById("dirishaHistoria").classList.add("hidden");
+        }
+
+        function angaliaMteja(){
+            let namba = document.getElementById("namba").value;
+            let box = document.getElementById("taarifaMteja");
+
+            if(namba.length < 5){
+                box.classList.add("hidden");
+                return;
+            }
+
+            let historia = simuZote.filter(function(simu){
+                return simu.namba === namba;
+            });
+
+            if(historia.length > 0){
+                box.innerHTML = `👋 Karibu tena <b class="text-white">${historia[0].jina}</b><br>📱 Ulishawahi kuleta simu: ${historia.length}<br>✅ Mteja wa zamani`;
+                box.className = "bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 p-3 rounded-xl text-xs font-bold block";
+            } else {
+                box.innerHTML = `🆕 Mteja mpya<br>Taarifa zake zitaanza kuhifadhiwa kupitia mfumo.`;
+                box.className = "bg-amber-500/10 border border-amber-500/30 text-amber-400 p-3 rounded-xl text-xs font-bold block";
+            }
+        }
+
+        // SIDEBAR TOGGLE
+        let menuBtn = document.getElementById("menuBtn");
+        let closeSidebar = document.createElement("button"); // handle safe close
+        let sidebar = document.getElementById("sidebar");
+        let overlay = document.getElementById("overlay");
+
+        function toggleMenu(){
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+
+        menuBtn.addEventListener("click", toggleMenu);
+        document.querySelector("#sidebar button").addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", toggleMenu);
+    </script>
+</body>
+</html>

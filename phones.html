@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Simu Zangu - BYAO Mobile Solutions</title>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    darkBg: '#05070b',
+                    cardBg: '#0f172a',
+                    accentRed: '#ef4444'
+                }
+            }
+        }
+    }
+</script>
+</head>
+
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col font-sans p-4 sm:p-6 m-0 overflow-x-hidden">
+
+    <!-- Toast Notification ya Kisasa -->
+    <div id="toastNotification" class="fixed top-5 z-50 hidden bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold shadow-2xl backdrop-blur-md">
+        Ujumbe wa Mfumo
+    </div>
+
+    <!-- Kitufe cha Menu na Overlay ya Sidebar -->
+    <button id="menuBtn" class="fixed top-4 left-4 z-50 bg-slate-800 hover:bg-slate-700 text-white font-bold p-2.5 rounded-xl border border-slate-700 shadow-lg transition">
+        ☰ Menu
+    </button>
+    <div id="overlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-40"></div>
+
+    <!-- Sidebar ya Pamoja ya Kibabe -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-cardBg border-r border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+            <div class="flex items-center space-x-2">
+                <span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">BYAO Pro</span>
+                <span class="text-sm font-bold text-white">Navigation</span>
+            </div>
+            <button id="closeSidebar" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-1.5 text-xs">
+            <a href="index.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🏠 Mwanzo</a>
+            <a href="studio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💻 Studio Kubwa</a>
+            <a href="ide.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚡ Master IDE</a>
+            <a href="masterfinishproject.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🛠️ Zana za Mwisho</a>
+            <a href="profile.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📄 Utambulisho & Mwongozo</a> 
+            <a href="repair.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📱 Pokea Simu</a>
+            <a href="phones.html" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-800 text-white font-bold transition">📋 Simu Zangu</a>
+            <a href="wateja.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">👥 Wateja</a>
+            <a href="mipangilio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Mipangilio</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-2xl mx-auto space-y-6 pt-12 sm:pt-4">
+
+        <!-- HEADER -->
+        <div class="bg-cardBg border border-slate-800 p-6 sm:p-8 rounded-2xl shadow-2xl text-center space-y-3">
+            <div class="w-16 h-16 bg-slate-950 p-2 rounded-2xl border border-slate-800 mx-auto flex items-center justify-center shadow-inner">
+                <img src="Byao-logo.jpg" alt="BYAO Logo" class="w-12 h-12 object-contain rounded-xl">
+            </div>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-white">SIMU ZANGU</h1>
+            <p class="text-xs sm:text-sm text-slate-400">BYAO MOBILE SOLUTIONS</p>
+            <div class="w-20 h-1 bg-red-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- SEARCH BOX -->
+        <div class="bg-cardBg border border-slate-800 p-4 rounded-2xl shadow-xl">
+            <input 
+                type="text"
+                id="tafuta"
+                placeholder="🔍 Tafuta jina, namba, brand au model..."
+                class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-red-500 transition"
+            >
+        </div>
+
+        <!-- TAKWIMU -->
+        <div class="bg-cardBg border border-slate-800 p-5 rounded-2xl shadow-xl space-y-3">
+            <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">📊 Muhtasari wa Kazi</h3>
+            <div class="grid grid-cols-2 gap-3 text-xs">
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">📱 Jumla ya simu: <b id="jumlaSimu" class="text-white">0</b></div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">🟡 Imepokelewa: <b id="imepokelewa" class="text-amber-400">0</b></div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">🔵 Inatengenezwa: <b id="inatengenezwa" class="text-blue-400">0</b></div>
+                <div class="bg-slate-950 p-3 rounded-xl border border-slate-800">🟢 Imekamilika: <b id="imekamilika" class="text-emerald-400">0</b></div>
+            </div>
+        </div>
+
+        <!-- ORODHA YA SIMU -->
+        <div id="orodha" class="space-y-4"></div>
+
+        <!-- BACKUP SECTION -->
+        <div class="bg-cardBg border border-slate-800 p-6 rounded-2xl shadow-xl space-y-4">
+            <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">💾 Backup ya Mfumo</h3>
+            <button onclick="pakuaBackup()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 rounded-xl text-xs transition border border-slate-700">📥 Pakua Backup</button>
+            <div class="space-y-2 pt-2 border-t border-slate-800">
+                <label class="text-xs text-slate-300 font-semibold">Chagua faili la Backup (.json):</label>
+                <input type="file" id="backupFile" accept=".json" class="w-full bg-slate-950 border border-dashed border-slate-700 text-slate-400 p-2.5 rounded-xl text-xs cursor-pointer">
+                <button onclick="rudishaBackup()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-red-900/20">📤 Rudisha Backup</button>
+            </div>
+            <p id="ujumbeBackup" class="text-xs font-bold text-center"></p>
+        </div>
+    </main>
+
+    <!-- MODALS -->
+    <div id="dirishaSimu"></div>
+    <div id="dirishaUjumbe"></div>
+
+    <!-- Script ya Uendeshaji -->
+    <script>
+        // BYAO SECURITY CHECK
+        let ameLogin = localStorage.getItem("byaoLogin");
+        if(ameLogin !== "ndiyo"){
+            localStorage.setItem("ukurasaUliotaka", window.location.pathname.split("/").pop());
+            window.location.href="login.html";
+        }
+
+        let simuZote = JSON.parse(localStorage.getItem("simuZote")) || [];
+        let orodha = document.getElementById("orodha");
+
+        function showNotification(msg) {
+            let toast = document.getElementById('toastNotification');
+            toast.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 2500);
+        }
+
+        function onyeshaSimu(data = simuZote){
+            orodha.innerHTML="";
+            if(data.length===0){
+                orodha.innerHTML=`
+                    <div class="bg-cardBg border border-slate-800 p-6 rounded-2xl text-center space-y-2">
+                        <h3 class="text-sm font-bold text-white">📱 Hakuna simu bado</h3>
+                        <p class="text-xs text-slate-400">Anza kwa kupokea simu mpya kwenye sehemu ya Pokea Simu.</p>
+                    </div>
+                `;
+                hesabuTakwimu();
+                return;
+            }
+
+            data.forEach(function(simu){
+                let indexHalisi = simuZote.indexOf(simu);
+                
+                let statusClass = "bg-slate-950 text-slate-300 border border-slate-800";
+                if(simu.status === "Imepokelewa") statusClass = "bg-amber-500/10 text-amber-400 border border-amber-500/30";
+                else if(simu.status === "Inatengenezwa") statusClass = "bg-blue-500/10 text-blue-400 border border-blue-500/30";
+                else if(simu.status === "Imekamilika") statusClass = "bg-emerald-500/10 text-emerald-400 border border-emerald-500/30";
+                else if(simu.status === "Imeshindwa kutengenezwa") statusClass = "bg-red-500/10 text-red-400 border border-red-500/30";
+
+                let historiaHtml = "";
+                if(simu.historia && simu.historia.length > 0) {
+                    historiaHtml = simu.historia.map(function(h){
+                        let icon="🔧";
+                        if(h.tukio.toLowerCase().includes("pokelewa")) icon="🟡";
+                        else if(h.tukio.toLowerCase().includes("anza") || h.tukio.toLowerCase().includes("kutengenezwa")) icon="🔵";
+                        else if(h.tukio.toLowerCase().includes("kamilika")) icon="🟢";
+                        return `
+                            <div class="flex items-center space-x-3 bg-slate-950/60 p-2.5 rounded-xl border border-slate-800 text-xs">
+                                <span class="text-base">${icon}</span>
+                                <div>
+                                    <b class="text-slate-200">${h.tukio}</b>
+                                    <div class="text-[10px] text-slate-400">📅 ${h.tarehe}</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join("");
+                } else {
+                    historiaHtml = "<p class='text-xs text-slate-500'>Hakuna historia bado</p>";
+                }
+
+                orodha.innerHTML += `
+                    <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                            <h3 class="text-sm sm:text-base font-bold text-white flex items-center space-x-2">
+                                <span>📱</span>
+                                <span>${simu.brand} ${simu.model}</span>
+                            </h3>
+                            <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase ${statusClass}">${simu.status}</span>
+                        </div>
+
+                        ${simu.picha ? `<div class="text-center"><img src="${simu.picha}" class="max-h-40 mx-auto rounded-xl border border-slate-800 cursor-pointer object-contain" onclick="funguaPicha('${simu.picha}')"></div>` : ""}
+
+                        <div class="text-xs space-y-1.5 text-slate-300">
+                            <p>🔖 <b>ID:</b> <span class="text-slate-400">${simu.id || "Hakuna"}</span></p>
+                            <p>👤 <b>Mteja:</b> <span class="text-white font-semibold">${simu.jina}</span></p>
+                            <p>📞 <b>Namba:</b> <span class="text-slate-400">${simu.namba}</span></p>
+                            <p>⚠️ <b>Tatizo:</b> <span class="text-slate-400">${simu.tatizo}</span></p>
+                            <p>📅 <b>Tarehe:</b> <span class="text-slate-400">${simu.tarehe}</span></p>
+                            <p>💰 <b>Bei:</b> <span class="text-emerald-400 font-bold">${simu.bei}</span></p>
+                        </div>
+
+                        <div class="space-y-1.5 pt-2">
+                            <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">🕒 Historia:</p>
+                            <div class="space-y-1.5 max-h-40 overflow-y-auto">${historiaHtml}</div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 pt-2">
+                            <button onclick="badiliStatus(${indexHalisi})" class="bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition border border-slate-700">🔄 Badilisha Hali</button>
+                            <a href="tel:${simu.namba}" class="w-full"><button class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition border border-slate-700">📞 Piga Simu</button></a>
+                            <button onclick="tumaTaarifa(${indexHalisi})" class="bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 font-bold py-2.5 px-3 rounded-xl text-xs transition border border-emerald-500/30">📤 Tuma Taarifa</button>
+                            <button onclick="ongezaUjumbe(${indexHalisi})" class="bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 font-bold py-2.5 px-3 rounded-xl text-xs transition border border-blue-500/30">📝 Ongeza Hatua</button>
+                            <button onclick="angaliaSimu(${indexHalisi})" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2.5 px-3 rounded-xl text-xs transition border border-slate-700">👁️ Angalia</button>
+                            <button onclick="toaRisiti(${indexHalisi})" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 font-bold py-2.5 px-3 rounded-xl text-xs transition border border-amber-500/30">🧾 Risiti</button>
+                        </div>
+                        <button onclick="futaSimu(${indexHalisi})" class="w-full bg-red-600/10 hover:bg-red-600/20 text-red-400 font-bold py-2.5 rounded-xl text-xs transition border border-red-500/30">🗑 Futa Taarifa</button>
+                    </div>
+                `;
+            });
+            hesabuTakwimu();
+        }
+
+        // SEARCH
+        document.getElementById("tafuta").addEventListener("input", function(){
+            let neno = this.value.toLowerCase();
+            let matokeo = simuZote.filter(function(simu){
+                return (
+                    (simu.jina || "").toLowerCase().includes(neno) ||
+                    (simu.brand || "").toLowerCase().includes(neno) ||
+                    (simu.model || "").toLowerCase().includes(neno) ||
+                    (simu.namba || "").includes(neno) ||
+                    (simu.id || "").toLowerCase().includes(neno)
+                );
+            });
+            onyeshaSimu(matokeo);
+        });
+
+        // FUTA SIMU
+        function futaSimu(index){
+            let dirisha = document.getElementById("dirishaUjumbe");
+            dirisha.innerHTML = `
+                <div class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+                    <div class="bg-cardBg border border-slate-800 w-full max-w-sm p-6 rounded-2xl shadow-2xl text-center space-y-4">
+                        <h3 class="text-sm font-bold text-white">🗑 Futa Simu</h3>
+                        <p class="text-xs text-slate-300">Una uhakika unataka kufuta taarifa hii ya ukarabati?</p>
+                        <div class="space-y-2 pt-2">
+                            <button onclick="thibitishaFuta(${index})" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-xs transition">✅ Ndiyo, Futa</button>
+                            <button onclick="fungaUjumbe()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 rounded-xl text-xs transition">❌ Ghairi</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function thibitishaFuta(index){
+            simuZote.splice(index, 1);
+            localStorage.setItem("simuZote", JSON.stringify(simuZote));
+            fungaUjumbe();
+            onyeshaSimu();
+            showNotification("Simu imefutwa!");
+        }
+
+        function fungaUjumbe(){
+            document.getElementById("dirishaUjumbe").innerHTML="";
+        }
+
+        // BADILISHA STATUS
+        function badiliStatus(index){
+            let simu = simuZote[index];
+            if(!simu.historia){ simu.historia=[]; }
+
+            if(simu.status==="Imepokelewa"){
+                simu.status="Inatengenezwa";
+                simu.historia.push({ tarehe: new Date().toLocaleDateString(), tukio: "Simu imeanza kutengenezwa" });
+            } else if(simu.status==="Inatengenezwa"){
+                simu.status="Imekamilika";
+                simu.historia.push({ tarehe: new Date().toLocaleDateString(), tukio: "Matengenezo yamekamilika" });
+            } else {
+                simu.status="Imepokelewa";
+            }
+
+            localStorage.setItem("simuZote", JSON.stringify(simuZote));
+            onyeshaSimu();
+            showNotification("Hali ya simu imebadilishwa!");
+        }
+
+        // ANGALIA SIMU
+        function angaliaSimu(index){
+            let simu = simuZote[index];
+            document.getElementById("dirishaSimu").innerHTML=`
+                <div class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+                    <div class="bg-cardBg border border-slate-800 w-full max-w-sm p-6 rounded-2xl shadow-2xl text-slate-100 space-y-4 max-h-[90vh] overflow-y-auto">
+                        <h3 class="text-sm font-bold text-white text-center border-b border-slate-800 pb-3">👁️ Maelezo ya Simu</h3>
+                        ${simu.picha ? `<img src="${simu.picha}" class="w-full max-h-48 object-contain rounded-xl border border-slate-800 bg-slate-950 p-1">` : ""}
+                        <div class="text-xs space-y-2">
+                            <p>👤 <b>Mteja:</b> ${simu.jina}</p>
+                            <p>📞 <b>Namba:</b> ${simu.namba}</p>
+                            <p>📱 <b>Simu:</b> ${simu.brand} ${simu.model}</p>
+                            <p>⚠️ <b>Tatizo:</b> ${simu.tatizo}</p>
+                            <p>📌 <b>Hali:</b> ${simu.status}</p>
+                            <p>💰 <b>Bei:</b> ${simu.bei}</p>
+                        </div>
+                        <button onclick="fungaDirisha()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 rounded-xl text-xs transition">❌ Funga</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function fungaDirisha(){
+            document.getElementById("dirishaSimu").innerHTML="";
+        }
+
+        // TAKWIMU
+        function hesabuTakwimu(){
+            let jumla = simuZote.length;
+            let imepokelewa = 0;
+            let inatengenezwa = 0;
+            let imekamilika = 0;
+
+            simuZote.forEach(function(simu){
+                if(simu.status==="Imepokelewa") imepokelewa++;
+                if(simu.status==="Inatengenezwa") inatengenezwa++;
+                if(simu.status==="Imekamilika") imekamilika++;
+            });
+
+            document.getElementById("jumlaSimu").innerHTML = jumla;
+            document.getElementById("imepokelewa").innerHTML = imepokelewa;
+            document.getElementById("inatengenezwa").innerHTML = inatengenezwa;
+            document.getElementById("imekamilika").innerHTML = imekamilika;
+        }
+
+        // ONGEZA MAENDELEO
+        function ongezaUjumbe(index){
+            let dirisha = document.getElementById("dirishaUjumbe");
+            dirisha.innerHTML = `
+                <div class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+                    <div class="bg-cardBg border border-slate-800 w-full max-w-sm p-6 rounded-2xl shadow-2xl space-y-4">
+                        <h3 class="text-sm font-bold text-white text-center">📝 Ongeza Hatua ya Maendeleo</h3>
+                        <textarea id="ujumbeMpya" placeholder="Andika hatua ya matengenezo..." class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl text-xs focus:outline-none focus:border-red-500 h-28"></textarea>
+                        <div class="space-y-2">
+                            <button onclick="hifadhiNaTumaMaendeleo(${index})" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs transition">💬 Hifadhi & Tuma WhatsApp</button>
+                            <button onclick="fungaUjumbe()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 rounded-xl text-xs transition">❌ Ghairi</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function hifadhiNaTumaMaendeleo(index){
+            let maandishi = document.getElementById("ujumbeMpya").value;
+            if(maandishi.trim()===""){
+                showNotification("⚠️ Andika maendeleo kwanza");
+                return;
+            }
+
+            let simu = simuZote[index];
+            if(!simu.historia){ simu.historia=[]; }
+
+            simu.historia.push({
+                tarehe: new Date().toLocaleDateString(),
+                tukio: maandishi
+            });
+
+            localStorage.setItem("simuZote", JSON.stringify(simuZote));
+
+            let ujumbe = "Habari "+simu.jina+" 👋\n\n📱 Simu: "+simu.brand+" "+simu.model+"\n\n📝 Maendeleo:\n"+maandishi+"\n\n📌 Hali: "+simu.status+"\n\nBYAO Mobile Solutions 🔧";
+            let namba = simu.namba.replace(/\D/g,'');
+
+            window.open("https://wa.me/"+namba+"?text="+encodeURIComponent(ujumbe), "_blank");
+
+            fungaUjumbe();
+            onyeshaSimu();
+            showNotification("Maendeleo yamehifadhiwa!");
+        }
+
+        function tumaTaarifa(index){
+            let simu = simuZote[index];
+            let ujumbe = "Habari "+simu.jina+" 👋\n\nBYAO MOBILE SOLUTIONS 🔧\n\nSimu yako: "+simu.brand+" "+simu.model+"\n\nHali ya sasa: "+simu.status+"\n\nTatizo: "+simu.tatizo+"\n\nTutakujulisha maendeleo mengine. Asante.";
+            let namba = simu.namba.replace(/\D/g,'');
+            window.open("https://wa.me/"+namba+"?text="+encodeURIComponent(ujumbe), "_blank");
+        }
+
+        // RISITI
+        function toaRisiti(index){
+            let simu = simuZote[index];
+            let fundi = JSON.parse(localStorage.getItem("mipangilio")) || {};
+            let dirisha = document.getElementById("dirishaUjumbe");
+
+            dirisha.innerHTML = `
+                <div class="fixed inset-0 bg-black/70 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+                    <div class="bg-cardBg border border-slate-800 w-full max-w-sm p-6 rounded-2xl shadow-2xl text-slate-100 space-y-4 max-h-[90vh] overflow-y-auto">
+                        <div class="text-center border-b border-slate-800 pb-3 space-y-1">
+                            <img src="Byao-logo.jpg" alt="BYAO Logo" class="w-12 h-12 object-contain mx-auto rounded-xl bg-slate-950 p-1 border border-slate-800">
+                            <h3 class="text-xs font-bold text-white">BYAO MOBILE SOLUTIONS</h3>
+                            <p class="text-[10px] text-slate-400">👨‍🔧 Fundi: ${fundi.jina || "Haijawekwa"} | 🏪 ${fundi.duka || ""}</p>
+                        </div>
+                        <div class="space-y-1.5 text-xs text-slate-300">
+                            <p>👤 <b>Mteja:</b> ${simu.jina}</p>
+                            <p>📞 <b>Namba:</b> ${simu.namba}</p>
+                            <p>📱 <b>Simu:</b> ${simu.brand} ${simu.model}</p>
+                            <p>⚠️ <b>Tatizo:</b> ${simu.tatizo}</p>
+                            <p>📌 <b>Hali:</b> ${simu.status}</p>
+                            <p>💰 <b>Bei:</b> ${simu.bei}</p>
+                            <p>📅 <b>Tarehe:</b> ${simu.tarehe}</p>
+                        </div>
+                        <div class="space-y-2 pt-2 border-t border-slate-800">
+                            <button onclick="tumaRisitiWhatsApp(${index})" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs transition">📤 Tuma WhatsApp</button>
+                            <button onclick="chapishaRisiti()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 rounded-xl text-xs transition">🖨️ Chapisha / Hifadhi</button>
+                            <button onclick="fungaUjumbe()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 rounded-xl text-xs transition">❌ Funga</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function tumaRisitiWhatsApp(index){
+            let simu = simuZote[index];
+            let ujumbe = `🧾 RISITI BYAO MOBILE SOLUTIONS\n\n👤 Mteja: ${simu.jina}\n📱 Simu: ${simu.brand} ${simu.model}\n⚠️ Tatizo: ${simu.tatizo}\n📌 Hali: ${simu.status}\n💰 Bei: ${simu.bei}\n📅 Tarehe: ${simu.tarehe}`;
+            let link = "https://wa.me/" + simu.namba.replace(/\D/g,'') + "?text=" + encodeURIComponent(ujumbe);
+            window.open(link, "_blank");
+        }
+
+        function chapishaRisiti(){
+            window.print();
+        }
+
+        // BACKUP & RESTORE
+        function pakuaBackup(){
+            let data = localStorage.getItem("simuZote");
+            if(!data || data === "[]" || data === "null"){
+                showNotification("⚠️ Hakuna simu zilizohifadhiwa");
+                return;
+            }
+            let blob = new Blob([data], {type:"application/json"});
+            let url = URL.createObjectURL(blob);
+            let link = document.createElement("a");
+            link.href = url;
+            link.download = "BYAO_Backup.json";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            showNotification("Backup imepakuliwa!");
+        }
+
+        function rudishaBackup(){
+            let file = document.getElementById("backupFile").files[0];
+            if(!file){
+                showNotification("⚠️ Chagua faili la backup kwanza");
+                return;
+            }
+            let reader = new FileReader();
+            reader.onload = function(e){
+                localStorage.setItem("simuZote", e.target.result);
+                document.getElementById("ujumbeBackup").innerHTML = "✅ Backup imerudishwa vizuri";
+                showNotification("Backup imerudishwa kikamilifu!");
+                setTimeout(function(){
+                    location.reload();
+                }, 1000);
+            };
+            reader.readAsText(file);
+        }
+
+        function funguaPicha(picha){
+            let dirisha = document.getElementById("dirishaSimu");
+            dirisha.innerHTML = `
+                <div class="fixed inset-0 bg-black/80 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+                    <div class="bg-cardBg border border-slate-800 p-4 rounded-2xl max-w-md w-full text-center space-y-4">
+                        <img src="${picha}" class="w-full max-h-[70vh] object-contain rounded-xl border border-slate-800">
+                        <button onclick="fungaDirisha()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2.5 rounded-xl text-xs transition">❌ Funga</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // SIDEBAR TOGGLE
+        let menuBtn = document.getElementById("menuBtn");
+        let closeSidebar = document.getElementById("closeSidebar");
+        let sidebar = document.getElementById("sidebar");
+        let overlay = document.getElementById("overlay");
+
+        function toggleMenu(){
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+
+        menuBtn.addEventListener("click", toggleMenu);
+        closeSidebar.addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", toggleMenu);
+
+        onyeshaSimu();
+    </script>
+</body>
+</html>

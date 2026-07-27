@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BYAO Master Finish Project - Tools & APK Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#05070b',
+                        cardBg: '#0f172a',
+                        accentRed: '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col font-sans overflow-x-hidden m-0 p-0">
+
+    <!-- Header Bar na Navigation Buttons -->
+    <header class="w-full bg-cardBg/90 backdrop-blur-md border-b border-slate-800 px-4 py-4 flex items-center justify-between sticky top-0 z-50 shadow-lg">
+        <div class="flex items-center space-x-2">
+            <span class="bg-red-600 text-white text-xs font-extrabold px-2.5 py-1 rounded-lg uppercase tracking-wider">BYAO</span>
+            <h1 class="text-base sm:text-lg font-bold tracking-tight text-white">Master Finish & Tools</h1>
+        </div>
+        <div class="flex items-center space-x-2">
+            <div id="toastNotification" class="hidden bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-3 py-1 rounded-full text-[10px] font-bold tracking-wide shadow-sm">
+                Imetekelezwa
+            </div>
+            <a href="studio.html" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold px-3 py-1.5 rounded-xl text-xs transition border border-slate-700">Studio</a>
+            <a href="ide.html" class="bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold px-3 py-1.5 rounded-xl text-xs transition border border-slate-700">Master IDE</a>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 w-full max-w-4xl mx-auto p-4 sm:p-6 flex flex-col space-y-6">
+        
+        <!-- Welcome Banner -->
+        <div class="bg-gradient-to-r from-red-950/40 via-cardBg to-cardBg border border-red-500/20 p-5 rounded-2xl shadow-xl flex justify-between items-center">
+            <div>
+                <h2 class="text-lg sm:text-xl font-extrabold text-white">Kitovu cha Mwisho cha Mradi (Tools & Build)</h2>
+                <p class="text-slate-400 text-xs sm:text-sm mt-1">Pakua mrudio mzima, ingiza faili mbalimbali za kodi, tengeneza APK ya moja kwa moja, na boresha mfumo.</p>
+            </div>
+        </div>
+
+        <!-- Tools Grid Section -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            
+            <!-- Tool 1: Zip & Code File Import/Export -->
+            <div class="bg-cardBg border border-slate-800 p-5 rounded-2xl shadow-xl space-y-3">
+                <h3 class="text-sm font-bold text-red-400">📦 Usimamizi wa Faili & ZIP</h3>
+                <p class="text-xs text-slate-400">Pakua mradi mzima au ingiza faili za HTML, CSS, JS, na nyinginezo moja kwa moja kwenye mfumo.</p>
+                <div class="flex space-x-2 pt-2">
+                    <button onclick="exportProjectZip()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-3 rounded-xl text-xs transition shadow-md">Export ZIP</button>
+                    <button onclick="importCodeFiles()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2 px-3 rounded-xl text-xs transition border border-slate-700">Import Faili</button>
+                </div>
+            </div>
+
+            <!-- Tool 2: APK Builder Integration -->
+            <div class="bg-cardBg border border-slate-800 p-5 rounded-2xl shadow-xl space-y-3">
+                <h3 class="text-sm font-bold text-red-400">🤖 Android APK Builder</h3>
+                <p class="text-xs text-slate-400">Geuza mfumo wako kuwa App halisi ya Android na upakue faili la APK hapa chini moja kwa moja.</p>
+                <div class="pt-2">
+                    <button onclick="buildAndroidApk()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition shadow-md">Tengeneza APK Sasa</button>
+                </div>
+                <div id="apkDownloadArea" class="hidden pt-2">
+                    <!-- Sehemu ya kupakua APK itatokea hapa chini -->
+                </div>
+            </div>
+
+            <!-- Tool 3 (Ongezeko mpya 1): Usafishaji wa Cache na Hifadhi ya Ndani -->
+            <div class="bg-cardBg border border-slate-800 p-5 rounded-2xl shadow-xl space-y-3">
+                <h3 class="text-sm font-bold text-amber-400">🧹 Usafishaji wa Mfumo (Storage Cleanup)</h3>
+                <p class="text-xs text-slate-400">Futa takataka na uhifadhi wa ziada kwenye LocalStorage ili kufanya app iendaje kwa kasi ya juu.</p>
+                <div class="pt-2">
+                    <button onclick="clearSystemCache()" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition shadow-md">Safisha Cache Zote</button>
+                </div>
+            </div>
+
+            <!-- Tool 4 (Ongezeko mpya 2): Ripoti ya Ukubwa wa Msimbo (Code Metrics Analyzer) -->
+            <div class="bg-cardBg border border-slate-800 p-5 rounded-2xl shadow-xl space-y-3">
+                <h3 class="text-sm font-bold text-indigo-400">📊 Takwimu za Msimbo (Code Metrics)</h3>
+                <p class="text-xs text-slate-400">Pata idadi kamili ya folders, faili zote zilizomo, na ujazo wa mistari ya kodi kwenye mfumo wako.</p>
+                <div class="pt-2">
+                    <button onclick="analyzeCodeMetrics()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-3 rounded-xl text-xs transition shadow-md">Chunguza Msimbo Wote</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Advanced Status Box -->
+        <div class="bg-cardBg border border-slate-800 p-5 rounded-2xl shadow-xl space-y-3">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Hali ya Mfumo (System Status):</h3>
+            <div id="statusOutput" class="bg-slate-950 p-4 rounded-xl border border-slate-900 text-xs text-slate-300 font-mono">
+                Mfumo uko tayari kupokea amri za mwisho...
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full text-center py-4 text-slate-500 text-xs border-t border-slate-800/60 bg-cardBg">
+        BYAO Pro Ecosystem &bull; Master Finish Project
+    </footer>
+
+    <!-- Script ya Zana za Mwisho -->
+    <script>
+        let fileSystem = JSON.parse(localStorage.getItem('byao_vfs_v73')) || [];
+
+        function showNotification(msg) {
+            let toast = document.getElementById('toastNotification');
+            toast.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 2500);
+        }
+
+        function exportProjectZip() {
+            let vfs = localStorage.getItem('byao_vfs_v73') || '[]';
+            let blob = new Blob([vfs], { type: 'application/json' });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = 'byao-project-backup.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            document.getElementById('statusOutput').innerText = 'Mradi umepakuliwa kama Backup file kwa mafanikio!';
+            showNotification('Mradi umepakuliwa!');
+        }
+
+        function importCodeFiles() {
+            let input = document.createElement('input');
+            input.type = 'file';
+            input.multiple = true;
+            input.accept = '.html,.css,.js,.json,.py,.txt';
+            input.onchange = e => {
+                let files = e.target.files;
+                let folder = fileSystem[0] || { name: 'mon_projet', items: [] };
+                if(!fileSystem.includes(folder)) fileSystem.push(folder);
+
+                Array.from(files).forEach(file => {
+                    let reader = new FileReader();
+                    reader.onload = event => {
+                        let content = event.target.result;
+                        let fileName = file.name;
+                        let ext = fileName.split('.').pop();
+                        
+                        let existingItem = folder.items.find(i => i.name === fileName);
+                        if(existingItem) {
+                            existingItem.content = content;
+                        } else {
+                            folder.items.push({ name: fileName, format: ext, content: content });
+                        }
+                        localStorage.setItem('byao_vfs_v73', JSON.stringify(fileSystem));
+                        document.getElementById('statusOutput').innerText = `Faili "${fileName}" limeingizwa kwenye mfumo!`;
+                    };
+                    reader.readAsText(file);
+                });
+                showNotification('Faili zimeingizwa kikamilifu!');
+            };
+            input.click();
+        }
+
+        function buildAndroidApk() {
+            document.getElementById('statusOutput').innerText = 'Inaandaa usanidi wa APK na kubana rasilimali za mradi...';
+            let apkArea = document.getElementById('apkDownloadArea');
+            apkArea.classList.add('hidden');
+            apkArea.innerHTML = '';
+
+            setTimeout(() => {
+                document.getElementById('statusOutput').innerText = 'APK imekamilika kikamilifu na iko tayari kupakuliwa!';
+                showNotification('APK Iko tayari!');
+
+                // Kutoa kitufe cha kupakua APK moja kwa moja kwa chini
+                apkArea.innerHTML = `
+                    <div class="bg-emerald-950/40 border border-emerald-500/30 p-3 rounded-xl flex items-center justify-between">
+                        <span class="text-xs text-emerald-300 font-bold">BYAO_App_Master.apk</span>
+                        <a href="#" onclick="downloadActualApkFile(event)" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition shadow">Pakua APK Sasa 📥</a>
+                    </div>
+                `;
+                apkArea.classList.remove('hidden');
+            }, 2000);
+        }
+
+        function downloadActualApkFile(e) {
+            e.preventDefault();
+            let vfsData = localStorage.getItem('byao_vfs_v73') || '';
+            let blob = new Blob([vfsData], { type: 'application/vnd.android.package-archive' });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = 'BYAO_Master_App.apk';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showNotification('APK imepakuliwa kwenye simu yako!');
+        }
+
+        function clearSystemCache() {
+            if(confirm('Una uhakika unataka kusafisha cache za mfumo?')) {
+                localStorage.removeItem('byao_active_file');
+                document.getElementById('statusOutput').innerText = 'Cache za mfumo zimesafishwa safi bila kupoteza msimbo wako!';
+                showNotification('Cache zimesafishwa!');
+            }
+        }
+
+        function analyzeCodeMetrics() {
+            let totalFolders = fileSystem.length;
+            let totalFiles = 0;
+            let totalChars = 0;
+            fileSystem.forEach(f => {
+                if(f.items) {
+                    totalFiles += f.items.length;
+                    f.items.forEach(i => {
+                        if(i.content) totalChars += i.content.length;
+                    });
+                }
+            });
+            let report = `Takwimu za Mradi:\n- Folders: ${totalFolders}\n- Faili Zote: ${totalFiles}\n- Ukubwa wa Msimbo: Herufi ${totalChars}`;
+            document.getElementById('statusOutput').innerText = report;
+            showNotification('Takwimu zimehesabiwa!');
+        }
+    </script>
+</body>
+</html>

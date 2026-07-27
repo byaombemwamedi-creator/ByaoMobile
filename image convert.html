@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BYAO Advanced Image Converter Pro</title>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    darkBg: '#05070b',
+                    cardBg: '#0f172a',
+                    accentRed: '#ef4444'
+                }
+            }
+        }
+    }
+</script>
+</head>
+
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col font-sans p-4 sm:p-6 m-0 overflow-x-hidden">
+
+    <!-- Toast Notification ya Kisasa -->
+    <div id="toastNotification" class="fixed top-5 z-50 hidden bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold shadow-2xl backdrop-blur-md">
+        Ujumbe wa Mfumo
+    </div>
+
+    <!-- Kitufe cha Menu na Overlay ya Sidebar -->
+    <button id="menuBtn" class="fixed top-4 left-4 z-50 bg-slate-800 hover:bg-slate-700 text-white font-bold p-2.5 rounded-xl border border-slate-700 shadow-lg transition">
+        ☰ Menu
+    </button>
+    <div id="overlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-40"></div>
+
+    <!-- Sidebar ya Pamoja ya Kibabe -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-cardBg border-r border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+            <div class="flex items-center space-x-2">
+                <span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">BYAO Pro</span>
+                <span class="text-sm font-bold text-white">Navigation</span>
+            </div>
+            <button id="closeSidebar" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-1.5 text-xs">
+            <a href="index.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🏠 Mwanzo (Hub)</a>
+            <a href="studio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💻 Studio Kubwa</a>
+            <a href="ide.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚡ Master IDE</a>
+            <a href="masterfinishproject.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🛠️ Zana za Mwisho</a>
+            <a href="profile.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📄 Utambulisho & Mwongozo</a> 
+            <a href="repair.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📱 Pokea Simu</a>
+            <a href="phones.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📋 Simu Zangu</a>
+            <a href="spares.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📦 Spares & Stock</a>
+            <a href="payments.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💰 Payments Tracker</a>
+            <a href="tools.html" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-800 text-white font-bold transition">⚙️ Quick Tools (Converter)</a>
+            <a href="wateja.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">👥 Wateja</a>
+            <a href="report.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📈 Master Report</a>
+            <a href="mipangilio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Mipangilio</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-2xl mx-auto space-y-6 pt-12 sm:pt-4">
+
+        <!-- HEADER -->
+        <div class="bg-cardBg border border-slate-800 p-6 sm:p-8 rounded-2xl shadow-2xl text-center space-y-3">
+            <span class="bg-red-500/10 text-red-400 text-xs font-semibold px-3 py-1 rounded-full border border-red-500/20">BYAO Ecosystem Tool</span>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-white">Advanced Image Converter & Compressor</h1>
+            <p class="text-xs sm:text-sm text-slate-400">Badilisha umbizo sahihi, rekebisha vipimo, na finya uzito kwa ufanisi mkubwa.</p>
+            <div class="w-20 h-1 bg-red-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- File Upload Section -->
+        <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-4">
+            <label class="block text-xs sm:text-sm font-medium text-slate-300">Chagua Picha Yako</label>
+            <div class="flex items-center justify-center w-full">
+                <label class="flex flex-col items-center justify-center w-full h-36 border-2 border-slate-700 border-dashed rounded-xl cursor-pointer bg-slate-950/50 hover:bg-slate-950 transition duration-200">
+                    <div class="flex flex-col items-center justify-center pt-5 pb-6 px-4 text-center">
+                        <svg class="w-8 h-8 mb-2 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
+                        <p class="text-xs sm:text-sm text-slate-300"><span class="font-semibold text-red-400">Bonyeza kupakia</span> au buruta picha hapa</p>
+                        <p id="fileNameDisplay" class="text-[11px] text-slate-500 mt-1">PNG, JPG, WEBP, n.k.</p>
+                    </div>
+                    <input type="file" id="imageInput" accept="image/*" class="hidden" />
+                </label>
+            </div>
+        </div>
+
+        <!-- Controls Section -->
+        <div id="controlsSection" class="space-y-5 hidden bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl text-xs sm:text-sm">
+            <!-- Format Selector -->
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Umbizo Lengwa (Output Format)</label>
+                <div class="grid grid-cols-3 gap-3">
+                    <button type="button" data-format="image/jpeg" class="format-btn py-2 px-3 rounded-xl border border-slate-700 text-xs font-medium bg-red-600 text-white transition shadow-sm">JPG / JPEG</button>
+                    <button type="button" data-format="image/png" class="format-btn py-2 px-3 rounded-xl border border-slate-700 text-xs font-medium bg-slate-950 text-slate-300 hover:bg-slate-800 transition">PNG</button>
+                    <button type="button" data-format="image/webp" class="format-btn py-2 px-3 rounded-xl border border-slate-700 text-xs font-medium bg-slate-950 text-slate-300 hover:bg-slate-800 transition">WEBP</button>
+                </div>
+            </div>
+
+            <!-- Resize Option & Presets -->
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Vipimo (Dimensions px) & Vifungo vya Haraka</label>
+                <div class="grid grid-cols-2 gap-3 mb-3">
+                    <div>
+                        <span class="text-[10px] text-slate-400">Upana (Width)</span>
+                        <input type="number" id="widthInput" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-red-500 transition">
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-400">Urefu (Height)</span>
+                        <input type="number" id="heightInput" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-red-500 transition">
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" onclick="setSize(512, 512)" class="text-[11px] bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 px-2.5 py-1.5 rounded-lg transition">512x512 (Bora)</button>
+                    <button type="button" onclick="setSize(256, 256)" class="text-[11px] bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 px-2.5 py-1.5 rounded-lg transition">256x256</button>
+                    <button type="button" onclick="setSize(128, 128)" class="text-[11px] bg-slate-950 hover:bg-slate-800 border border-slate-800 text-slate-300 px-2.5 py-1.5 rounded-lg transition">128x128</button>
+                </div>
+            </div>
+
+            <!-- Quality Slider -->
+            <div id="qualityContainer">
+                <div class="flex justify-between text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">
+                    <span>Ubora / Finya Uzito (Quality)</span>
+                    <span id="qualityVal" class="text-red-400 font-bold">80%</span>
+                </div>
+                <input type="range" id="qualityRange" min="10" max="100" value="80" class="w-full h-2 bg-slate-950 rounded-lg appearance-none cursor-pointer accent-red-500 border border-slate-800">
+                <p class="text-[10px] text-slate-500 mt-1">*Kumbuka: Umbizo la PNG linajitegemea halitumii slider ya quality.</p>
+            </div>
+
+            <!-- Target Size Control -->
+            <div>
+                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Lengo la Ukubwa (Max Size Limit)</label>
+                <select id="targetLimit" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs sm:text-sm text-white focus:outline-none focus:border-red-500 transition">
+                    <option value="none">Hakuna mpaka maalum (Tumia Quality ya Juu)</option>
+                    <option value="256">Chini ya 256 KB (Inafaa WebIntoApp)</option>
+                    <option value="512">Chini ya 512 KB</option>
+                    <option value="1024">Chini ya 1 MB (1024 KB)</option>
+                    <option value="2048">Chini ya 2 MB</option>
+                </select>
+            </div>
+
+            <button id="processBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-4 rounded-xl transition shadow-lg text-xs sm:text-sm tracking-wide shadow-red-900/20">
+                Tekeleza Mabadiliko & Finya Picha ⚡
+            </button>
+        </div>
+
+        <!-- Result Area -->
+        <div id="resultArea" class="hidden bg-cardBg border border-emerald-500/30 p-5 rounded-2xl shadow-xl text-center space-y-4">
+            <h3 class="text-emerald-400 font-bold text-sm sm:text-base">Imefanikiwa Vizuri! ✔️</h3>
+            <div class="flex justify-around text-xs sm:text-sm text-slate-300 bg-slate-950 p-3 rounded-xl border border-slate-800">
+                <div>Ukubwa wa Zamani: <span id="oldSizeText" class="font-semibold text-white">0 KB</span></div>
+                <div>Ukubwa Mpya: <span id="newSizeText" class="font-semibold text-emerald-400">0 KB</span></div>
+            </div>
+            <a id="downloadBtn" class="inline-block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-xl transition shadow-lg text-center text-xs sm:text-sm">
+                Pakua Picha Yako Iliyosawazishwa 📥
+            </a>
+        </div>
+
+        <a href="index.html" class="block text-center bg-cardBg hover:bg-slate-800 border border-slate-800 text-slate-300 font-bold p-3.5 rounded-xl text-xs transition shadow-xl">⬅️ Rudi kwenye Ecosystem Hub</a>
+    </main>
+
+    <!-- Script ya Uendeshaji & Logic -->
+    <script>
+        // BYAO SECURITY CHECK
+        let ameLogin = localStorage.getItem("byaoLogin");
+        if(ameLogin !== "ndiyo"){
+            localStorage.setItem("ukurasaUliotaka", window.location.pathname.split("/").pop());
+            window.location.href="login.html";
+        }
+
+        function showNotification(msg) {
+            let toast = document.getElementById('toastNotification');
+            toast.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 2500);
+        }
+
+        const imageInput = document.getElementById('imageInput');
+        const fileNameDisplay = document.getElementById('fileNameDisplay');
+        const controlsSection = document.getElementById('controlsSection');
+        const formatBtns = document.querySelectorAll('.format-btn');
+        const widthInput = document.getElementById('widthInput');
+        const heightInput = document.getElementById('heightInput');
+        const qualityRange = document.getElementById('qualityRange');
+        const qualityVal = document.getElementById('qualityVal');
+        const qualityContainer = document.getElementById('qualityContainer');
+        const targetLimit = document.getElementById('targetLimit');
+        const processBtn = document.getElementById('processBtn');
+        const resultArea = document.getElementById('resultArea');
+        const oldSizeText = document.getElementById('oldSizeText');
+        const newSizeText = document.getElementById('newSizeText');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        let originalFile = null;
+        let selectedFormat = 'image/jpeg';
+        let originalImage = new Image();
+
+        function setSize(w, h) {
+            widthInput.value = w;
+            heightInput.value = h;
+            showNotification(`Vipimo vimesetiwa: ${w}x${h}`);
+        }
+
+        formatBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                formatBtns.forEach(b => {
+                    b.classList.remove('bg-red-600', 'text-white');
+                    b.classList.add('bg-slate-950', 'text-slate-300');
+                });
+                btn.classList.remove('bg-slate-950', 'text-slate-300');
+                btn.classList.add('bg-red-600', 'text-white');
+                selectedFormat = btn.getAttribute('data-format');
+
+                if (selectedFormat === 'image/png') {
+                    qualityContainer.style.opacity = '0.4';
+                    qualityRange.disabled = true;
+                } else {
+                    qualityContainer.style.opacity = '1';
+                    qualityRange.disabled = false;
+                }
+            });
+        });
+
+        qualityRange.addEventListener('input', (e) => {
+            qualityVal.innerText = e.target.value + '%';
+        });
+
+        imageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+            originalFile = file;
+            fileNameDisplay.innerText = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)';
+            
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = (event) => {
+                originalImage.src = event.target.result;
+                originalImage.onload = () => {
+                    widthInput.value = originalImage.width;
+                    heightInput.value = originalImage.height;
+                    controlsSection.classList.remove('hidden');
+                    resultArea.classList.add('hidden');
+                    showNotification("Picha imepakiwa kikamilifu! 🖼️");
+                }
+            }
+        });
+
+        processBtn.addEventListener('click', () => {
+            if (!originalFile) return;
+
+            let targetW = parseInt(widthInput.value) || originalImage.width;
+            let targetH = parseInt(heightInput.value) || originalImage.height;
+
+            const canvas = document.createElement('canvas');
+            canvas.width = targetW;
+            canvas.height = targetH;
+            const ctx = canvas.getContext('2d');
+
+            if (selectedFormat === 'image/jpeg') {
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, targetW, targetH);
+            }
+
+            ctx.drawImage(originalImage, 0, 0, targetW, targetH);
+
+            let quality = parseInt(qualityRange.value) / 100;
+            let limitKB = targetLimit.value === 'none' ? null : parseInt(targetLimit.value);
+
+            let dataUrl = canvas.toDataURL(selectedFormat, quality);
+
+            function getBytes(base64) {
+                let base64Header = base64.substring(0, base64.indexOf(',') + 1);
+                let stringLength = base64.length - base64Header.length;
+                return 4 * Math.ceil(stringLength / 3) * 0.75;
+            }
+
+            if (limitKB && selectedFormat !== 'image/png') {
+                let currentBytes = getBytes(dataUrl);
+                while (currentBytes > limitKB * 1024 && quality > 0.05) {
+                    quality -= 0.05;
+                    dataUrl = canvas.toDataURL(selectedFormat, quality);
+                    currentBytes = getBytes(dataUrl);
+                }
+            }
+
+            let finalBytes = getBytes(dataUrl);
+            let finalKB = (finalBytes / 1024).toFixed(2);
+            let ext = selectedFormat.split('/')[1];
+            if(ext === 'jpeg') ext = 'jpg';
+
+            oldSizeText.innerText = (originalFile.size / 1024).toFixed(2) + ' KB';
+            newSizeText.innerText = finalKB + ' KB';
+
+            downloadBtn.href = dataUrl;
+            downloadBtn.download = `byao-image.${ext}`;
+            resultArea.classList.remove('hidden');
+            showNotification("Picha imebadilishwa na kufinywa kikamilifu! ✔️");
+        });
+
+        // SIDEBAR TOGGLE
+        let menuBtn = document.getElementById("menuBtn");
+        let closeSidebar = document.getElementById("closeSidebar");
+        let sidebar = document.getElementById("sidebar");
+        let overlay = document.getElementById("overlay");
+
+        function toggleMenu(){
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+
+        menuBtn.addEventListener("click", toggleMenu);
+        closeSidebar.addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", toggleMenu);
+    </script>
+</body>
+</html>

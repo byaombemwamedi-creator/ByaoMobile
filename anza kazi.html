@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+
+<head>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#ef4444">
+<link rel="apple-touch-icon" href="Byao Pro-logo.png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<title>BYAO Mobile Solutions - Master Index Hub</title>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    darkBg: '#05070b',
+                    cardBg: '#0f172a',
+                    accentRed: '#ef4444'
+                }
+            }
+        }
+    }
+</script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+</head>
+
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col font-sans p-4 sm:p-6 m-0 overflow-x-hidden">
+
+    <!-- Ujumbe Maalum wa Mfumo (Toast) -->
+    <div id="toastNotification" class="fixed top-5 z-50 hidden bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold shadow-2xl backdrop-blur-md">
+        Mfumo uko tayari kufanya kazi!
+    </div>
+
+    <!-- Kitufe cha Menu na Overlay ya Sidebar -->
+    <button id="menuBtn" class="fixed top-4 left-4 z-50 bg-slate-800 hover:bg-slate-700 text-white font-bold p-2.5 rounded-xl border border-slate-700 shadow-lg transition">
+        ☰ Menu
+    </button>
+    <div id="overlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-40"></div>
+
+    <!-- Sidebar Kamili ya Pamoja -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-cardBg border-r border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+            <div class="flex items-center space-x-2">
+                <span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">BYAO Pro</span>
+                <span class="text-sm font-bold text-white">Navigation</span>
+            </div>
+            <button id="closeSidebar" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-1.5 text-xs">
+            <a href="index.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🏠 Mwanzo (Hub)</a>
+            <a href="anza kazi.html" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-800 text-white font-bold transition">🚀 Anza Kazi</a>
+            <a href="repair.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📱 Pokea Simu</a>
+            <a href="phones.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📋 Simu Zangu</a>
+            <a href="byaoia.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🎨 ByaoIA Generator</a>
+            <a href="ai-generator.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🖼️ Image Converter</a>
+            <a href="BYAO Developer Suite.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🛠️ Developer Suite</a>
+            <a href="studio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💻 Studio Kubwa</a>
+            <a href="ide.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚡ Master IDE</a>
+            <a href="masterfinishproject.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🛠️ Zana za Mwisho</a>
+            <a href="spares.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📦 Spares & Stock</a>
+            <a href="payments.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💰 Payments Tracker</a>
+            <a href="clients.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">👥 Clients Directory</a>
+            <a href="analytics.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📈 Analytics & Report</a>
+            <a href="profile.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📄 Utambulisho & Guide</a> 
+            <a href="mipangilio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Mipangilio</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-2xl mx-auto space-y-6 pt-12 sm:pt-4">
+
+        <!-- HEADER KUU BYAO PRO - MASTER HUB UNIQUE STYLE -->
+        <div class="bg-gradient-to-r from-red-950 via-cardBg to-slate-900 border border-red-500/40 p-6 sm:p-8 rounded-2xl shadow-2xl relative overflow-hidden text-center space-y-4">
+            <div class="absolute top-0 right-0 bg-red-600 text-white text-[9px] font-extrabold px-3 py-1 rounded-bl-xl uppercase tracking-wider">
+                Master Hub #1
+            </div>
+            <div class="flex items-center justify-center space-x-4">
+                <div class="w-16 h-16 bg-slate-950 p-2 rounded-2xl border border-slate-800 shadow-inner flex items-center justify-center">
+                    <img src="Byao Pro-logo.png" alt="BYAO Logo" class="w-12 h-12 object-contain rounded-xl">
+                </div>
+                <div class="text-left">
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">BYAO</h1>
+                    <span class="text-xs sm:text-sm font-bold text-red-500 uppercase tracking-widest">Mobile Solutions Hub</span>
+                </div>
+            </div>
+            <p class="text-slate-300 text-xs sm:text-sm">Mfumo mkuu wa kwanza na wa kipekee kwa ajili ya usimamizi wa mafundi wa simu</p>
+            <div class="w-24 h-1 bg-red-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- KARIBU FUNDI CARD & ANZA KAZI -->
+        <div class="bg-cardBg border border-red-500/30 p-6 rounded-2xl shadow-2xl text-center space-y-4 relative overflow-hidden">
+            <div class="absolute top-0 left-0 bg-red-600/10 text-red-400 text-[10px] font-bold px-3 py-1 rounded-br-xl border-r border-b border-red-500/20">
+                Uwanja wa Kazi
+            </div>
+
+            <div class="w-16 h-16 bg-slate-950 border border-slate-800 mx-auto flex items-center justify-center text-3xl rounded-full shadow-inner">👨‍🔧</div>
+            <h3 id="karibuFundi" class="text-lg font-bold text-white">Karibu Fundi</h3>
+            <p id="maelezoFundi" class="text-xs sm:text-sm text-slate-400">Simamia kazi zako za ukarabati wa simu kwa mfumo mmoja madhubuti.</p>
+            
+            <div class="inline-block px-3 py-1 bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold rounded-full">
+                🟢 Mfumo uko tayari, Anza Kazi Sasa!
+            </div>
+
+            <!-- KITUFE CHA ANZA KAZI -->
+            <div class="pt-2 space-y-2.5">
+                <a href="repair.html" class="block w-full group">
+                    <button class="w-full bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 text-white font-bold py-3.5 px-4 rounded-xl text-xs sm:text-sm transition shadow-lg shadow-red-900/30 flex items-center justify-center space-x-2 border border-red-400/30">
+                        <span>🚀 Anza Kazi (Pokea Simu)</span>
+                        <span class="group-hover:translate-x-2 transition-transform text-base">➡️</span>
+                    </button>
+                </a>
+                
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <a href="repair.html" class="p-3 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-red-500/40 rounded-xl text-xs font-bold text-slate-300 flex items-center justify-between transition group">
+                        <span class="flex items-center space-x-1.5">
+                            <span>📱</span>
+                            <span>Repair Panel</span>
+                        </span>
+                        <span class="text-red-500 group-hover:translate-x-1 transition-transform">➔</span>
+                    </a>
+                    <a href="phones.html" class="p-3 bg-slate-950 hover:bg-slate-900 border border-slate-800 hover:border-red-500/40 rounded-xl text-xs font-bold text-slate-300 flex items-center justify-between transition group">
+                        <span class="flex items-center space-x-1.5">
+                            <span>📋</span>
+                            <span>Simu Zangu</span>
+                        </span>
+                        <span class="text-red-500 group-hover:translate-x-1 transition-transform">➔</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- MENU GRID YA HARAKA -->
+        <div class="grid grid-cols-2 gap-4">
+            <a href="repair.html" class="bg-cardBg border border-slate-800 p-5 rounded-2xl text-center hover:border-slate-700 transition flex flex-col items-center justify-center space-y-2 group shadow-xl">
+                <div class="text-4xl group-hover:scale-110 transition duration-300">📱</div>
+                <h3 class="text-sm font-bold text-white">Pokea Simu</h3>
+                <p class="text-[11px] text-slate-400">Pokea na hifadhi taarifa za simu mpya</p>
+            </a>
+
+            <a href="phones.html" class="bg-cardBg border border-slate-800 p-5 rounded-2xl text-center hover:border-slate-700 transition flex flex-col items-center justify-center space-y-2 group shadow-xl">
+                <div class="text-4xl group-hover:scale-110 transition duration-300">📋</div>
+                <h3 class="text-sm font-bold text-white">Simu Zangu</h3>
+                <p class="text-[11px] text-slate-400">Fuatilia simu na historia za matengenezo</p>
+            </a>
+
+            <a href="wateja.html" class="bg-cardBg border border-slate-800 p-5 rounded-2xl text-center hover:border-slate-700 transition flex flex-col items-center justify-center space-y-2 group shadow-xl">
+                <div class="text-4xl group-hover:scale-110 transition duration-300">👥</div>
+                <h3 class="text-sm font-bold text-white">Wateja</h3>
+                <p class="text-[11px] text-slate-400">Simamia taarifa za wateja</p>
+            </a>
+
+            <a href="mipangilio.html" class="bg-cardBg border border-slate-800 p-5 rounded-2xl text-center hover:border-slate-700 transition flex flex-col items-center justify-center space-y-2 group shadow-xl">
+                <div class="text-4xl group-hover:scale-110 transition duration-300">⚙️</div>
+                <h3 class="text-sm font-bold text-white">Mipangilio</h3>
+                <p class="text-[11px] text-slate-400">Badilisha mfumo wako</p>
+            </a>
+        </div>
+
+        <!-- MODULE SWAHILI : MSAIDIZI WA KITALAM (Inayounganishwa na assistant.html / assistant.js) -->
+        <div class="bg-cardBg border border-slate-800 p-6 rounded-2xl shadow-2xl space-y-4">
+            <div class="flex items-center justify-between">
+                <h2 class="text-sm font-bold text-emerald-400 uppercase tracking-wider border-l-4 border-emerald-500 pl-3">💡 Msaidizi wa Kitaalam</h2>
+                <a href="assistant.html" class="text-[11px] bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 px-3 py-1 rounded-xl font-bold transition">Fungua App Kamili ↗</a>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-300">Tafuta suluhisho la haraka kwa zaidi ya masuala 500 ya simu na vifaa:</p>
+            
+            <input 
+                type="text" 
+                id="swahiliSearchInput" 
+                class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-500 p-3 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-emerald-500 transition"
+                placeholder="Andika tatizo hapa mfano: betri, joto, kioo..."
+            >
+              
+            <div id="swahiliResultsContainer" class="max-h-64 overflow-y-auto space-y-2 text-xs">
+                <div class="text-center text-slate-500 italic py-4">Andika neno au tatizo hapo juu kuona suluhisho papo hapo...</div>
+            </div>
+        </div>
+
+        <!-- DASHBOARD MUHTASARI PRO -->
+        <div class="bg-cardBg border border-slate-800 p-6 rounded-2xl shadow-2xl space-y-4">
+            <div class="text-center space-y-1">
+                <h2 class="text-sm font-bold text-red-500 uppercase tracking-wider">📊 Muhtasari wa Mfumo</h2>
+                <p class="text-xs text-slate-400">Hali ya kazi za mafundi kwa sasa</p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-2">
+                <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl text-center space-y-1">
+                    <span class="text-xl">📱</span>
+                    <h3 class="text-[11px] text-slate-400 font-bold">Jumla ya Simu</h3>
+                    <strong id="jumla" class="text-xl text-white block">0</strong>
+                </div>
+
+                <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl text-center space-y-1">
+                    <span class="text-xl">🟡</span>
+                    <h3 class="text-[11px] text-slate-400 font-bold">Imepokelewa</h3>
+                    <strong id="received" class="text-xl text-amber-400 block">0</strong>
+                </div>
+
+                <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl text-center space-y-1">
+                    <span class="text-xl">🔵</span>
+                    <h3 class="text-[11px] text-slate-400 font-bold">Inatengenezwa</h3>
+                    <strong id="repair" class="text-xl text-blue-400 block">0</strong>
+                </div>
+
+                <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl text-center space-y-1">
+                    <span class="text-xl">🟢</span>
+                    <h3 class="text-[11px] text-slate-400 font-bold">Imekamilika</h3>
+                    <strong id="done" class="text-xl text-emerald-400 block">0</strong>
+                </div>
+
+                <div class="col-span-2 bg-slate-950 border border-slate-800 p-4 rounded-xl text-center space-y-1">
+                    <span class="text-xl">🔴</span>
+                    <h3 class="text-[11px] text-slate-400 font-bold">Imeshindwa</h3>
+                    <strong id="failed" class="text-xl text-red-400 block">0</strong>
+                </div>
+            </div>
+
+            <!-- STATS DE BIASHARA & CHAGUO LA SARAFU -->
+            <div class="bg-slate-950 border border-slate-800 p-4 rounded-xl space-y-3 mt-4">
+                <h3 class="text-xs font-bold text-red-500 uppercase text-center tracking-wider">💼 Hali ya Biashara</h3>
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                        <span class="text-[10px] text-slate-400 block">Mapato</span>
+                        <b id="mapato" class="text-xs sm:text-sm text-white font-bold block mt-1">0 FC</b>
+                    </div>
+                    <div class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                        <span class="text-[10px] text-slate-400 block">Zinazosubiri</span>
+                        <b id="zinazosubiri" class="text-xs sm:text-sm text-white font-bold block mt-1">0</b>
+                    </div>
+                    <div class="p-2 bg-slate-900 rounded-lg border border-slate-800">
+                        <span class="text-[10px] text-slate-400 block">Kazi za leo</span>
+                        <b id="kaziLeo" class="text-xs sm:text-sm text-white font-bold block mt-1">0</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="text-center py-6 text-slate-500 text-xs space-y-1">
+            <p>© 2026 BYAO Mobile Solutions - Master Index Hub</p>
+            <p>Mfumo wa usimamizi wa mafundi wa simu - Version 1.0 Beta</p>
+        </footer>
+    </main>
+
+    <!-- KUUNGANISHA FAILI LA ASISTANTI -->
+    <script src="assistant.js"></script>
+
+    <script>
+        // FIREBASE REALTIME DATABASE CONFIGURATION
+        const firebaseConfig = {
+            databaseURL: "https://byaomobilesolutions-default-rtdb.firebaseio.com/"
+        };
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const db = firebase.database();
+
+        // BYAO SECURITY CHECK
+        let ameLogin = localStorage.getItem("byaoLogin");
+        if(ameLogin !== "ndiyo"){
+            localStorage.setItem("ukurasaUliotaka", window.location.pathname.split("/").pop());
+            window.location.href="login.html";
+        }
+
+        let menuBtn = document.getElementById("menuBtn");
+        let closeSidebar = document.getElementById("closeSidebar");
+        let sidebar = document.getElementById("sidebar");
+        let overlay = document.getElementById("overlay");
+
+        function toggleMenu(){
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+
+        menuBtn.addEventListener("click", toggleMenu);
+        closeSidebar.addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", toggleMenu);
+
+        // SARAFU INAYOTUMIKA (Currency Selector: FC, Fbu, TSh, $, €, n.k.)
+        function pataSarafuInayotumika() {
+            let mipangilioLocal = JSON.parse(localStorage.getItem("mipangilio")) || {};
+            return mipangilioLocal.sarafu || "FC";
+        }
+
+        function sasishaMuhtasari(){
+            let simuZote = JSON.parse(localStorage.getItem("simuZote")) || [];
+            let jumla = simuZote.length;
+            let received = 0;
+            let repair = 0;
+            let done = 0;
+            let failed = 0;
+
+            simuZote.forEach(function(simu){
+                if(simu.status === "Imepokelewa"){
+                    received++;
+                } else if(simu.status === "Inatengenezwa"){
+                    repair++;
+                } else if(simu.status === "Imekamilika"){
+                    done++;
+                } else if(simu.status === "Imeshindwa kutengenezwa"){
+                    failed++;
+                }
+            });
+
+            document.getElementById("jumla").textContent = jumla;
+            document.getElementById("received").textContent = received;
+            document.getElementById("repair").textContent = repair;
+            document.getElementById("done").textContent = done;
+            document.getElementById("failed").textContent = failed;
+        }
+
+        function takwimuBiashara(){
+            let simuZote = JSON.parse(localStorage.getItem("simuZote")) || [];
+            let mapato = 0;
+            let zinazosubiri = 0;
+            let kaziLeo = 0;
+            let sarafu = pataSarafuInayotivikaKamili = pataSarafuInayotumika();
+            
+            let leoDate = new Date();
+            let mwaka = leoDate.getFullYear();
+            let mwezi = String(leoDate.getMonth() + 1).padStart(2, '0');
+            let siku = String(leoDate.getDate()).padStart(2, '0');
+            let leo = `${mwaka}-${mwezi}-${siku}`;
+
+            simuZote.forEach(function(simu){
+                if(simu.status === "Imekamilika"){
+                    mapato += Number(simu.bei) || 0;
+                }
+                if(simu.status !== "Imekamilika"){
+                    zinazosubiri++;
+                }
+                if(simu.tarehe === leo){
+                    kaziLeo++;
+                }
+            });
+
+            document.getElementById("mapato").innerHTML = mapato + " " + sarafu;
+            document.getElementById("zinazosubiri").innerHTML = zinazosubiri;
+            document.getElementById("kaziLeo").innerHTML = kaziLeo;
+        }
+
+        takwimuBiashara();
+        sasishaMuhtasari();
+
+        // KUSOMA TAARIFA ZA FUNDI KUTOKA FIREBASE NA LOCALSTORAGE
+        function onyeshaTaarifaFundi(){
+            // Kwanza jaribu kusoma LocalStorage kwa ajili ya kasi/offline
+            let dataLocal = JSON.parse(localStorage.getItem("mipangilio"));
+            if(dataLocal){
+                document.getElementById("karibuFundi").innerHTML = "👨‍🔧 Karibu " + dataLocal.jina;
+                document.getElementById("maelezoFundi").innerHTML = "🔧 " + (dataLocal.duka || "BYAO Mobile") + "<br><br>Simamia kazi zako za ukarabati wa simu kwa mfumo mmoja madhubuti.";
+            }
+
+            // Pili, vuta moja kwa moja kutoka Firebase Realtime Database
+            db.ref("mipangilio").once("value").then(function(snapshot) {
+                let dataFirebase = snapshot.val();
+                if(dataFirebase){
+                    // Hifadhi pia kwenye LocalStorage ili iwe backup
+                    localStorage.setItem("mipangilio", JSON.stringify(dataFirebase));
+                    document.getElementById("karibuFundi").innerHTML = "👨‍🔧 Karibu " + dataFirebase.jina;
+                    document.getElementById("maelezoFundi").innerHTML = "🔧 " + (dataFirebase.duka || "BYAO Mobile") + "<br><br>Simamia kazi zako za ukarabati wa simu kwa mfumo mmoja madhubuti.";
+                    takwimuBiashara(); // Sasisha sarafu kama imebadilishwa
+                }
+            }).catch(function(error){
+                console.log("Imetumia LocalStorage kutokana na mtandao:", error);
+            });
+        }
+
+        onyeshaTaarifaFundi();
+
+        if("serviceWorker" in navigator){
+            window.addEventListener("load", function(){
+                navigator.serviceWorker.register("service-worker.js");
+            });
+        }
+        if('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then((reg) => { console.log('BYAO Service Worker Imesajiliwa:', reg.scope); })
+                    .catch((err) => { console.log('Hitilafu ya Service Worker:', err); });
+            });
+        }
+
+        // UUNGANISHAJI WA MSAIDIZI WA KITAALAM (ASSISTANT.JS & ASSISTANT.HTML LINK)
+        const searchInput = document.getElementById("swahiliSearchInput");
+        const resultsContainer = document.getElementById("swahiliResultsContainer");
+
+        if (searchInput && resultsContainer) {
+            searchInput.addEventListener("input", function() {
+                let neno = this.value.trim();
+
+                if (neno === "") {
+                    resultsContainer.innerHTML = `<div class="text-center text-slate-500 italic py-4">Andika neno au tatizo hapo juu kuona suluhisho papo hapo...</div>`;
+                    return;
+                }
+
+                if (typeof tafutaTatizoBao === "function" || typeof madaBao500_Total !== "undefined") {
+                    let matokeo = madaBao500_Total.filter(item => 
+                        item.id.toString().includes(neno) || 
+                        item.tatizo.toLowerCase().includes(neno.toLowerCase()) ||
+                        item.suluhu.toLowerCase().includes(neno.toLowerCase())
+                    );
+
+                    if (matokeo.length > 0) {
+                        resultsContainer.innerHTML = matokeo.slice(0, 10).map(item => `
+                            <div class="bg-slate-950 border border-slate-800 p-3 rounded-xl space-y-1">
+                                <div class="flex items-center justify-between">
+                                    <span class="bg-red-950 text-red-400 text-[10px] font-bold px-2 py-0.5 rounded">Tatizo #${item.id}</span>
+                                </div>
+                                <p class="text-white font-bold">❌ ${item.tatizo}</p>
+                                <p class="text-emerald-400 font-medium">💡 Suluhu: ${item.suluhu}</p>
+                            </div>
+                        `).join('');
+                    } else {
+                        resultsContainer.innerHTML = `<div class="text-center text-slate-400 py-4">Hakuna suluhisho lililopatikana kwa neno hilo. Jaribu neno lingine au fungua <a href="assistant.html" class="text-emerald-400 underline">App ya Assistant</a>!</div>`;
+                    }
+                } else {
+                    resultsContainer.innerHTML = `<div class="text-center text-red-400 py-4">Faili la assistant.js linapakia au halijasomwa kikamilifu.</div>`;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

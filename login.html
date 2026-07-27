@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ingia Kwenye Mfumo - BYAO Pro</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    darkBg: '#05070b',
+                    cardBg: '#0f172a',
+                    accentRed: '#ef4444'
+                }
+            }
+        }
+    }
+</script>
+</head>
+
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col items-center justify-center font-sans p-4 m-0 overflow-x-hidden">
+
+    <!-- Toast Notification ya Kisasa (Badala ya Alert) -->
+    <div id="toastNotification" class="fixed top-5 z-50 hidden bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold shadow-2xl backdrop-blur-md">
+        Ujumbe wa Mfumo
+    </div>
+
+    <!-- Kitufe cha Menu na Overlay ya Sidebar -->
+    <button id="menuBtn" class="fixed top-4 left-4 z-50 bg-slate-800 hover:bg-slate-700 text-white font-bold p-2.5 rounded-xl border border-slate-700 shadow-lg transition">
+        ☰ Menu
+    </button>
+    <div id="overlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-40"></div>
+
+    <!-- Sidebar ya Pamoja ya Kibabe -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-cardBg border-r border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+            <div class="flex items-center space-x-2">
+                <span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">BYAO Pro</span>
+                <span class="text-sm font-bold text-white">Navigation</span>
+            </div>
+            <button id="closeSidebar" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-1.5 text-xs">
+            <a href="index.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🏠 Mwanzo</a>
+            <a href="studio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💻 Studio Kubwa</a>
+            <a href="ide.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚡ Master IDE</a>
+            <a href="masterfinishproject.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🛠️ Zana za Mwisho</a>
+            <a href="repair.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📱 Pokea Simu</a>
+            <a href="phones.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📋 Simu Zangu</a>
+            <a href="wateja.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">👥 Wateja</a>
+            <a href="mipangilio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Mipangilio</a>
+        </div>
+    </div>
+
+    <!-- Login Container -->
+    <div class="w-full max-w-sm space-y-4">
+        
+        <!-- Header Banner -->
+        <div class="bg-gradient-to-r from-red-950/40 via-cardBg to-cardBg border border-red-500/20 p-6 rounded-2xl shadow-xl text-center space-y-2">
+            <span class="bg-red-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-lg uppercase tracking-wider">SECURE ACCESS</span>
+            <h2 class="text-lg font-extrabold text-white tracking-tight">BYAO MOBILE SOLUTIONS</h2>
+            <p class="text-slate-400 text-xs">Ingia kwenye mfumo wako salama</p>
+        </div>
+
+        <!-- Card Form -->
+        <div class="bg-cardBg border border-slate-800 p-6 rounded-2xl shadow-2xl space-y-4">
+            <h3 class="text-sm font-bold text-red-400 text-center uppercase tracking-wider">Uthibitisho wa Mtumiaji</h3>
+            <p class="text-[11px] text-slate-400 text-center">Weka jina lako na neno la siri sahihi (passcode) ili uendelee.</p>
+            
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Jina la Fundi / Mmiliki:</label>
+                    <input type="text" id="loginJina" placeholder="Andika jina lako..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-red-500 transition">
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold text-slate-300 mb-1">Neno la Siri (Passcode):</label>
+                    <input type="password" id="loginPass" placeholder="Weka passcode (mfano: 2026)..." class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2.5 text-xs text-white focus:outline-none focus:border-red-500 transition">
+                </div>
+            </div>
+            
+            <button onclick="fanyaLogin()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs transition shadow-lg shadow-red-900/20">
+                🚀 Ingia Kwenye Mfumo
+            </button>
+        </div>
+    </div>
+
+    <!-- JavaScript ya Uendeshaji -->
+    <script>
+        const menuBtn = document.getElementById('menuBtn');
+        const closeSidebar = document.getElementById('closeSidebar');
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+
+        function toggleMenu() {
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        menuBtn.addEventListener('click', toggleMenu);
+        closeSidebar.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+
+        function showNotification(msg) {
+            let toast = document.getElementById('toastNotification');
+            toast.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 2500);
+        }
+
+        function fanyaLogin() {
+            let jina = document.getElementById("loginJina").value.trim();
+            let pass = document.getElementById("loginPass").value.trim();
+
+            if(!jina) {
+                showNotification("Tafadhali jaza jina lako!");
+                return;
+            }
+
+            // Weka Passcode salama ya mfumo wako (Hapa tumeweka '2026' kama mfano wa kibabe)
+            if(pass !== "2026" && pass !== "byao2026") {
+                showNotification("Neno la siri si sahihi! Jaribu tena.");
+                return;
+            }
+            
+            localStorage.setItem("byaoLogin", "ndiyo");
+            
+            let mipangilioYako = JSON.parse(localStorage.getItem("mipangilio")) || {};
+            mipangilioYako.jina = jina;
+            localStorage.setItem("mipangilio", JSON.stringify(mipangilioYako));
+
+            showNotification("Karibu tena, " + jina + "!");
+
+            setTimeout(() => {
+                let ukurasaUliotaka = localStorage.getItem("ukurasaUliotaka");
+                if(ukurasaUliotaka && ukurasaUliotaka !== "login.html") {
+                    localStorage.removeItem("ukurasaUliotaka");
+                    window.location.href = ukurasaUliotaka;
+                } else {
+                    window.location.href = "index.html";
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

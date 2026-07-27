@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BYAO Master Ecosystem Report</title>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    darkBg: '#05070b',
+                    cardBg: '#0f172a',
+                    accentRed: '#ef4444'
+                }
+            }
+        }
+    }
+</script>
+</head>
+
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col font-sans p-4 sm:p-6 m-0 overflow-x-hidden">
+
+    <!-- Toast Notification ya Kisasa -->
+    <div id="toastNotification" class="fixed top-5 z-50 hidden bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold shadow-2xl backdrop-blur-md">
+        Ujumbe wa Mfumo
+    </div>
+
+    <!-- Kitufe cha Menu na Overlay ya Sidebar -->
+    <button id="menuBtn" class="fixed top-4 left-4 z-50 bg-slate-800 hover:bg-slate-700 text-white font-bold p-2.5 rounded-xl border border-slate-700 shadow-lg transition">
+        ☰ Menu
+    </button>
+    <div id="overlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-40"></div>
+
+    <!-- Sidebar ya Pamoja ya Kibabe -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-cardBg border-r border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+            <div class="flex items-center space-x-2">
+                <span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">BYAO Pro</span>
+                <span class="text-sm font-bold text-white">Navigation</span>
+            </div>
+            <button id="closeSidebar" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-1.5 text-xs">
+            <a href="index.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🏠 Mwanzo</a>
+            <a href="studio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💻 Studio Kubwa</a>
+            <a href="ide.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚡ Master IDE</a>
+            <a href="masterfinishproject.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🛠️ Zana za Mwisho</a>
+            <a href="profile.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📄 Utambulisho & Mwongozo</a> 
+            <a href="repair.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📱 Pokea Simu</a>
+            <a href="phones.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📋 Simu Zangu</a>
+            <a href="spares.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📦 Spares & Stock</a>
+            <a href="tools.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Quick Tools</a>
+            <a href="wateja.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">👥 Wateja</a>
+            <a href="report.html" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-800 text-white font-bold transition">📈 Master Report</a>
+            <a href="mipangilio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Mipangilio</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-2xl mx-auto space-y-6 pt-12 sm:pt-4">
+
+        <!-- HEADER -->
+        <div class="bg-cardBg border border-slate-800 p-6 sm:p-8 rounded-2xl shadow-2xl text-center space-y-3">
+            <div class="w-16 h-16 bg-slate-950 p-2 rounded-2xl border border-slate-800 mx-auto flex items-center justify-center shadow-inner">
+                <span class="text-2xl">📈</span>
+            </div>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-white">BYAO MASTER REPORT DASHBOARD</h1>
+            <p class="text-xs sm:text-sm text-slate-400">Muhtasari wa Jumla na Uchambuzi wa Takwimu za Mfumo Mzima</p>
+            <div class="w-20 h-1 bg-red-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Kiteuzi cha Sarafu -->
+        <div class="bg-cardBg border border-slate-800 p-4 rounded-2xl shadow-xl flex items-center justify-between">
+            <label class="font-bold text-xs sm:text-sm text-slate-300">Chagua Sarafu (Currency):</label>
+            <select id="currencySymbol" onchange="pakiaDataZaMfumo()" class="bg-slate-950 border border-slate-800 text-red-400 font-bold p-2.5 rounded-xl text-xs sm:text-sm focus:outline-none focus:border-red-500 transition">
+                <option value="FC">FC (Franc ya Kongo)</option>
+                <option value="TZS">TZS (Shilingi ya Tanzania)</option>
+                <option value="KES">KES (Shilingi ya Kenya)</option>
+                <option value="UGX">UGX (Shilingi ya Uganda)</option>
+                <option value="XOF">XOF/XAF (CFA - Afr. ya Magharibi/Kati)</option>
+                <option value="USD">USD ($ Dola ya Marekani)</option>
+                <option value="EUR">EUR (€ Euro)</option>
+            </select>
+        </div>
+
+        <!-- 1. Sehemu ya Ukarabati na Wateja -->
+        <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-3">
+            <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">📱 Kitengo cha Ukarabati na Wateja</h3>
+            <div class="space-y-2 text-xs">
+                <div class="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <span class="text-slate-300">Jumla ya Simu Zilizopokelewa:</span>
+                    <span id="repPhones" class="font-bold text-white text-sm">0</span>
+                </div>
+                <div class="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <span class="text-slate-300">Wateja Walioandikishwa Kwenye Directory:</span>
+                    <span id="repClients" class="font-bold text-white text-sm">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Sehemu ya Stoku na Vipuri -->
+        <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-3">
+            <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">📦 Kitengo cha Stoku na Vipuri</h3>
+            <div class="space-y-2 text-xs">
+                <div class="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <span class="text-slate-300">Aina za Vipuri Vilivyopo Stoku:</span>
+                    <span id="repSpares" class="font-bold text-white text-sm">0</span>
+                </div>
+                <div class="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <span class="text-slate-300">Hali ya Stoku:</span>
+                    <span id="repStockStatus" class="font-bold text-slate-400">Bado hakuna data</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Sehemu ya Fedha na Miamala -->
+        <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-3">
+            <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">💰 Kitengo cha Fedha na Miamala</h3>
+            <div class="space-y-2 text-xs">
+                <div class="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <span class="text-slate-300">Jumla ya Makadirio ya Mapato:</span>
+                    <span id="repRevenue" class="font-bold text-emerald-400 text-sm">0</span>
+                </div>
+                <div class="flex items-center justify-between bg-slate-950 p-3 rounded-xl border border-slate-800">
+                    <span class="text-slate-300">Makadirio ya Faida Halisi (40%):</span>
+                    <span id="repProfit" class="font-bold text-emerald-400 text-sm">0</span>
+                </div>
+            </div>
+        </div>
+
+        <button onclick="pakiaDataZaMfumo(); showNotification('Ripoti imesasishwa kikamilifu!')" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-xs transition shadow-lg shadow-red-900/20">Sasisha Ripoti (Refresh Data) 🔄</button>
+
+        <a href="index.html" class="block text-center bg-cardBg hover:bg-slate-800 border border-slate-800 text-slate-300 font-bold p-3.5 rounded-xl text-xs transition shadow-xl">⬅️ Rudi kwenye Mwanzo (Ecosystem Hub)</a>
+    </main>
+
+    <!-- Script ya Uendeshaji -->
+    <script>
+        // BYAO SECURITY CHECK
+        let ameLogin = localStorage.getItem("byaoLogin");
+        if(ameLogin !== "ndiyo"){
+            localStorage.setItem("ukurasaUliotaka", window.location.pathname.split("/").pop());
+            window.location.href="login.html";
+        }
+
+        function showNotification(msg) {
+            let toast = document.getElementById('toastNotification');
+            toast.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 2500);
+        }
+
+        function pakiaDataZaMfumo() {
+            let curr = document.getElementById('currencySymbol').value;
+
+            let simuZote = JSON.parse(localStorage.getItem('simuZote') || '[]');
+            let spares = JSON.parse(localStorage.getItem('byao_spares') || '[]');
+            
+            // Hesabu wateja wa kipekee kutoka kwenye simu zilizopokelewa
+            let watejaUnique = {};
+            simuZote.forEach(s => {
+                if(s.jina) watejaUnique[s.jina] = true;
+            });
+            let totalClients = Object.keys(watejaUnique).length;
+
+            // Kokotoa mapato ya jumla kutoka kwenye bei za simu zilizopokelewa au malipo
+            let totalRev = simuZote.reduce((sum, item) => sum + (parseFloat(item.bei) || parseFloat(item.price) || 0), 0);
+            let calculatedProfit = Math.round(totalRev * 0.4);
+
+            document.getElementById('repPhones').innerText = simuZote.length;
+            document.getElementById('repClients').innerText = totalClients;
+            document.getElementById('repSpares').innerText = spares.length;
+            
+            let stockStatusEl = document.getElementById('repStockStatus');
+            if(spares.length > 0) {
+                stockStatusEl.innerText = "Inasomeka Vizuri (Stoku Imeshiba)";
+                stockStatusEl.className = "font-bold text-emerald-400 text-sm";
+            } else {
+                stockStatusEl.innerText = "Bado hakuna stoku zilizowekwa";
+                stockStatusEl.className = "font-bold text-slate-400 text-sm";
+            }
+
+            document.getElementById('repRevenue').innerText = curr + " " + totalRev.toLocaleString();
+            document.getElementById('repProfit').innerText = curr + " " + calculatedProfit.toLocaleString();
+        }
+
+        window.onload = function() {
+            pakiaDataZaMfumo();
+        };
+
+        // SIDEBAR TOGGLE
+        let menuBtn = document.getElementById("menuBtn");
+        let closeSidebar = document.getElementById("closeSidebar");
+        let sidebar = document.getElementById("sidebar");
+        let overlay = document.getElementById("overlay");
+
+        function toggleMenu(){
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+
+        menuBtn.addEventListener("click", toggleMenu);
+        closeSidebar.addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", toggleMenu);
+    </script>
+</body>
+</html>

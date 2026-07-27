@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BYAO Mobile & Computer Elite Master Suite - Professional Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        deepObsidian: '#030712',
+                        panelCharcoal: '#0b0f19',
+                        eliteGold: '#f59e0b',
+                        cyberCyan: '#06b6d4',
+                        neonViolet: '#8b5cf6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .elite-glass { background: rgba(11, 15, 25, 0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #030712; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #374151; }
+    </style>
+</head>
+<body class="bg-deepObsidian text-slate-200 min-h-screen w-full flex flex-col font-sans overflow-x-hidden m-0 p-0 selection:bg-cyan-500 selection:text-black">
+
+    <!-- Header Kuu ya Kitaalamu -->
+    <header class="w-full elite-glass border-b border-slate-800/80 px-6 py-4 flex items-center justify-between sticky top-0 z-50 shadow-2xl">
+        <div class="flex items-center space-x-4">
+            <span class="bg-gradient-to-r from-cyan-500 to-violet-600 text-black text-xs font-black px-3.5 py-1.5 rounded-xl uppercase tracking-widest shadow-lg">BYAO ELITE</span>
+            <div>
+                <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white flex items-center space-x-2.5">
+                    <span>BYAO MOBILE SOLUTION - ENTERPRISE MASTER SUITE</span>
+                    <span class="w-2.5 h-2.5 bg-cyan-400 rounded-full animate-pulse shadow-[0_0_12px_#06b6d4]"></span>
+                </h1>
+                <p class="text-[11px] text-slate-400 font-mono tracking-wide">Cloud Ecosystem (Airtable, Make, Softr) &bull; 1500+ Engineering Modules</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button onclick="loadQuickStats()" class="hidden sm:block bg-slate-900 border border-slate-700/60 text-cyan-400 hover:text-white text-xs px-3.5 py-2 rounded-xl transition font-mono">Takwimu</button>
+            <button onclick="clearChatScreen()" class="bg-slate-900 border border-slate-700/60 text-slate-300 hover:text-white text-xs px-3.5 py-2 rounded-xl transition font-mono">Safisha Skrini</button>
+        </div>
+    </header>
+
+    <!-- Sehemu Kuu ya Mazungumzo na Utatuzi -->
+    <main class="flex-1 w-full max-w-5xl mx-auto p-4 sm:p-6 flex flex-col space-y-6 pb-32">
+        
+        <!-- Ujumbe wa Kukaribisha wa Kitaalamu -->
+        <div class="flex items-start space-x-4">
+            <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-cyan-500 to-violet-600 flex items-center justify-center text-black font-black text-xs shrink-0 shadow-lg shadow-cyan-500/20">AI</div>
+            <div class="bg-panelCharcoal border border-slate-800/90 p-5 rounded-2xl rounded-tl-none text-xs sm:text-sm text-slate-300 shadow-2xl max-w-[88%] leading-relaxed font-sans space-y-2">
+                <p class="text-cyan-400 font-bold tracking-wide">ENTERPRISE MASTER SUITE PRO MAX IMEWASHWA</p>
+                <p>Habari mkuu! Karibu kwenye mfumo mkuu wa Byao Mobile Solution. Hifadhidata yetu sasa imesheheni moduli zaidi ya 1500+ zinazojumuisha mifumo ya wingu (Airtable, Make, Softr), mitandao, urekebishaji wa FRP/Flashing, na uchambuzi wa vifaa vya simu na kompyuta.</p>
+                <p class="text-slate-400">Tafadhali andika neno kuu au tatizo lako (mfano: airtable, make, softr, wifi, frp, samsung s23, vpn, router, sfc) ili nikupe ripoti ya kitaalamu ya papo hapo!</p>
+            </div>
+        </div>
+
+        <!-- Eneo la Mazungumzo Yanayotiririka -->
+        <div id="chatHistory" class="flex flex-col space-y-5"></div>
+
+    </main>
+
+    <!-- Sehemu ya Kuandikia Ujumbe (Fixed Bottom Professional Input Panel) -->
+    <div class="fixed bottom-0 inset-x-0 elite-glass border-t border-slate-800/80 p-3 sm:p-5 z-40 shadow-2xl">
+        <div class="max-w-5xl mx-auto flex items-center space-x-3">
+            <input type="text" id="userInputQuery" placeholder="Andika neno kuu la moduli au tatizo (Mfano: airtable, make, softr, frp, samsung s23, wifi)..." class="flex-1 bg-slate-950/90 border border-slate-800/90 rounded-2xl px-5 py-3.5 text-xs sm:text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-cyan-500 shadow-inner font-sans transition">
+            <button onclick="sendUserQuery()" class="bg-gradient-to-r from-cyan-500 to-violet-600 hover:from-cyan-400 hover:to-violet-500 text-black font-extrabold px-6 py-3.5 rounded-2xl text-xs uppercase tracking-wider transition shadow-lg shadow-cyan-500/20 cursor-pointer shrink-0 font-sans">Tuma Ujumbe</button>
+        </div>
+    </div>
+
+    <!-- JavaScript Engine ya Hifadhidata Iliyopanuliwa na Kusawazishwa Kitaalamu -->
+    <script>
+        const masterDatabase = {
+            "maji": "RIPOTI YA KIELEKTRONIKI: SIMU ILIYOWINGIA KWENYE MAJI (LIQUID DAMAGE)\n\n" +
+                    "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+                    "Maji yana madini yanayoweza kupitisha umeme, jambo linalosababisha shoti ya ghafla kwenye saketi za bodi, kutu kwenye pini za kuunganisha, na uharibifu wa kudumu wa chipu za nishati.\n\n" +
+                    "• Suluhu na Hatua za Kitaalamu:\n" +
+                    "1. Kuzima Haraka: Tenganisha na uzime kifaa mara moja. Usithubutu kukiwasha kuangalia kama kinafanya kazi kwani kufanya hivyo kunaongeza uharibifu.\n" +
+                    "2. Kuondoa Vifaa vya Ziada: Toa kadi ya SIM na kadi ya kumbukumbu ili kuruhusu hewa kupita kwenye nafasi zake.\n" +
+                    "3. Kukausha Salama: Epuka kutumia mashine za kukaushia nywele zenye joto kali kwani zinasukuma maji kuingia ndani zaidi kwenye sehemu nyeti. Tumia feni ya kawaida au weka kifaa kwenye vifurushi vya Silica Gel.\n" +
+                    "4. Usafishaji wa Bodi: Mpeleke fundi bingwa ili afungue simu na kusafisha bodi kwa kutumia kioevu maalumu cha Isopropyl Alcohol na mashine ya joto la chini.",
+
+            "ganda": "RIPOTI YA KIELEKTRONIKI: SIMU INAYOGANDA NA KUKataa KUSOGEA (SYSTEM FREEZING)\n\n" +
+                    "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+                    "Kujaa kupita kiasi kwa nafasi ya hifadhi ya ndani, faili za akiba zilizoharibika, au programu zinazotumia rasilimali nyingi za RAM kwa wakati mmoja nyuma ya pazia.\n\n" +
+                    "• Suluhu na Hatua za Kitaalamu:\n" +
+                    "1. Usafishaji wa Nafasi: Hakikisha unaacha nafasi huru ya kuanzia GB 2 hadi 4 kwenye hifadhi kuu ili kuruhusu mfumo kufanya kazi kwa ufanisi.\n" +
+                    "2. Kufanya Force Reboot: Bonyeza na ushikilie kitufe cha kuwasha pamoja na kitufe cha kushusha sauti kwa takriban sekunde 10 hadi 15.\n" +
+                    "3. Kufuta Akiba ya Mfumo: Ingia kwenye Recovery Mode na ufanye Wipe Cache Partition ili kuondoa faili zote mbovu za kumbukumbu za muda.\n" +
+                    "4. Kurejesha Hali ya Kiwandani: Fanya nakala rudufu ya taarifa zako muhimu kisha ufute mfumo mzima kama tatizo litaendelea.",
+
+            "bluu": "RIPOTI YA KIELEKTRONIKI: SKRINI YA BLUU KUTOKEA KWENYE KOMPYUTA (BSOD)\n\n" +
+                    "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+                    "Hitilafu ya kiendeshi programu, kadi ya kumbukumbu ya RAM iliyochafuka au kulegea kwenye tundu lake, faili za mfumo wa uendeshaji zilizoharibika, au joto kupita kiasi kwenye kichakataji kikuu.\n\n" +
+                    "• Suluhu na Hatua za Kitaalamu:\n" +
+                    "1. Kukagua Ujumbe wa Hitilafu: Soma namba ya makosa inayoonekana kwenye skrini hiyo ya bluu ili kubaini faili husika.\n" +
+                    "2. Matengenezo ya RAM: Zima kompyuta, fungua kifuniko cha chini, toa kadi za RAM na usafishe sehemu zake za dhahabu kwa kifutio safi cha penseli kisha uzirudishe kwa umakini mkubwa.\n" +
+                    "3. Matumizi ya Safe Mode: Washa kompyuta kupitia Safe Mode ili kuondoa programu au madereva yaliyosababisha mgongano wa kimfumo.\n" +
+                    "4. Kukagua Faili za Mfumo: Tumia amri ya sfc /scannow kupitia Command Prompt ili kurejesha faili zilizoharibika za Windows.",
+
+            "moto": "RIPOTI YA KIELEKTRONIKI: JOTO KUPITA KASI (OVERHEATING ISSUES)\n\n" +
+                    "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+                    "Matumizi ya vifaa vikiwa vimechomekwa kwenye chaji, betri iliyoharibika au kuvimba ndani, au kuziba kwa njia za kupitishia hewa kwenye feni na heatsink za kompyuta.\n\n" +
+                    "• Suluhu na Hatua za Kitaalamu:\n" +
+                    "1. Kupunguza Matumizi Wakati wa Kuchaji: Epuka kucheza michezo mizito au kutumia programu za mtandaoni wakati kifaa chako kinajaza nishati.\n" +
+                    "2. Usafishaji wa Mfumo wa Upozeaji: Kwa kompyuta, fungua na usafishe vumbi lililojikusanya kwenye feni, kisha uweke mafuta mapya ya kuzuia joto kwenye kichakataji.\n" +
+                    "3. Kubadilisha Betri: Kifaa kinapochemka hata kikiwa kimesimama bila matumizi, mara nyingi huashiria hitilafu ya ndani kwenye seli za betri zinazohitaji kubadilishwa haraka.",
+
+            "chaji": "RIPOTI YA KIELEKTRONIKI: TATIZO LA KUGOMA KUCHAJI AU KUCHAJI TARATIBU\n\n" +
+                    "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+                    "Uchafu uliorundikana ndani ya tundu la kuchajia, kebo iliyokatika nyuzi za ndani na kupoteza uwezo wa kusafirisha mkondo thabiti wa umeme, au hitilafu kwenye chipu ya kuchajia ya bodi.\n\n" +
+                    "• Suluhu na Hatua za Kitaalamu:\n" +
+                    "1. Usafishaji wa Tundu: Tumia sindano ya mbao au brashi kavu yenye nyuzi laini kuondoa vumbi na uchafu ulioshikana ndani ya tundu la kuchajia.\n" +
+                    "2. Kujaribu Vifaa Mbadala: Badilisha kebo na kichwa cha kuchajia utumie vifaa halisi vyenye viwango sahihi vya umeme.\n" +
+                    "3. Ukarabati wa Kiufundi: Mpeleke fundi akague pini za tundu la kuchajia au abadilishe bodi ndogo ya nishati ikiwa njia za umeme zimekatika.",
+
+            "kioo": "RIPOTI YA KIELEKTRONIKI: KUVUNJIKA AU KUSHINDWA KUONYSHA KWA VIOO (DISPLAY FAULTS)\n\n" +
+                    "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+                    "Athari za kuanguka kwa nguvu chini, kushinikizwa kwa nguvu kwenye mfuko wa nguo, au kukatika kwa utepe wa kioo wa ndani.\n\n" +
+                    "• Suluhu na Hatua za Kitaalamu:\n" +
+                    "1. Kubadilisha Kioo Kizima: Wakati kioo kimepasuka na hakisikii mguso au hakionyeshi picha kabisa, suluhu pekee ni kubadilisha kioo kipya cha asili.\n" +
+                    "2. Upimaji wa Kompyuta: Kwa upande wa kompyuta, unganisha kebo ya HDMI na kioo cha nje ili kuthibitisha kama kadi ya picha inafanya kazi kabla ya kununua kioo kipya.",
+
+            "sauti": "RIPOTI YA KIELEKTRONIKI: SPIKA KUTOA SAUTI YA UKWARUZO AU KUKATIKA\n\n" +
+                    "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+                    "Vumbi au unyevu kuingia kwenye matundu ya spika, kuchakaa kwa utando wa ndani wa spika, au hitilafu ya programu ya uendeshaji wa sauti kwenye kompyuta.\n\n" +
+                    "• Suluhu na Hatua za Kitaalamu:\n" +
+                    "1. Usafishaji wa Matundu: Safisha kwa uangalifu matundu ya spika kwa brashi kavu ili kuondoa chembechembe za vumbi.\n" +
+                    "2. Sasisho la Kiendeshi cha Sauti: Kwenye kompyuta, nenda kwenye Device Manager, ondoa kiendeshi cha Realtek Audio kisha uwashe upya mashine ili ijisanikishe upya.\n" +
+                    "3. Kubadilisha Spika: Badilisha spika mpya kabisa ikiwa utando wake wa ndani umepasuka na kutoa sauti ya kuchanganyikiwa.",
+
+            "virusi": "RIPOTI YA KIELEKTRONIKI: MAAMBUKIZI YA PROGRAMU HATARISHI (VIRUSES & MALWARE)\n\n" +
+                    "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+                    "Kupakua faili kutoka tovuti zisizo na usalama, kubonyeza viungo vya matangazo ya kitapeli, au kuunganisha kifaa cha kuhifadhi kumbukumbu chenye maambukizi kwenye kompyuta yako.\n\n" +
+                    "• Suluhu na Hatua za Kitaalamu:\n" +
+                    "1. Ufungaji wa Antivirus: Weka programu halisi na salama ya kuzuia virusi na uendeshe uchunguzi kamili.\n" +
+                    "2. Kuondoa Programu za Tatanishi: Zifute programu zote ambazo hukuzisakinisha mwenyewe kwenye mfumo wako.\n" +
+                    "3. Kufanya Usakinishaji Mpya: Ikiwa virusi vimeharibu mfumo mzima wa uendeshaji, fanya usakinishaji mpya wa Windows au mfumo wa simu.",
+
+            "nenosiri": "RIPOTI YA KIELEKTRONIKI: KUSAHAU NENOSIRI AU KUFUNGWA KWA USALAMA (FRP / PASSWORD LOCK)\n\n" +
+                    "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+                    "Kuingiza nenosiri jipya na kupoteza kumbukumbu yake, au simu kujifunga yenyewe baada ya kufanya Factory Reset kutokana na ulinzi wa Google.\n\n" +
+                    "• Suluhu na Hatua za Kitaalamu:\n" +
+                    "1. Matumizi ya Recovery Mode: Kwenye vifaa vya simu, unaweza kufanya Hard Reset kupitia mchanganyiko wa vifungo vya pembeni.\n" +
+                    "2. Zana za Kompyuta: Tumia zana maalum za kisheria za kuweka upya nenosiri la kompyuta.\n" +
+                    "3. Uthibitisho wa Akaunti: Tumia barua pepe na nenosiri la awali la Google lililosajiliwa kwenye kifaa ili kukamilisha ufunguzi wa usalama.",
+
+            "projector": "RIPOTI YA KIELEKTRONIKI: PROJECTOR KUTOWAKA AU KUPOTEZA MWANGA\n\n" +
+                    "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+                    "Taa ya projector imefikisha ukomo wa saa zake za kufanya kazi, bodi ya umeme ya ballast imeungua, au vumbi limeziba vichungi vya hewa na kusababisha joto kali.\n\n" +
+                    "• Suluhu na Hatua za Kitaalamu:\n" +
+                    "1. Kubadilisha Taa Mpya: Nunua na uweke taa nyingine inayofanana na namba ya modeli ya projector yako.\n" +
+                    "2. Kusafisha Vichungi vya Hewa: Safisha vichungi vya vumbi mara kwa mara ili kuruhusu hewa ya kutosha kupoa ndani.\n" +
+                    "3. Ukaguzi wa Ballast: Mpeleke fundi bingwa akague bodi ya kuzalisha nguvu ya taa kwa kutumia vipimo vya umeme.",
+
+            "router": "RIPOTI YA KIELEKTRONIKI: ROUTER YA WI-FI KUTOA MTANDAO AU KUWAKA TAA NYEKUNDU\n\n" +
+                    "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+                    "Salio la kifurushi limeisha, mipangilio ya APN imebadilika, au mfumo wa ndani wa programu umepata hitilafu ya kiufundi.\n\n" +
+                    "• Suluhu na Hatua za Kitaalamu:\n" +
+                    "1. Kufanya Hard Reset: Bonyeza kitufe cha nyuma kilichozama cha Reset kwa sekunde 10 wakati router imewashwa ili kurudisha mipangilio ya kiwandani.\n" +
+                    "2. Kukagua Salio na Laini: Hakikisha laini ya data imekaa vizuri na ina salio la kutosha.\n" +
+                    "3. Kusasisha Firmware: Ingia kwenye anwani ya IP ya router kupitia kivinjari cha kompyuta ili kusasisha programu yake ya ndani.", 
+                    
+             "kamera": "RIPOTI YA KIELEKTRONIKI: KAMERA KUSHINDWA KUWAKA AU KUTOA PICHA YA UCHAFU\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Lenzi kukwaruzwa, unyevu kuingia kwenye kioo cha kamera ya ndani, au hitilafu ya kimfumo kwenye kiendeshi cha programu ya kamera.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Lenzi: Tumia kitambaa maalum cha microfiber kuondoa alama za vidole na vumbi.\n" +
+            "2. Kufuta Akiba ya Kamera: Nenda kwenye mipangilio ya simu, futa data na akiba (Clear Cache) ya programu ya kamera.\n" +
+            "3. Ukarabati wa Hardware: Mpeleke fundi kubadilisha Moduli ya Kamera ikiwa imeharibika baada ya simu kuanguka.",
+
+          "network": "RIPOTI YA KIELEKTRONIKI: SIMU KUKOSA MTANDAO AU SIM CARD KUTOSOMEKA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Pini za kusoma kadi ya SIM kwenye bodi kuchakaa, kadi ya SIM kuharibika, au mipangilio ya mtandao (APN) kuharibika.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Jaribu Kadi Nyingine: Weka SIM kadi nyingine ili kubaini kama tatizo lipo kwenye kadi au kwenye simu yenyewe.\n" +
+            "2. Kuweka Mipangilio Sahihi: Hakikisha mtandao umewekwa kwenye mfumo wa 4G/5G otomatiki.\n" +
+            "3. Usafishaji wa Pini: Fundi anaweza kusafisha au kubadilisha sehemu ya kusomea SIM kadi (SIM Tray/Reader).",
+
+           "mic": "RIPOTI YA KIELEKTRONIKI: KIPAZA SAUTI (MICROPHONE) KUTOSIKIKA WAKATI WA MAZUNGUMZO\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Matundu ya kipaza sauti kuzibwa na vumbi au uchafu, au hitilafu kwenye bodi ndogo ya nishati na mawasiliano.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Matundu: Tumia brashi laini kusafisha tundu dogo la chini la kipaza sauti kwa umakini.\n" +
+            "2. Kujaribu Programu Nyingine: Pima kupitia kinasa sauti (Recorder) kuona kama inarekodi sauti.\n" +
+            "3. Kubadilisha Mic: Mpeleke fundi abadilishe kipaza sauti kipya cha ndani.",
+
+           "touch": "RIPOTI YA KIELEKTRONIKI: KIOO CHA MGUSO (TOUCH SCREEN) KUTOSIKIA SEHEMU FULANI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kuweka kioo cha kulinda (screen protector) chenye unene mkubwa au chenye hewa ndani, kuanguka kwa simu na kusababisha kioo cha ndani kupoteza uwezo wa mguso.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuondoa Screen Protector: Jaribu kutoa kioo cha ziada cha ulinzi na ujaribu tena.\n" +
+            "2. Kuzima na kuwasha upya: Kufanya Force Restart ili kuweka sawa mfumo wa mguso.\n" +
+            "3. Kubadilisha Touch Panel: Badilisha kioo kipya cha mguso ikiwa kimepasuka au kina hitilafu ya ndani.",
+
+          "bootloop": "RIPOTI YA KIELEKTRONIKI: SIMU KUKWAMA KWENYE NEMBO NA KUSHINDWA KUWAKA (BOOTLOOP)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kujaribu kusakinisha mfumo usioendana na simu, faili za mfumo kufutika au kuharibika ghafla, au hitilafu kwenye kumbukumbu ya ndani (EMMC/UFS).\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuingia Recovery: Jaribu kufuta data kupitia Factory Reset kupitia Recovery Mode.\n" +
+            "2. Kuweka Mfumo Mpya (Flashing): Tumia kompyuta na programu maalum za ufundi kusakinisha upya mfumo rasmi wa simu hiyo.",
+
+    
+          "bluetooth": "RIPOTI YA KIELEKTRONIKI: BLUETOOTH AU WI-FI KUSHINDWA KUUNGANISHA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Chipu ya mawasiliano ya Wireless/Bluetooth kwenye bodi kupata joto kali au kuchomeka vibaya, au mgongano wa kimfumo wa mtandao.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kurejesha Mipangilio ya Mtandao: Fanya Reset Network Settings kupitia mipangilio ya simu.\n" +
+            "2. Kuwasha na Kuzima Flight Mode: Rudisha mawasiliano sawa kwa kuwasha na kuzima hali ya ndege.",
+
+          "keyboard": "RIPOTI YA KIELEKTRONIKI: KIBODI YA KOMPYUTA KUSHINDWA KUFANYA KAZI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Uchafu au vumbi kuingia chini ya vitufe, utepe wa kibodi kulegea kwenye bodi kuu, au maji kumwagika kwenye kibodi.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha kwa Hewa: Tumia mtungi wa hewa ya kisukuma kuondoa uchafu chini ya vitufe.\n" +
+            "2. Kukagua Utepe: Fungua kompyuta na uhakikishe utepe wa kibodi umekaa vizuri kwenye tundu lake.\n" +
+            "3. Kubadilisha Kibodi: Weka kibodi mpya kabisa ikiwa kuna vitufe viliyokufa au kuungua.",
+
+           "hdd": "RIPOTI YA KIELEKTRONIKI: KOMPYUTA KUSHINDWA KUSOMA HARD DISK AU SSD\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kifaa cha kuhifadhi kumbukumbu kuchakaa, kushindwa kupata umeme wa kutosha, au kuharibika kwa mfumo wa faili.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukagua BIOS: Washa kompyuta na uangalie kama BIOS inaisoma Hard Disk hiyo.\n" +
+            "2. Kubadilisha Tundu la Kuunganisha: Jaribu kuhamishia kwenye tundu jingine la SATA au M.2.\n" +
+            "3. Kubadilisha Kifaa: Nunua na uweke Hard Disk au SSD mpya kisha usakinishe mfumo.",
+
+          "battery": "RIPOTI YA KIELEKTRONIKI: BETRI YA KOMPYUTA KUTODUMU NA KUZIMA GHAFLA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Seli za betri kufikia ukomo wa matumizi, au mfumo wa umeme wa kompyuta kushindwa kusoma kiwango halisi cha nishati.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kufanya Battery Calibration: Tumia kompyuta hadi iishe chaji kabisa kisha ije nishati kwa asilimia mia moja bila kukata.\n" +
+            "2. Kubadilisha Betri: Weka betri mpya ya asili inayofanana na mahitaji ya nishati ya kompyuta yako.",
+
+           "port": "RIPOTI YA KIELEKTRONIKI: TUNDU LA USB LA KOMPYUTA KOSOMA VIFAA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Pini za ndani za tundu la USB kupinda au kuvunjika, au kiendeshi cha USB Controller kwenye bodi kupata hitilafu.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusasisha Madereva: Tumia Device Manager kusasisha USB Host Controllers.\n" +
+            "2. Ukarabati wa Kiufundi: Mpeleke fundi ili anyooshe pini zilizopinda au abadilishe tundu zima la USB kwenye bodi.",
+
+           "usb": "RIPOTI YA KIELEKTRONIKI: SIMU KUSHINDWA KUSOMA KOMPYUTA WAKATI WA KUUNGANISHA (USB DEBUGGING)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kebo ya USB kutokuwa na nyuzi za data (inatumika kwa ajili ya kuchaji pekee), uchafu kwenye tundu la simu, au mipangilio ya mtandao wa USB kutowashwa.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Badilisha Kebo: Tumia kebo halisi yenye uwezo wa kusafirisha data na nishati kwa pamoja.\n" +
+            "2. Kubadilisha Mipangilio ya USB: Baada ya kuchomeka,shusha menyu ya juu ya simu na uchague File Transfer au MTP mode.\n" +
+            "3. Kusafisha Tundu: Ondoa vumbi lililobana mawasiliano ya data kwenye tundu la kuchajia.",
+
+    "sensor": "RIPOTI YA KIELEKTRONIKI: SENSOR YA SIMU (PROXIMITY SENSOR) KUTOZIMA SKRINI WAKATI WA SIMU\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Uchafu au kioo cha ulinzi (screen protector) kufunika eneo la juu karibu na kamera ya mbele, au hitilafu ya calibration kwenye mfumo.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Sehemu ya Juu: Hakikisha hakuna gundi au vumbi lililofunika eneo la kihisi cha karibu na sikio.\n" +
+            "2. Kuondoa Kioo cha Kinga: Badilisha kioo cha ulinzi kinachozuia mwangaza usiingie kwenye sensor.\n" +
+            "3. Kufanya Sensor Calibration: Tumia programu maalum za simu kurekebisha usahihi wa kihisi hicho.",
+
+    "nfc": "RIPOTI YA KIELEKTRONIKI: HUDUMA YA NFC KUSHINDWA KUSOMA KADI AU VIFAA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Antena ya NFC ndani ya simu kulegea, au kifuniko cha nyuma cha simu kuwa na chuma kinachozuia mawimbi.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuweka Wazi: Hakikisha unatumia kifuniko cha simu (phone case) ambacho hakina sumaku au chuma.\n" +
+            "2. Kuwasha Upya Huduma: Zima na uwashe tena NFC kupitia mipangilio ya simu au kilele cha udhibiti.",
+
+    "restart": "RIPOTI YA KIELEKTRONIKI: SIMU KUZIMA NA KUWAKA YENYEWE MARA KWA MARA (RESTART LOOP)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kitufe cha kuwasha (power button) kukwama au kuunganisha ndani, betri kushindwa kutoa nguvu ya kutosha kwa wakati mmoja, au hitilafu ya programu.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukagua Kitufe cha Power: Hakikisha kitufe cha pembeni hakijabana au kushikana ndani.\n" +
+            "2. Kubadilisha Betri: Weka betri nyingine mpya ikiwa ya zamani imepoteza uwezo wa kuhimili nguvu ya kuwasha.\n" +
+            "3. Kusafisha Mfumo: Futa programu zilizosababisha mgongano au fanya Flash upya.",
+
+    "imei": "RIPOTI YA KIELEKTRONIKI: KUPOTEA KWA NAMBA YA UTAMBULISHO WA SIMU (IMEI NULL / UNKNOWN)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kufuta faili za EFS kwenye mfumo wakati wa kujaribu kusakinisha mfumo mpya bila kuwa na nakala rudufu.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kurejesha kupitia Backup: Tumia faili la EFS ulilohifadhi awali kupitia kompyuta.\n" +
+            "2. Kutumia Programu za Ufundi: Tumia zana maalum za kitaalamu za kisheria kuandika upya namba hiyo kupitia msimbo wa kiufundi.", 
+            
+        "speaker": "RIPOTI YA KIELEKTRONIKI: SPIKA KUSHINDWA KUSIKIKA KABISA (NO SOUND OUTPUT)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Nyaya za spika kukatika ndani, spika kuungua kutokana na ujazo mkubwa wa sauti, au hitilafu kwenye IC ya sauti kwenye bodi kuu.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kupima Spika: Tumia kifaa cha kupimia umeme (Multimeter) kupima kama spika ina mwendelezo wa umeme.\n" +
+            "2. Kubadilisha Spika: Weka spika mpya inayolingana na modeli ya simu au kompyuta yako.\n" +
+            "3. Ukarabati wa Bodi: Mpeleke fundi akague au abadilishe Audio IC ikiwa njia za sauti zimekufa.",
+
+    "water": "RIPOTI YA KIELEKTRONIKI: KIOO KUWA NA ALAMA ZA MAJI AU MADOA MEUSI (LCD BLEEDING)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Shinikizo kubwa kwenye kioo au maji kuingia ndani ya tabaka za mwanga za kioo (Backlight layers).\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukausha kwa Makini: Weka kioo kwenye chumba cha joto la chini ili kuruhusu unyevu kujichuja.\n" +
+            "2. Kubadilisha Kioo: Ikiwa madoa bado yamesalia au kusambaa, suluhu ya kudumu ni kubadilisha kioo kizima.",
+
+    "overclock": "RIPOTI YA KIELEKTRONIKI: KOMPYUTA KUZIMA GHAFLA WAKATI WA KUTUMIA PROGRAMU NZITO\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kichakataji (CPU) kupata joto kupita kiasi na mfumo kujizima kiotomatiki ili kujikinga na kuungua, au usambazaji duni wa nishati kutoka kwenye Power Supply.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kupaka Thermal Paste Mpya: Safisha kichakataji na uweke mafuta mapya ya kupoza joto.\n" +
+            "2. Kuongeza Upozeaji: Hakikisha feni zote za kompyuta zinasokota kwa kasi sahihi na hazina vumbi.",
+
+    "powerbutton": "RIPOTI YA KIELEKTRONIKI: KITUFE CHA KUWASHA (POWER BUTTON) KUTOFANYA KAZI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Plastiki ya kitufe kuchakaa, swichi ndogo ya ndani (Tact switch) kuvunjika au kupoteza uwezo wa kugandamiza.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Swichi: Safisha kwa kioevu maalumu eneo la kitufe cha ndani.\n" +
+            "2. Kuchomelea Swichi Mpya: Mpeleke fundi abadilishe swichi hiyo ndogo kwa kutumia chuma cha kuchomelea (Soldering iron).",
+
+    "sdcard": "RIPOTI YA KIELEKTRONIKI: SIMU KUSHINDWA KUSOMA KADI YA KUMBUKUMBU (SD CARD)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kadi ya kumbukumbu kuharibika faili zake (Corrupted), au tundu la kusomea kadi kuwa na uchafu au pini zilizopinda.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kujaribu Kwenye Kompyuta: Unganisha kadi hiyo kwenye kompyuta ili kuona kama inasomeka au inahitaji kufutwa (Formatted).\n" +
+            "2. Kusafisha Tundu: Safisha sehemu ya kuwekea kadi kwa kutumia brashi kavu.", 
+            
+    "headphone": "RIPOTI YA KIELEKTRONIKI: TUNDU LA SIJIKIA (HEADPHONE JACK) KOSIKIKA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Vumbi au chembe za mifukoni kubana ndani ya tundu, au pini za ndani kupoteza nguvu ya kushikilia ncha ya earphone.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Tundu: Safisha kwa uangalifu mkubwa ukitumia sindano nyembamba ya mbao kutoa vumbi lililoshindiliwa.\n" +
+            "2. Kubadilisha Jack Port: Mpeleke fundi abadilishe tundu zima la headphone ikiwa pini zimevunjika ndani.",
+
+    "brightness": "RIPOTI YA KIELEKTRONIKI: MWANGA WA KIOO (BACKLIGHT) KUPOTEA GHAFLA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Hitilafu kwenye saketi ya kuleta mwanga kwenye bodi (Display Light IC), au simu kuanguka na kusababisha njia za mwanga kukatika.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukagua kwa Tochi: Angalia kwa karibu sana kwa mwanga wa tochi kuona kama picha ipo lakini mwanga hauwaki.\n" +
+            "2. Ukarabati wa Bodi: Fundi anapaswa kukagua na kutengeneza au kubadilisha Display Light IC na koili yake.",
+
+    "hotspot": "RIPOTI YA KIELEKTRONIKI: KUSHINDWA KUTOA MTANDAO WA WI-FI (HOTSPOT ERROR)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Hitilafu ya kimfumo wa mtandao, au kizuizi cha huduma za data kutoka kwa mtoa huduma wa mtandao wako.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuweka Upya Mipangilio: Futa na rudisha mipangilio ya mtandao kupitia Network Reset.\n" +
+            "2. Kuwasha Upya Kifaa: Zima simu kwa dakika mbili kisha uiwashe ili kusafisha kumbukumbu ya muda ya mtandao.",
+
+    "simlock": "RIPOTI YA KIELEKTRONIKI: SIMU KULENGWA NA MTANDAO MMOJA (NETWORK / CARRIER LOCK)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Simu imetoka nje ya nchi ikiwa imefungwa na mkataba wa kampuni fulani ya mawasiliano (mfano AT&T au Vodafone).\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuomba Unlock Code: Tumia huduma za kisheria mtandaoni au kwa kampuni husika kulipia huduma ya kufungua.\n" +
+            "2. Kutumia Box za Kisheria za Ufundi: Fundi anaweza kutumia zana maalum za kompyuta kufungua mtandao huo.",
+
+    "stucklogo": "RIPOTI YA KIELEKTRONIKI: KOMPYUTA KUKWAMA KWENYE NEMBO YA WINDOWS WAKATI WA KUWAKA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Faili muhimu za uendeshaji za mfumo zimeharibika au Hard Disk imepata ulemavu wa sekta mbovu (Bad Sectors).\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kufanya Startup Repair: Tumia USB ya mfumo wa Windows kuchagua chaguo la kurekebisha hitilafu za kuanza.\n" +
+            "2. Kusakinisha Upya Windows: Safisha mfumo mzima na uweke Windows mpya kabisa.", 
+
+    "touchpad": "RIPOTI YA KIELEKTRONIKI: PANYA YA KOMPYUTA (TOUCHPAD) KUSHINDWA KUFANYA KAZI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kuzima kwa kiendeshi cha touchpad kimfumo, utepe wake kulegea kwenye bodi, au mikono kuwa na unyevu wakati wa kugusa.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuwasha Kupitia Kibodi: Bonyeza mchanganyiko wa vitufe (mfano Fn + F4/F7 kulingana na modeli ya kompyuta yako) ili kuwasha tena.\n" +
+            "2. Sasisho la Driver: Sakinisha upya kiendeshi cha panya kupitia Device Manager.",
+
+    "chargeroverheat": "RIPOTI YA KIELEKTRONIKI: KICHWA CHA CHAJI KUCHEMKA KALI WAKATI WA KUCHAJI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Matumizi ya kichwa cha chaji bandia kisicho na viwango sahihi vya kupunguza nguvu ya umeme, au betri ya simu kuvuta mkondo mkubwa kupita kiasi.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Badilisha Chaji: Tumia kichwa halisi cha chaji kinachoendana na uwezo wa betri yako.\n" +
+            "2. Kuchaji Eneo la Wazi: Epuka kuchomeka chaji kwenye maeneo yenye joto jingi au yaliyofunikwa.",
+
+    "motherboard": "RIPOTI YA KIELEKTRONIKI: KOMPYUTA KUSHINDWA KUWAKA KABISA HATA TAA ZISIWAKE\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Hitilafu ya umeme kwenye bodi kuu (Power IC au Fuse kuungua kutokana na shoti ya ghafla ya umeme wa kwenye rula).\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kupima Power Supply: Pima kiwango cha nishati inayotoka kwenye chaji kuu.\n" +
+            "2. Ukarabati wa Bodi: Mpeleke fundi bingwa akague njia za umeme na kubadilisha vipengele vilivyoungua kwenye bodi kuu.",
+
+    "simtray": "RIPOTI YA KIELEKTRONIKI: TUNDU LA KWEKEA SIM CARD KUVUNJIKA NDANI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kuingiza kadi ya SIM kwa nguvu au kutumia kadi iliyokatwa vibaya kwa mkono.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Uangalifu wa Kutoa: Tumia vifaa maalum kutoa vipande vilivyobaki bila kuchoma pini za bodi.\n" +
+            "2. Kubadilisha Sim Tray: Mpeleke fundi abadilishe sehemu yote ya kusomea kadi.",
+
+    "appcrash": "RIPOTI YA KIELEKTRONIKI: PROGRAMU KUFUNGUKA NA Kujifunga Yenyewe Ghafla (APP CRASH)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Faili za programu kuharibika, toleo la programu kuwa gumu na lisiloendana na mfumo wa simu yako.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kufuta Cache: Nenda kwenye App Info kisha ufute akiba na data za programu hiyo.\n" +
+            "2. Kusasisha Programu: Pakua toleo jipya la programu hiyo kupitia duka rasmi la mauzo.", 
+            
+     "antivirus": "RIPOTI YA KIELEKTRONIKI: PROGRAMU YA KUZUIA VIRUSI KUSHINDWA KUFANYA KAZI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Toleo la antivirus limepitwa na wakati, au kuna programu haribifu (malware) iliyozuia huduma za usalama zisifanye kazi kwenye mfumo.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusasisha Programu: Hakikisha unapakua toleo jipya lenye utambuzi wa kisasa wa virusi.\n" +
+            "2. Kuchunguza Kwenye Safe Mode: Washa kompyuta kupitia Safe Mode kisha uendeshe uchunguzi kamili wa mfumo.",
+
+    "displaylines": "RIPOTI YA KIELEKTRONIKI: KIOO KUWA NA MISTARI YA WIMA AU YA USHAFA (DISPLAY LINES)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Simu kuanguka chini na kusababisha nyaya ndogo za kuunganisha kioo kulegea, au kioo chenyewe kupata ufa wa ndani.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukagua Utepe: Mpeleke fundi akague kuunganishwa kwa utepe wa kioo kwenye bodi kuu.\n" +
+            "2. Kubadilisha Kioo: Ikiwa mistari haipotezi, badilisha kioo kipya cha simu au kompyuta.",
+
+    "microsd": "RIPOTI YA KIELEKTRONIKI: KADI YA KUMBUKUMBU KUHRIBIKA NA KUSEMA 'CORRUPTED'\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kutoa kadi kwenye simu ghafla wakati bado inasoma au kuandika data, au kujaa kupita kiasi.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kufanya Format: Futa data zote za kadi kupitia kompyuta au simu ikiwa bado inatoa nafasi ya kusoma.\n" +
+            "2. Kununua Kadi Mpya: Badilisha kadi hiyo kwani seli zake za ndani zimefikia ukomo.",
+
+    "overheatpc": "RIPOTI YA KIELEKTRONIKI: KOMPYUTA KUPIGA KELELE KUBWA KUPITA KISIFA NA KUZIMA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Feni ya kupoza imeziba kwa vumbi zito au imepoteza mafuta ya kulainisha mizunguko yake.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Usafishaji wa Ndani: Fungua na uondoe vumbi lote lililojikusanya kwenye njia za kupitishia hewa.\n" +
+            "2. Kulainisha Feni: Weka tone dogo la mafuta maalum kwenye mhimili wa feni au ubadilishe nyingine.",
+
+    "networkreset": "RIPOTI YA KIELEKTRONIKI: KUSHINDWA KUPATA MTANDAO WA INTANETI WA DATA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Mipangilio ya APN ya mtandao imefutika au kubadilika kimakosa kwenye simu yako.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kurejesha APN Rasmi: Weka mipangilio upya kutoka kwa kampuni yako ya simu au chagua chaguo la kurejesha za awali.\n" +
+            "2. Kuwasha Upya: Zima na uwashe simu ili kupokea mipangilio mipya kutoka mnara wa mawasiliano.", 
+            
+    "bluetoothpc": "RIPOTI YA KIELEKTRONIKI: KOMPYUTA KUSHINDWA KUONA VIFAA VYA BLUETOOTH\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kiendeshi cha Bluetooth (Bluetooth Driver) kimeharibika au kuzimwa kimfumo kwenye huduma za nyuma za Windows.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuwasha Bluetooth Services: Bonyeza Windows + R, andika services.msc kisha uhakikishe Bluetooth Support Service iwe Automatic na Running.\n" +
+            "2. Kusasisha Driver: Pakua na uweke kiendeshi kipya cha Bluetooth kupitia tovuti rasmi ya mtengenezaji wa kompyuta yako.",
+
+    "simpin": "RIPOTI YA KIELEKTRONIKI: SIMU KULITAKA NENOSIRI LA SIM CARD (PIN LOCKED)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Huduma ya kuzuia matumizi ya SIM kadi bila nenosiri (SIM PIN) imewashwa kwenye mipangilio ya usalama ya simu.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuingiza Nenosiri La Awali: Weka namba 0000 au 1234 ambazo ni za kawaida kwa mtandao mwingi ikiwa hukubadilisha.\n" +
+            "2. Kutumia PUK Code: Tumia namba ya PUK inayopatikana kwenye kadi ya plastiki uliyoununulia SIM kadi hiyo ili kuweka PIN mpya.",
+
+    "screenrecording": "RIPOTI YA KIELEKTRONIKI: PROGRAMU YA KUCHUKUA VIDEO YA SKRINI KUSHINDWA KUFANYA KAZI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Hifadhi ya simu kujaa kiasi cha kushindwa kutunza faili kubwa la video, au mfumo kuzuia kurekodi maeneo yenye usalama maalum (Secure Packages).\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuacha Nafasi Huru: Futa faili zisizotumika ili kutoa nafasi ya kutosha kwenye hifadhi.\n" +
+            "2. Kutumia Programu Mbadala: Pakua programu salama za nje kupitia duka la huduma za simu.",
+
+    "autofluorescence": "RIPOTI YA KIELEKTRONIKI: MWANGA WA SIMU KUJIBADILISHA WENYEWE (AUTO BRIGHTNESS FAULT)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kihisi cha mwangaza (Ambient Light Sensor) kufunikwa na uchafu au kioo cha ulinzi kisichoendana na muundo wa simu.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Eneo la Juu: Ondoa vumbi lililopo kwenye kihisi cha mwangaza karibu na kamera ya mbele.\n" +
+            "2. Kuzima Auto Brightness: Nenda kwenye mipangilio ya Display kisha uzime huduma hiyo ili kudhibiti mwanga kwa mikono.",
+
+    "freezescreen": "RIPOTI YA KIELEKTRONIKI: KOMPYUTA KUKWAMA GHAFLA NA KUSHINDWA KUTENDA KITU KABISA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Ukosefu wa kumbukumbu ya kutosha ya RAM, programu nzito kushindwa kujibu, au Hard Disk kushindwa kusoma data kwa wakati.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kulazimisha Kuzima (Hard Shutdown): Bonyeza na ushikilie kitufe cha kuwasha cha kompyuta kwa takriban sekunde 10 hadi izime.\n" +
+            "2. Kufungua Task Manager: Tumia mchanganyiko wa vitufe Ctrl + Shift + Esc ili kusitisha programu zilizosababisha kukwama.", 
+            
+    "vibration": "RIPOTI YA KIELEKTRONIKI: MTETEMEKO WA SIMU (VIBRATION MOTOR) KUTOFANYA KAZI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Injini ndogo ya mtetemeko (Vibration Motor) kukatika nyaya zake za ndani, au kuchoka kwa sumaku yake baada ya simu kuanguka mara kwa mara.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukagua Mipangilio: Hakikisha huduma ya mtetemeko imewashwa kwenye sehemu ya sauti na arifa (Sound & Vibration).\n" +
+            "2. Ukarabati wa Kiufundi: Mpeleke fundi akague au abadilishe mota hiyo ndogo kwa kuichomelea upya.",
+
+    "frontcamera": "RIPOTI YA KIELEKTRONIKI: KAMERA YA MBELE KUWA NA UKUNGU AU KUSHINDWA KUFUNGUKA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Unyevu kuingia na kukaa kwenye kioo cha ndani cha kamera ya selfie, au vumbi lililopenya kupitia tundu la sikio.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Kioo cha Ndani: Mpeleke fundi afungue simu na kusafisha lenzi ya mbele kwa kutumia kioevu maalumu.\n" +
+            "2. Kuondoa Programu Zenye Mgongano: Futa programu za ziada za picha zinazoweza kuzuia kamera kufanya kazi vizuri.",
+
+    "simnetwork": "RIPOTI YA KIELEKTRONIKI: MNARA WA SIMU KUSOMA LAKINI KUSHINDWA KUPIGA SIMU\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Salio la muda wa maongezi kuisha, au huduma ya kuzuia mawasiliano ya dharura na kutoka nje kuwashwa kimakosa.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukagua Salio: Weka Salio na uhakikishe laini haijafungwa na mtoa huduma.\n" +
+            "2. Kurejesha Mtandao Chaguomsingi: Badilisha mtandao kutoka 4G pekee kwenda kwenye mfumo wa otomatiki (Auto Network Selection).",
+
+    "computernoise": "RIPOTI YA KIELEKTRONIKI: KOMPYUTA KUTOA SAUTI KALI YA KUSaga WAKATI WA KULETA MAELEZO\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Hard Disk ya zamani (Mechanical HDD) imepata mwanzo wa kuharibika kwa diski zake za ndani na kichwa cha kusoma.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuhifadhi Taarifa Haraka: Hamisha faili zako muhimu mara moja kabla Hard Disk haijafa kabisa.\n" +
+            "2. Kubadilisha na Kuweka SSD: Nunua na uweke kifaa kipya cha kisasa cha SSD ili kuongeza kasi na usalama wa data zako.",
+
+    "screenrot": "RIPOTI YA KIELEKTRONIKI: KUZUNGUSHA SIMU KUSHINDWA KUBADILISHA MWONEKANO (AUTO-ROTATE ERROR)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kihisi cha mwelekeo (Gyroscope/Accelerometer) kupata hitilafu ya kimfumo au kuzimwa kwenye kitelezi cha juu cha simu.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuwasha Auto-Rotate: Hakikisha kitufe cha kuzungusha kimeshafunguliwa kwenye menyu ya haraka.\n" +
+            "2. Kuwasha Upya Simu: Zima na uwashe simu upya ili kusafisha kumbukumbu ya kihisi hicho.", 
+            
+    "gpucrash": "RIPOTI YA KIELEKTRONIKI: KADI YA PICHA YA KOMPYUTA (GPU) KUSHINDWA NA KUSABABISHA GAME KUGOMA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kiendeshi cha picha (Graphics Driver) kimepitwa na wakati, joto kali kwenye chipu ya GPU, au kuendesha michezo inayozidi uwezo wa kompyuta.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusasisha GPU Driver: Pakua toleo jipya la kiendeshi kupitia Nvidia, AMD au Intel kulingana na aina ya kadi yako.\n" +
+            "2. Kupunguza Ubora wa Michoro: Shusha viwango vya michoro (Graphics Settings) kwenye michezo au programu ili kupunguza Mzigo.",
+
+    "waterdamageboard": "RIPOTI YA KIELEKTRONIKI: BODI YA SIMU KUTOA HARUFU YA KUTEKETEA BAADA YA KUNGIWA MAJI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Maji yalisababisha shoti ya umeme wakati betri ilipokuwa bado imeunganishwa, jambo lililochoma njia za umeme za ndani.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Tenganisha Betri Mara Moja: Usijaribu kuwasha simu tena.\n" +
+            "2. Kusafisha na Darubini: Mpeleke fundi bingwa kukagua kwa darubini na kusafisha kwa mashine maalum ya Ultrasonic ili kuondoa athari za kutu.",
+
+    "poweric": "RIPOTI YA KIELEKTRONIKI: SIMU KUSHINDWA KUWAKA NA KUTOCHAJI KABISA (DEAD POWER IC)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kupanda kwa ghafla kwa mkondo wa umeme wakati wa kuchaji (Power Surge) kumechoma chipu inayotawanya nishati kwenye bodi (Power Management IC).\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kupima kwa Power Supply ya Maabara: Angalia kama kuna mkondo unaovuja (Short Circuit).\n" +
+            "2. Kubadilisha Power IC: Fundi bingwa lazima anGOe na kubadilisha chipu hiyo iliyoungua kwa kutumia mashine ya joto ya BGA.",
+
+    "wifiip": "RIPOTI YA KIELEKTRONIKI: KOMPYUTA KUGOMA KUUNGANISHA NA KUANDIKA 'IP CONFIGURATION ERROR'\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Hitilafu katika kupokea anwani ya mtandao kutoka kwenye Router, au mpangilio wa IP umewekwa kwa mikono (Static IP) kwa njia isiyo sahihi.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuweka Otomatiki: Weka mipangilio ya IP na DNS iwe 'Obtain Automatically' (DHCP).\n" +
+            "2. Kuweka Upya Winsock: Tumia amri ya 'netsh winsock reset' kupitia Command Prompt ya kompyuta.",
+
+    "microphoneraw": "RIPOTI YA KIELEKTRONIKI: SAUTI YAKO KUSIKIKA KWA MBALI SANA WAKATI WA SIMU\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kipaza sauti kimefunikwa na uchafu mzito au mpira mdogo wa kuzuia kelele (Mic Rubber) umehama kutoka eneo lake sahihi.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Tundu la Chini: Tumia brashi safi yenye dawa ya kuondoa mafuta.\n" +
+            "2. Kupanga Upya Mpira wa Mic: Fungua simu na uhakikishe kipaza sauti kimekaa sawasawa kwenye tundu lake la nje ili kuzuia sauti kupotea.", 
+            
+    "camerablack": "RIPOTI YA KIELEKTRONIKI: PROGRAMU YA KAMERA KUTOA SKRINI NYEUSI TU\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Moduli ya kamera kukosa nguvu ya umeme kutoka kwenye bodi, au mgongano wa programu za nje zinazotumia kamera kwa wakati mmoja.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kufuta Programu za Tatu: Ondoa programu zote za picha ulizopakua hivi karibuni ambazo zinaweza kuwa zinazuia ruhusa.\n" +
+            "2. Ukaguzi wa Kiufundi: Mpeleke fundi akague pini za kuunganisha kamera na bodi kuu.",
+
+    "simrejected": "RIPOTI YA KIELEKTRONIKI: UJUMBE WA 'SIM CARD REJECTED' KWENYE SIMU\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kadi ya SIM imeharibika upande wa dhahabu, au simu imefungiwa kutumia mtandao maalum wa nchi ya kigeni.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kubadilisha Laini: Nenda kwa mtoa huduma wako ukatafute kadi mpya yenye namba yako ileile.\n" +
+            "2. Kufungua Mtandao: Tumia huduma za kitaalamu za kuondoa ufungwa wa kimtandao (Network Unlock).",
+
+    "computerexplorer": "RIPOTI YA KIELEKTRONIKI: WINDOWS EXPLORER KUKWAMA NA KUTOONEKANA KWA MAFAILI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Faili za mfumo wa uendeshaji zinazosimamia muonekano wa skrini zimepata hitilafu ya muda.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuanzisha Upya Explorer: Bonyeza Ctrl + Shift + Esc, tafuta Windows Explorer kwenye Task Manager kisha bonyeza Restart.\n" +
+            "2. Kuchunguza Faili: Tumia amri ya SFC Scan ili kurekebisha faili zilizoharibika za mfumo.",
+
+    "batterycalibration": "RIPOTI YA KIELEKTRONIKI: ASILIMIA ZA BETRI KUSHUKA KWA KASI NA KUZIMA BILA TAARIFA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Mfumo wa kusoma ujazo wa betri umepoteza usahihi (Calibration Loss) au seli za ndani zimechakaa.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kurekebisha Usomaji: Tumia simu hadi iishe chaji kabisa na kisha iweke kwenye chaji bila kukata hadi ifike asilimia mia moja.\n" +
+            "2. Kubadilisha Betri: Weka betri mpya ya asili ikiwa tatizo litaendelea baada ya kurekebisha.",
+
+    "headsetmic": "RIPOTI YA KIELEKTRONIKI: KIPAZA SAUTI CHA SIMU YA MASIKIONI (HEADSET MIC) KUTOSIKIKA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Ncha ya kuunganisha ya earphone imechakaa au ina uchafu unaozuia njia ya sauti ya nje kufika kwenye simu.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Ncha: Futa ncha ya chuma ya earphone kwa kitambaa safi.\n" +
+            "2. Kujaribu Earphone Nyingine: Hakikisha kama tatizo lipo kwenye vifaa vyako au kwenye tundu la simu.", 
+            
+    "bluetoothpairing": "RIPOTI YA KIELEKTRONIKI: VIFAA VYA BLUETOOTH KUSHINDWA KUUNGANISHA (PAIRING FAILED)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kifaa cha ziada kimeshikilia kumbukumbu ya kuunganishwa na kifaa kingine, au mfumo wa mawasiliano ya bluetooth umepata msongamano wa data.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusahau Vifaa (Forget Device): Futa kumbukumbu ya vifaa kwenye orodha ya Bluetooth kisha utafute upya.\n" +
+            "2. Kuweka Upya Kifaa cha Nje: Zima na uwashe kipaza sauti au earphone ya bluetooth kisha ujaribu kuunganisha tena.",
+
+    "screenburn": "RIPOTI YA KIELEKTRONIKI: ALAMA ZA PROGRAMU KUCHAPISHWA KWENYE KIOO (SCREEN BURN-IN)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kutumia kioo cha AMOLED kwa kiwango cha juu cha mwangaza kwa muda mrefu bila kubadilisha picha ya nyuma (Static Image).\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kupunguza Mwangaza: Weka kiwango cha chini cha mwanga na tumia mandhari nyeusi (Dark Mode).\n" +
+            "2. Kubadilisha Kioo: Suluhu pekee ya kuondoa kabisa alama hizo ni kuweka kioo kipya cha simu.",
+
+    "simpinblock": "RIPOTI YA KIELEKTRONIKI: SIM KADI KUFUNGWA KABISA NA KUDAI PUK (PUK LOCKED)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kuingiza namba ya siri ya SIM (PIN) vibaya mara tatu mfululizo kwenye mipangilio ya simu.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kutumia Namba ya PUK: Tumia namba ya siri ya dharura iliyotolewa na kampuni ya mtandao kwenye kadi ya plastiki.\n" +
+            "2. Kupiga Huduma kwa Wateja: Wasiliana na huduma kwa wateja ya mtandao wako ili kupata namba sahihi ya kufungua.",
+
+    "computerrandomrestart": "RIPOTI YA KIELEKTRONIKI: KOMPYUTA KUZIMA NA KUWAKA YENYEWE WAKATI WOWOTE (RANDOM REBOOT)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Moduli ya RAM imekaa vibaya au ina vumbi kwenye mibapa yake, au usambazaji wa nishati kwenye bodi una hitilafu.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha RAM: Fungua kompyuta, toa RAM safisha sehemu zake za dhahabu kwa kifutio cha penseli kisha rudisha.\n" +
+            "2. Kukagua Joto la CPU: Hakikisha mfumo wa kupoza joto unachukua nafasi nzuri ya kuzuia kompyuta kujizima.",
+
+    "wifidisconnect": "RIPOTI YA KIELEKTRONIKI: MTANDAO WA WI-FI KUKATIKA KATIKA MARA KWA MARA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Ishara hafifu za intaneti kutoka kwenye router, au mgongano wa anwani za IP kati ya vifaa vilivyounganishwa.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusahau Mtandao: Bonyeza 'Forget Network' kwenye simu au kompyuta kisha uweke nenosiri upya.\n" +
+            "2. Kusogeza Karibu na Router: Hakikisha uko kwenye eneo lenye mawimbi ya kutosha ya mtandao bila vizuizivizuizi vikubwa.", 
+            
+    "storageslow": "RIPOTI YA KIELEKTRONIKI: HIFADHI YA NDANI KUJAA NA KUSABABISHA SIMU KUTEMBEA KAVU (SLOW PERFORMANCE)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kutumia zaidi ya asilimia 95 ya nafasi ya hifadhi, jambo linalofanya mfumo kukosa eneo huru la kubadilishana data za muda (Virtual RAM/Swap memory).\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Faili Taka: Tumia sehemu ya Storage Manager kufuta faili za ziada na kashe zilizojikusanya.\n" +
+            "2. Kuhamisha Data: Hifadhi picha na video kwenye mitandao ya wingu (Cloud Storage) au kadi ya kumbukumbu ya nje.",
+
+    "screenreplacementerror": "RIPOTI YA KIELEKTRONIKI: KIOO KIPYA KUSHINDWA KUFANYA KAZI BAADA YA KUBADILISHWA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Utepe wa kioo haujachomekwa kwa usahihi kwenye tundu lake au kioo ulichonunua hakioani na toleo la programu (Software Version) ya simu yako.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukagua Utepe: Fungua simu tena na uhakikishe miunganisho ya kioo imekaa vizuri bila kupinda.\n" +
+            "2. Kusasisha Mfumo: Wakati mwingine simu mpya zinahitaji toleo jipya la mfumo ili kutambua vifaa vipya vya kioo.",
+
+    "simtoolkitmissing": "RIPOTI YA KIELEKTRONIKI: HUDUMA ZA MTANDAO WA SIMU (STK / SIM TOOLKIT) KUPOTEA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Programu inayoratibu huduma za ziada za SIM kadi imezimwa kimfumo au kadi yenyewe imepoteza mawasiliano na bodi ndogo.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuwasha Programu: Angalia kwenye App Manager kama STK imezimwa kisha uwashe upya.\n" +
+            "2. Kuhamisha Laini: Jaribu kuweka SIM kadi kwenye tundu lingine la simu ili kuona kama menyu inasoma.",
+
+    "computernoimage": "RIPOTI YA KIELEKTRONIKI: KOMPYUTA KUWAKA LAKINI KIOO KINAKAA KISIKU KUONYESHA KITU\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Moduli ya RAM imechafuka na inashindwa kuanzisha mfumo wa kuamsha skrini, au kadi ya picha haipati nishati ya kutosha.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha RAM: Toa RAM safisha sehemu za kuunganisha kisha uweke tena kwa umakini.\n" +
+            "2. Kujaribu Skrini ya Nje: Unganisha kompyuta na projekta au monitor ya nje kuona kama picha inatoka huko.",
+
+    "microphonecrack": "RIPOTI YA KIELEKTRONIKI: SAUTI YA KIPAZA SAUTI INASIKIKA KWA KUPIGA KELELE ZA MKWARUZO\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Vifaa vya ndani vya kipaza sauti vimelegea au kuna mwingiliano wa umeme (Electrical Interference) kutoka kwenye nyaya za chaji karibu na mic.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuweka Sawa Mic: Hakikisha kipaza sauti kimefungwa kwenye nafasi yake bila kugusa vyuma vya pembeni.\n" +
+            "2. Kubadilisha Mic: Weka kipaza sauti kipya chenye ubora unaostahili.", 
+            
+    "earpiecemuffled": "RIPOTI YA KIELEKTRONIKI: KISIKIO CHA JUU (EARPIECE) KISIKIKA KWA MLIO WA CHINI SANA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Vumbi na jasho limejikusanya na kuziba wavu mdogo wa kulinda kisikio cha kusikilizia simu za sikioni.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Wavu wa Kisikio: Tumia brashi nyembamba yenye dawa maalum kusafisha kwa uangalifu wavu huo wa nje.\n" +
+            "2. Kubadilisha Earpiece Mesh: Mpeleke fundi abadilishe wavu au spika yote ya sikio ikiwa imechakaa.",
+
+    "screenrotfree": "RIPOTI YA KIELEKTRONIKI: KIOO KUSHINDWA KUJIREKEBISHA MWANGA WAKATI WA USIKU\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Mipangilio ya mwanga wa otomatiki imepoteza kumbukumbu ya viwango vya mazingira kutokana na hitilafu ya programu.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusasisha Mfumo: Angalia kama kuna toleo jipya la programu ya simu linalorekebisha hitilafu za kihisi.\n" +
+            "2. Kuweka Mwanga kwa Mkono: Tumia kitelezi cha chini kudhibiti mwanga wako moja kwa moja.",
+
+    "computernoaudio": "RIPOTI YA KIELEKTRONIKI: KOMPYUTA KUTOA UJUMBE WA 'NO AUDIO DEVICES FOUND'\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kiendeshi cha sauti kimefutika au kimeharibika baada ya sasisho la mfumo wa uendeshaji wa Windows.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusasisha Audio Driver: Nenda kwenye Device Manager kisha uchague kusasisha au kusakinisha tena madereva ya sauti.\n" +
+            "2. Kutumia Windows Troubleshooter: Endesha huduma ya kutafuta na kurekebisha hitilafu za sauti ya mfumo.",
+
+    "simcontacts": "RIPOTI YA KIELEKTRONIKI: NAMBA ZA SIMU ZILIZOKUWA KADA YA SIM KUPOTEA GHAFLA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kadi ya SIM imepata mikwaruzo kwenye sehemu yake ya kumbukumbu au imetolewa wakati mfumo ulikuwa unasoma data.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuagiza Kurudishiwa Namba: Wasiliana na mtoa huduma wako wa simu ili kuhamisha namba kwenye kadi mpya.\n" +
+            "2. Kuhifadhi Kwenye Wingu: Tumia akaunti yako ya Google kuhifadhi namba zote za mawasiliano ili zisilindwe na kadi pekee.",
+
+    "fastchargingfail": "RIPOTI YA KIELEKTRONIKI: SIMU KUSHINDWA KUCHAJI KWA KASI (FAST CHARGING NOT WORKING)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kebo ya kuchajia imepoteza uwezo wa kusafirisha mkondo mkubwa wa umeme au tundu la kuchajia lina uchafu ndani.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kutumia Chacha Halisi: Hakikisha unatumia kichwa na kebo halisi zinazounga mkono teknolojia ya kuchaji haraka.\n" +
+            "2. Kusafisha Tundu: Safisha pini za tundu la simu ili kuruhusu mawasiliano kamili ya nishati.", 
+            
+    "tvremote": "RIPOTI YA KIELEKTRONIKI: KIDHIBITI CHA MBALI CHA TELEVISHENI (TV REMOTE) KUSHINDWA KUFANYA KAZI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Betri zimeisha nguvu, diodi ya kutoa mwanga wa infrared (IR Blaster) imevunjika ndani, au uchafu umekaa chini ya vitufe.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kubadilisha Betri: Weka betri mpya mbili na uhakikishe ncha zake zimeka sawa.\n" +
+            "2. Ukaguzi wa Kamera: Washa kamera ya simu yako kisha bonyeza kitufe cha remote kuangalia kama taa ndogo ya mbele inawaka kupitia simu.",
+
+    "decoder": "RIPOTI YA KIELEKTRONIKI: KISIMAMISHZI CHA TELEVISHENI (DECODER) KUKWAMA KWENYE NEMBO\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Hitilafu ya umeme uliopanda ghafla, faili za mfumo wa satellite kuharibika, au kadi ya usajili haisomeki.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuzima na Kuchomoa: Chomoa waya wa umeme kwa dakika tano kisha urudishe.\n" +
+            "2. Kukagua Kadi: Toa kadi ya malipo, safisha kwa kitambaa safi kisha uirudishe kwenye nafasi yake.",
+
+    "smartwatch": "RIPOTI YA KIELEKTRONIKI: SAA YA KISASA (SMARTWATCH) KUSHINDWA KUUNGANISHA NA SIMU\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Programu ya usimamizi kwenye simu imezimwa ruhusa za Bluetooth, au betri ya saa imepungua sana.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuweka Upya Uunganishaji: Futa kumbukumbu ya saa kwenye simu kisha utafute upya kupitia programu husika.\n" +
+            "2. Kuchaji Saa: Hakikisha saa inapata nishati ya kutosha kabla ya kuanzisha uunganishaji.",
+
+    "powerbank": "RIPOTI YA KIELEKTRONIKI: BETRI KUU YA KUBEBA (POWER BANK) KUCHAJI SIMU LAKINI HAIONGEZI ASILIMIA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Seli za ndani za power bank zimechakaa na zimepoteza uwezo wa kutoa mkondo thabiti wa umeme.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kubadilisha Kebo: Tumia kebo nyingine fupi na bora zaidi.\n" +
+            "2. Kununua Power Bank Mpya: Ikiwa seli za ndani zimevimba au zimechoka, suluhu ni kununua kifaa kipya.",
+
+    "microwave": "RIPOTI YA KIELEKTRONIKI: MASHINE YA KUPASHIA CHAKULA (MICROWAVE) KUSHINDWA KUPASHA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Fuse ya ndani imeungua kutokana na hitilafu ya umeme, au bomba la kuzalisha mawimbi ya joto (Magnetron) limepata ulemavu.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukagua Fuse: Mpeleke fundi wa vifaa vya nyumbani akague fuse na mfumo wa usalama wa mlango.\n" +
+            "2. Usalama wa Matumizi: Usijaribu kufungua mashine hii mwenyewe kwani inaacha mkondo hatari wa umeme hata ikiwa imezimwa.", 
+            
+    "ironbox": "RIPOTI YA KIELEKTRONIKI: ASIKUTA YA KUPIGIA NGUO (ELECTRIC IRON) KUSHINDWA KUPATA JOTO\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Waya wa umeme ulikatika ndani ya kamba kuu, thermostat imekwama kwenye hali ya chini, au kipande cha kupasha joto (Heating Element) kimeungua.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukagua Kamba ya Umeme: Pima kama umeme unapita kwenye waya unaounganisha pasi na tundu la ukutani.\n" +
+            "2. Kubadilisha Element: Mpeleke fundi wa vifaa vya nyumbani akague na kubadilisha sehemu ya kupasha joto.",
+
+    "blender": "RIPOTI YA KIELEKTRONIKI: MASHINE YA KUSAGA MATUNDU NA VIUNGO (BLENDER) FENI YAKE KUZUNGUKA LAKINI VISU HAVISOGEI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Gia ya plastiki (Rubber Clutch) inayounganisha mota na kikombe cha kusagia imechakaa au kuvunjika meno.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kubadilisha Gia: Nunua na uweke gia mpya ya plastiki inayopatikana kirahisi kwenye maduka ya vipuri vya mashine.\n" +
+            "2. Kupunguza Msongamano: Usiweke vipande vigumu sana kwa mara moja bila kuongeza kiasi kidogo cha maji.",
+
+    "electrickettle": "RIPOTI YA KIELEKTRONIKI: CHUNVI YA KUPASHIA MAJI (ELECTRIC KETTLE) KUZIMA KABLA MAJI HAYAJACHEMKA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kijenzi cha kusoma mvuke (Steam Switch) kimejaa chokaa au uchafu unaozuia kurudisha swichi kwenye hali ya kuwaka.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Ndani: Weka mchanganyiko wa maji na ndimu kisha uchemhe ili kuondoa tabaka la chokaa lililojikusanya.\n" +
+            "2. Kubadilisha Switch: Mpeleke fundi abadilishe sehemu ya kusimamia nishati iliyoharibika chini ya mtungi.",
+
+    "speakerbluetooth": "RIPOTI YA KIELEKTRONIKI: SPIKA YA BLUETOOTH YA KUBEBA (PORTABLE SPEAKER) KOSIKIKA VIZURI NA KUKATIKATIKA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Betri ya ndani imepoteza uwezo wa kutoa nguvu ya kutosha kwa ajili ya kuendesha sauti kubwa na Bluetooth kwa pamoja.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuchaji Kikamilifu: Hakikisha unapata nishati ya kutosha kabla ya kuitumia kwa sauti ya juu.\n" +
+            "2. Kukaa Karibu na Simu: Punguza umbali kati ya spika na simu yako ili kuondoa vikwazo vya mawimbi ya wireless.", 
+            
+    "inverter": "RIPOTI YA KIELEKTRONIKI: KIGEUZI CHA UMEME (INVERTER) KUTOA TAA NYEKUNDU NA KUSHINDWA KUPITISHA UMEME\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kifaa kimepata mzigo mkubwa kupita kiasi (Overload), betri zimeshuka chini ya kiwango kinachoruhusiwa, au mfumo wa kupoza joto umefunikwa na vumbi.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kupunguza Mzigo: Zima vifaa vizito kama majiko ya umeme au pasi kabla ya kuwasha upya inverter.\n" +
+            "2. Kuchaji Betri: Hakikisha betri zimepata nishati ya kutosha kutoka kwenye jua au gridi kabla ya kutumia tena.",
+
+    "solarcharger": "RIPOTI YA KIELEKTRONIKI: KIDHIBITI CHA CHAJI YA JUA (SOLAR CHARGE CONTROLLER) KUSHINDWA KUSOMA BETRI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Waya zinazounganisha kidhibiti na betri zimelegea, fuse ya ndani imeungua, au betri zimekufa kabisa na hazina uwezo wa kupokea chaji.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukagua Miunganisho: Safisha na kukaza vizuri ncha za waya zinazotoka kwenye betri na kuingia kwenye kidhibiti.\n" +
+            "2. Kupima Volti: Tumia kifaa cha kupimia umeme kuhakikisha betri ina kiwango sahihi cha volti kinachotambuliwa na kifaa.",
+
+    "solarpanel": "RIPOTI YA KIELEKTRONIKI: PANELI YA JUA (SOLAR PANEL) KUTOA UMEME MDOGO SANA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Uchafu, vumbi zito, au majani yaliyofunika kioo cha paneli, au diodi za kuzuia kurudi kwa umeme (Blocking Diodes) ndani ya paneli kuharibika.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Paneli: Osha paneli kwa maji safi na kitambaa laini asubuhi au jioni wakati jua likiwa limepoa.\n" +
+            "2. Kukagua Nyaya za Nje: Hakikisha hakuna sehemu iliyokatika au kuungua kwenye waya zinazounganisha paneli na mfumo.",
+
+    "torch": "RIPOTI YA KIELEKTRONIKI: TOCHI YA KUCHAJI (RECHARGEABLE TORCH) KUZIMA GHAFLA WAKATI WA MATUMIZI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Betri ya ndani imechakaa na inashindwa kuhimili mkondo wa umeme wa diode ya mwanga (LED), au swichi imepata kutu ndani.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kubadilisha Betri: Weka betri mpya ya lithiamu inayolingana na ukubwa na uwezo wa tochi yako.\n" +
+            "2. Kusafisha Swichi: Fungua na safisha sehemu ya kuwasha ili kuondoa uchafu unaozuia upitishwaji mzuri wa umeme.",
+
+    "solarbattery": "RIPOTI YA KIELEKTRONIKI: BETRI YA SOLAR (DEEP CYCLE BATTERY) KUSHINDWA KUSHIKA CHAJI KABISA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Seli za ndani zimekauka maji ya betri (Acid) kutokana na matumizi ya muda mrefu au kuchajiwa kwa kiwango kikubwa kupita kiasi.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuongeza Maji Maalum: Ikiwa ni betri inayofunguka, ongeza maji ya betri (Distilled Water) hadi kwenye mistari husika.\n" +
+            "2. Kubadilisha Betri: Ikiwa volti zimeshuka chini sana na hazipandishiki, badilisha na uweke betri mpya ya solar.", 
+            
+    "solarlight": "RIPOTI YA KIELEKTRONIKI: TAA YA JUA YA NJE YA NYUMBA (SOLAR STREET LIGHT) KUTOWAKA USIKU\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kihisi cha mwangaza (Light Sensor) kinasoma kimakosa kuwa bado kuna jua, au betri ya ndani imekufa baada ya siku za mawingu mfululizo.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Kihisi na Paneli: Ondoa uchafu wote unaozuia kihisi kusoma giza la usiku.\n" +
+            "2. Kuweka Upya Mfumo: Zima taa kupitia kitufe chake au kiondoe kwenye nguzo kwa muda kisha uiwashe tena asubuhi ikipata jua.",
+
+    "ledbulb": "RIPOTI YA KIELEKTRONIKI: AMPOU YA UMEME YA LED (LED BULB) KUWAKA KWA KUTAPATAPA (KUMMETA-MMETA)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kipande kidogo cha kusafirisha umeme ndani ya ampou (LED Driver Capacitor) kimepata hitilafu au kimeungua.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukagua Twanga: Hakikisha ampou imekazwa vizuri kwenye tundu lake (Lamp Holder).\n" +
+            "2. Kubadilisha Ampou: Kwa vile vifaa hivi vya ndani ni vigumu kutengeneza kwa mikono, suluhu kuu ni kubadilisha ampou mpya.",
+
+    "solarcontrollerpwm": "RIPOTI YA KIELEKTRONIKI: KIDHIBITI CHA PWM SOLAR KUSHINDWA KUCHAJI USIKU AU WAKATI WA MAWINGU\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Hakuna ulinzi wa kuzuia umeme kurudi kwenye paneli wakati hakuna jua, jambo linalofanya mfumo kujifunga wenyewe.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukagua Waya za Paneli: Hakikisha miunganisho haijalegea kwenye vituo vya kuingiza umeme.\n" +
+            "2. Kuangalia Viashiria vya Taa: Tumia mwongozo wa kifaa kusoma maana ya taa zinazowaka kwenye kidhibiti hicho.",
+
+    "solarpump": "RIPOTI YA KIELEKTRONIKI: PUMP YA KUTOA MAJI YA JUA (SOLAR WATER PUMP) KUZUNGUKA LAKINI HAITOI MAJI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Maji yameisha kwenye kisima, bomba la kuvutia limeingiza hewa (Air Lock), au kichujio cha chini kimezibwa na tope.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Kichujio: Toa pampu kutoka kwenye maji na uondoe uchafu wote ulioganda kwenye eneo la kuingiza maji.\n" +
+            "2. Kuondoa Hewa Kwenye Bomba: Hakikisha hakuna mianya inayoruhusu hewa kuingia kwenye mfumo wa mabomba ya kusafirishia maji.",
+
+    "solarinverterhybrid": "RIPOTI YA KIELEKTRONIKI: INVERTER YA MCHANGANYIKO (HYBRID INVERTER) KUSHINDWA KUBADILI KUTOKA GRIDI KWENDA SOLAR\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Vigezo vya mfumo vimewekwa vibaya kwenye skrini ya udhibiti (Settings Fault), au betri hazina uwezo wa kuhimili mzigo wa nyumba.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kurekebisha Vigezo: Ingia kwenye mipangilio ya inverter na uhakikishe vyanzo vya nishati vimapangwa kwa usahihi (Priority Settings).\n" +
+            "2. Kusasisha Programu: Wasiliana na fundi bingwa kukagua kama mfumo unahitaji sasisho la kiufundi.", 
+            
+    "solarcable": "RIPOTI YA KIELEKTRONIKI: WAYA WA SOLAR KUPATA JOTO LIKALI NA KUWAKA MOSHI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Matumizi ya waya mwembamba kupita kiasi usioendana na ukubwa wa mkondo wa umeme (Current Amperage) unaotoka kwenye paneli.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kubadilisha Waya: Tumia waya maalum wa sola wenye vipimo sahihi (mfano 4mm au 6mm) unaostahimili joto la nje.\n" +
+            "2. Kukaza Miunganisho: Hakikisha ncha zote zimebanwa vizuri ili kuzuia cheche za umeme zinazosababisha joto.",
+
+    "solarfusebox": "RIPOTI YA KIELEKTRONIKI: KISANDUKU CHA ULINZI WA UMEME (SOLAR FUSE BOX) KUVUNJA FUSE MARA KWA MARA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kuna hitilafu ya shoti (Short Circuit) kwenye mfumo wa nishati au ukubwa wa fuse uliowekwa ni mdogo kuliko mzigo wa vifaa.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukagua Njia za Umeme: Tafuta kama kuna waya uliokatika au kugusa chuma kwenye mfumo.\n" +
+            "2. Kuweka Fuse Sahihi: Weka fuse inayolingana na kiwango cha ampea za vifaa vyako ili kuzuia kuungua mara kwa mara.",
+
+    "solarlightensor": "RIPOTI YA KIELEKTRONIKI: TAA ZA SOLAR ZA NDANI YA NYUMBA KUSHINDWA KUCHAJI KABISA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Paneli ndogo ya kuleta chaji imewekwa ndani ya nyumba ambapo haina uwezo wa kupata mwangaza wa kutosha wa jua.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuweka Paneli Nje: Hamisha paneli na kuiweka kwenye eneo la wazi lenye jua la moja kwa moja kwa saa kadhaa.\n" +
+            "2. Kukagua Soketi ya Chaji: Hakikisha ncha ya kuingiza chaji kwenye taa haijavunjika ndani.",
+
+    "solargenerator": "RIPOTI YA KIELEKTRONIKI: KISIMA CHA UMEME WA JUA (PORTABLE SOLAR GENERATOR) KUSHINDWA KUTOA UMEME WA AC\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Sehemu ya kigeuzi cha ndani (Internal Inverter) imezimwa kimakosa au imepata hitilafu kutokana na kuunganisha vifaa vizito sana.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuwasha AC Output: Hakikisha kitufe cha kusambaza umeme wa nyumbani kimewashwa kwenye mashine.\n" +
+            "2. Kuweka Upya Mfumo (Reset): Zima jenereta kwa dakika tano kisha uwashe tena ili kurejesha mfumo katika hali yake ya kawaida.",
+
+    "solarfan": "RIPOTI YA KIELEKTRONIKI: FENI YA SOLAR (SOLAR TABLE FAN) KUZUNGUKA KWA KASI NDOGO SANA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Vumbi limerundikana kwenye mhimili wa feni na kuzuia mzunguko huru, au betri yake imeshuka nguvu.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Visu na Mhimili: Fungua na uondoe vumbi kisha weka tone la mafuta kwenye mhimili wa mota.\n" +
+            "2. Kuchaji Moja kwa Moja kwenye Jua: Unganisha feni na paneli yake wakati wa jua kali ili kupata nguvu ya kutosha kuendesha mota.", 
+            
+    "whatsappfault": "RIPOTI YA KIELEKTRONIKI: WHATSAPP KUSHINDWA KUTUMA AU KUPOKEA UJUMBE\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Akiba ya programu (App Cache) imejaa kupita kiasi, au muunganisho wa intaneti umefungwa ruhusa za kutumia data za nyuma (Background Data).\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kufuta Akiba: Nenda kwenye App Info ya WhatsApp kisha ufute Cache na data za muda.\n" +
+            "2. Kusasisha Toleo: Pakua toleo jipya kupitia duka la programu ili kurekebisha hitilafu za kimfumo.",
+
+    "facebookfault": "RIPOTI YA KIELEKTRONIKI: FACEBOOK KUZIMA GHAFLA WAKATI WA KUTAZAMA VIDEO\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Faili za muda za video zimejaa kwenye hifadhi ya simu, au toleo la programu limepitwa na wakati.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusafisha Browser au App: Futa akiba kupitia mipangilio ya simu au ingia kupitia kivinjari mbadala.\n" +
+            "2. Kuondoa na Kuweka Upya: Futa kabisa programu ya Facebook kisha uisakinishe tena kupitia Play Store.",
+
+    "geminifault": "RIPOTI YA KIELEKTRONIKI: GEMINI KUSHINDWA KULETA MAJIBU AU KUKWAMA KWENYE KUCHakata\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Mawimbi ya intaneti ni hafifu sana kiasi cha kukata mawasiliano ya moja kwa moja na seva za wingu.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kukagua Mtandao: Hakikisha una mtandao thabiti wa Wi-Fi au data za simu zenye kasi.\n" +
+            "2. Kuanzisha Upya Ukurasa: Funga na ufungue tena programu au kivinjari chako ili kusafisha kumbukumbu.",
+
+    "gptfault": "RIPOTI YA KIELEKTRONIKI: CHATGPT KUTOA UJUMBE WA 'Network Error' WAKATI WA KUANDIKA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Seva kuu zimelemewa na msongamano wa watumiaji duniani kote, au muda wa kipindi chako cha matumizi umekwisha.\n\n" +
+            "• Suluhu za Kitaalamu:\n" +
+            "1. Kuburuta Ukurasa (Refresh): Sasisha ukurasa ili kuunganisha upya na seva kuu.\n" +
+            "2. Kusubiri Kidogo: Acha programu ipumzike kwa sekunde chache kabla ya kutuma ombi lingine.",
+
+    "byaoiafault": "RIPOTI YA KIELEKTRONIKI: BYAOIA KUSHINDWA KUTENGENEZA PICHA ZA ARTIFICIAL INTELLIGENCE\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Miunganisho ya API inayounganisha Softr, Make, na Hugging Face imepata hitilafu ya muda au mikopo ya API imeisha.\n\n" +
+            "• Suluhu za Kitaalamu:\n" +
+            "1. Kukagua Make Scenarios: Hakikisha mtiririko wa kazi kwenye Make unafanya kazi bila kukatizwa.\n" +
+            "2. Kuangalia API Keys: Hakikisha funguo za kuunganisha mifumo ziko sahihi na zina ruhusa kamili.",
+
+    "tiktokfault": "RIPOTI YA KIELEKTRONIKI: TIKTOK KUCHAPISHA VIDEO ZINAZOWAKA NA KUZIMA (GLITCHING)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kadi ya picha ya simu imelemewa na michoro mizito ya video fupi zinazochezwa mfululizo.\n\n" +
+            "• Suluhu za Kitaalamu:\n" +
+            "1. Kufuta Akiba ya Ndani: Nenda kwenye mipangilio ya ndani ya TikTok kisha ufute 'Free up space'.\n" +
+            "2. Kupunguza Ubora: Weka mipangilio ya kucheza video kwa kiwango cha kati ili kulinda RAM ya simu.",
+
+    "playstorefault": "RIPOTI YA KIELEKTRONIKI: GOOGLE PLAY STORE KUSHINDWA KUPAKUA PROGRAMU (DOWNLOAD PENDING)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kuna upakuaji mwingine unaoendelea nyuma ya pazia, au akiba ya Google Play Services imeharibika.\n\n" +
+            "• Suluhu za Kitaalamu:\n" +
+            "1. Kusitisha Upakuaji: Ghairi programu zote zilizowekwa kwenye foleni ya kusubiri.\n" +
+            "2. Kufuta Data za Play Store: Nenda kwenye App Info ya Play Store kisha ufute data na akiba yake.",
+
+    "chromefault": "RIPOTI YA KIELEKTRONIKI: GOOGLE CHROME KUFUNGUKA NA KUJIFUNGA YENYEWE (CRASHING)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Vichupo (Tabs) vingi sana vimefunguliwa kwa wakati mmoja na kumaliza kumbukumbu ya RAM.\n\n" +
+            "• Suluhu za Kitaalamu:\n" +
+            "1. Kufunga Vichupo Visivyotumika: Punguza idadi ya kurasa zilizofunguliwa.\n" +
+            "2. Kusasisha Kivinjari: Pakua toleo jipya la Chrome lenye marekebisho ya hitilafu za kiufundi.",
+
+    "vodacomprofault": "RIPOTI YA KIELEKTRONIKI: VODACOM AGENT PRO KUSHINDWA KUSOMA MIAMALA YA FEDHA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Kumbukumbu ya ujumbe mfupi (SMS) imejaa, jambo linalozuia mfumo kusoma taarifa za uthibitisho wa miamala.\n\n" +
+            "• Suluhu za Kitaalamu:\n" +
+            "1. Kufuta Ujumbe wa Zamani: Punguza ujumbe kwenye kasha la simu ili kutoa nafasi kwa ujumbe mpya.\n" +
+            "2. Kuweka Upya Mtandao: Hakikisha laini ya Vodacom imekaa kwenye tundu sahihi la kwanza lenye nguvu ya mtandao.",
+
+    "thisaiassistantfault": "RIPOTI YA KIELEKTRONIKI: MFUMO HUU WA MAELEZO YA KITAALAMU KUKWAMA KWENYE UTENDAJI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Ukubwa wa hati ya msimbo (Code Script) umezidi kiwango cha usindikaji wa mara moja kwenye dirisha la mazungumzo.\n\n" +
+            "• Suluhu za Kitaalamu:\n" +
+            "1. Kuendelea kwa Sehemu: Tumia neno 'Endelea' ili kugawanya taarifa katika mafungu madogo madogo yanayosomeka kwa urahisi.\n" +
+            "2. Kuhifadhi Mara kwa Mara: Nakili na kuweka kwenye mfumo wako wa kodi kila sehemu inayokamilishwa ili kuepuka kupoteza kumbukumbu." , 
+            
+            "byaostudiopro": "RIPOTI YA KIELEKTRONIKI: BYAO STUDIO PRO KUSHINDWA KUSANIFU NA KUUNGANISHA VIPENGELE\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Makosa ya kimantiki kwenye namba za vitambulisho vya vipengele (IDs) au mgongano wa skripti wakati wa kuunganisha mifumo ya ziada.\n\n" +
+            "• Suluhu za Kitaalamu:\n" +
+            "1. Kukagua Msimbo: Pitia upya mistari ya kodi ili kubaini sehemu iliyotenganishwa kimakosa.\n" +
+            "2. Kurejesha Hifadhi Nakala: Tumia nakala ya awali ya mradi iliyokuwa fanya kazi kabla ya mabadiliko ya mwisho.",
+
+    "byaoapkeditor": "RIPOTI YA KIELEKTRONIKI: BYAO ÉDITEUR D'APK KUSHINDWA KUSISITIZA NA KUSAINI FAILI LA USAKINISHAJI\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Vyeti vya kidijitali vya kusaini programu (Signing Keys) vimepata hitilafu au hifadhi ya simu haina nafasi ya kutosha ya kujenga faili jipya.\n\n" +
+            "• Suluhu za Kitaalamu:\n" +
+            "1. Kusasisha Cheti: Weka upya funguo za kusaini apk kabla ya kuanzisha mchakato wa mwisho.\n" +
+            "2. Kutoa Nafasi ya Hifadhi: Hakikisha kuna nafasi ya kutosha kwenye hifadhi ya ndani ili kuruhusu uvunjaji na ujenzi mpya wa faili.",
+
+    "airtablefault": "RIPOTI YA KIELEKTRONIKI: AIRTABLE KUSHINDWA KUSOMA DATA NA KULETA UJUMBE WA 'API RATE LIMIT'\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Maombi mengi ya utafutaji yametumwa kwa wakati mmoja kupita kiasi kinachoruhusiwa kwenye mfumo wa msingi.\n\n" +
+            "• Suluhu za Kitaalamu:\n" +
+            "1. Kuweka Kipindi cha Kusubiri: Ongeza muda wa kusubiri (Delay) kwenye mtiririko wa Make kabla ya kutuma ombi lingine.\n" +
+            "2. Kuboresha Mpango: Tumia kiwango cha juu cha akaunti ili kuongeza uwezo wa kupokea maombi mengi kwa sekunde.",
+
+    "makeautomationfault": "RIPOTI YA KIELEKTRONIKI: MAKE (INTEGROMAT) SCENARIO KUSIMAMA GHAFLA KUTOKANA NA HITILAFU\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Muundo wa data (JSON Payload) uliotumwa haulingani na vigezo vinavyotarajiwa na moduli inayofuata.\n\n" +
+            "• Suluhu za Kitaalamu:\n" +
+            "1. Kuchunguza Historia ya Matukio: Angalia kumbukumbu za makosa (Execution History) kubaini moduli iliyokwama.\n" +
+            "2. Kurekebisha Vigezo vya Data: Hakikisha majina ya vigezo yanafanana kikamilifu kati ya chanzo na mpokeaji.",
+
+    "softrfault": "RIPOTI YA KIELEKTRONIKI: SOFTR WEB APP KUSHINDWA KUONYESHA ORODHA MPYA YA DATA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Uhusiano kati ya vyanzo vya data vya nje na kurasa za Softr haujahuishwa (Synced) baada ya mabadiliko.\n\n" +
+            "• Suluhu za Kitaalamu:\n" +
+            "1. Kusasisha Muunganisho: Bonyeza kitufe cha kusasisha data kwenye mipangilio ya kizuizi (Block Settings).\n" +
+            "2. Kufuta Akiba ya Kivinjari: Safisha kumbukumbu ya muda ya kivinjari chako ili kuona mabadiliko mapya mara moja.", 
+            
+    "firebasefault": "RIPOTI YA KIELEKTRONIKI: FIREBASE DATABASE KUSHINDWA KUUNGANISHA NA KUTOA UJUMBE WA 'PERMISSION DENIED'\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Sheria za usalama (Security Rules) za hifadhi ya mtandao zimezuia upatikanaji wa data kutokana na muda wa kuingia (Auth Token) kwisha muda wake.\n\n" +
+            "• Suluhu za Kitaalamu:\n" +
+            "1. Kusasisha Kanuni za Usalama: Rekebisha ruhusa kwenye dashibodi ya Firebase ili kuruhusu usomaji na uandikaji wa data.\n" +
+            "2. Kukagua Kitambulisho: Hakikisha akaunti ya mtumiaji imeingia kwa usahihi kabla ya kutuma maombi ya data.",
+
+    "githubfault": "RIPOTI YA KIELEKTRONIKI: GITHUB REPOSITORY KUSHINDWA KUSUKUMA (PUSH) MISIMBO MIPYA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Toleo la hifadhi ya mtandaoni liko mbele kuliko faili za ndani (Merge Conflict), au neno la siri la muda (Personal Access Token) limepoteza muda wake wa matumizi.\n\n" +
+            "• Suluhu za Kitaalamu:\n" +
+            "1. Kusasisha Tawi: Vuta mabadiliko ya hivi karibuni (git pull) kabla ya kujaribu kusukuma tena.\n" +
+            "2. Kutumia Token Mpya: Tengeneza neno jipya la siri la ufikiaji kupitia akaunti yako ya GitHub.",
+
+    "airtable": "RIPOTI YA KIELEKTRONIKI: AIRTABLE CLOUD DATABASE & INTEGRATION\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Airtable inatumika kama uti wa mgongo wa kuhifadhi data za moduli zako. Kukosekana kwa muunganisho sahihi wa API au ukomo wa maombi (Rate Limits) kunaweza kusitisha mtiririko wa taarifa.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Uhakiki wa API Keys: Hakikisha funguo za siri ziko sahihi na hazijabadilishwa kwenye dashibodi.\n" +
+            "2. Muundo wa Jedwali: Hakikisha majina ya nguzo (Field Names) yanafanana na yale yanayotumiwa na Make au Softr.",
+
+    "make": "RIPOTI YA KIELEKTRONIKI: MAKE.COM AUTOMATION WORKFLOWS\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Make inasimamia mtiririko wa kazi kati ya Softr, Airtable, na mifumo ya AI. Hitilafu za JSON au kuishiwa kwa operesheni husababisha scenariyo kusimama.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kuchunguza Execution History: Angalia moduli iliyosababisha kukwama na uangalie ujumbe wa makosa.\n" +
+            "2. Kuongeza Error Handlers: Weka njia mbadala za kukamata makosa ili mfumo uendelee kufanya kazi.",
+
+    "softr": "RIPOTI YA KIELEKTRONIKI: SOFTR FRONT-END PORTAL BUILDER\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Softr inatoa kiolesura safi cha wavuti kwa ajili ya kuonyesha data kutoka Airtable. Vizuizi vya mtandao au kutokusawazishwa kwa takwimu kunaweza kuleta ukurasa mweupe.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kusasisha Data Sources: Hakikisha umeunganisha upya Airtable base kwenye mipangilio ya Softr.\n" +
+            "2. Kufuta Cache: Safisha akiba ya kivinjari chako au jaribu kufungua kwa hali ya incognito.",
+
+    "sfc": "RIPOTI YA KIELEKTRONIKI: WINDOWS SYSTEM FILE CHECKER (SFC /SCANNOW)\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Faili za mfumo wa Windows zimeharibika kutokana na kuzima kwa ghafla kwa kompyuta au mashambulizi ya virusi.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kufungua CMD kama Administrator: Andika cmd kwenye utafutaji, bonyeza kulia na uchague 'Run as Administrator'.\n" +
+            "2. Kuendesha Amri: Andika sfc /scannow kisha bonyeza Enter na usubiri mchakato ukamilike ili kurekebisha faili zote mbovu.",
+
+    "vpn": "RIPOTI YA KIELEKTRONIKI: VIRTUALLY PRIVATE NETWORK (VPN) KUSHINDWA KUUNGANISHA\n\n" +
+            "• Chanzo na Athari za Kiafya na Kiteknolojia:\n" +
+            "Mabadiliko ya itifaki za mtandao wa simu au seva ya VPN uliyochagua imelemewa na watumiaji.\n\n" +
+            "• Suluhu na Hatua za Kitaalamu:\n" +
+            "1. Kubadilisha Seva: Chagua nchi nyingine au seva yenye kasi nzuri kwenye programu yako ya VPN.\n" +
+            "2. Kukagua Tarehe na Saa: Hakikisha saa ya kifaa chako iko sahihi kwani makosa ya saa huzuia usalama wa usimbaji fiche."
+        };
+
+               function sendUserQuery() {
+            const inputField = document.getElementById('userInputQuery');
+            const queryText = inputField.value.trim().toLowerCase();
+            
+            if (!queryText) return;
+
+            appendMessage(inputField.value, 'user');
+            inputField.value = '';
+
+            setTimeout(() => {
+                let responseFound = false;
+                let responseContent = "";
+
+                // Tafuta neno kuu linalofanana kwenye hifadhidata
+                for (let key in masterDatabase) {
+                    if (queryText.includes(key)) {
+                        responseContent = masterDatabase[key];
+                        responseFound = true;
+                        break;
+                    }
+                }
+
+                if (!responseFound) {
+                    responseContent = "RIPOTI YA KIELEKTRONIKI: HAKUNA MODULI ILIYOPATIKANA KWA NENO HILI\n\n" +
+                                      "• Sababu:\n" +
+                                      "Neno kuu uliloandika halijasajiliwa moja kwa moja kwenye moduli zetu za sasa za 1500+.\n\n" +
+                                      "• Suluhu na Ushauri wa Kitaalamu:\n" +
+                                      "1. Jaribu kuandika neno fupi zaidi au neno kuu lingine (mfano: airtable, make, softr, maji, ganda, bluu, chaji, router, sfc, vpn).\n" +
+                                      "2. Tumia maneno ya jumla yanayohusiana na tatizo la kifaa chako ili mfumo ukuletee ripoti kamili ya utatuzi.";
+                }
+
+                appendMessage(responseContent, 'ai');
+            }, 400);
+        }
+
+        function appendMessage(text, sender) {
+            const historyContainer = document.getElementById('chatHistory');
+            const messageWrapper = document.createElement('div');
+
+            if (sender === 'user') {
+                messageWrapper.className = 'flex items-start justify-end space-x-4';
+                messageWrapper.innerHTML = `
+                    <div class="bg-slate-900 border border-slate-700/80 p-4 rounded-2xl rounded-tr-none text-xs sm:text-sm text-slate-100 shadow-xl max-w-[88%] leading-relaxed font-sans whitespace-pre-line">
+                        ${escapeHtml(text)}
+                    </div>
+                    <div class="w-9 h-9 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center text-cyan-400 font-bold text-xs shrink-0 shadow-md">Wewe</div>
+                `;
+                historyContainer.appendChild(messageWrapper);
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            } else {
+                messageWrapper.className = 'flex items-start space-x-4';
+                
+                // Tunatengeneza muundo wa AI kwanza lakini sehemu ya maandishi tunaiacha wazi ili ije kujazwa na mtiririko
+                messageWrapper.innerHTML = `
+                    <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-cyan-500 to-violet-600 flex items-center justify-center text-black font-black text-xs shrink-0 shadow-lg shadow-cyan-500/20">AI</div>
+                    <div class="ai-text-content bg-panelCharcoal border border-slate-800/90 p-5 rounded-2xl rounded-tl-none text-xs sm:text-sm text-slate-300 shadow-2xl max-w-[88%] leading-relaxed font-sans whitespace-pre-line space-y-2">
+                    </div>
+                `;
+                historyContainer.appendChild(messageWrapper);
+                
+                // Tunachagua lile eneo la maandishi lililo ndani ya ujumbe huu mpya
+                const contentDiv = messageWrapper.querySelector('.ai-text-content');
+                
+                // Kitendakazi cha kutiririsha maandishi herufi moja baada ya nyingine
+                let i = 0;
+                const speed = 15; // Unaweza kupunguza au kuongeza kasi hapa (ndogo zaidi = kasi zaidi)
+                const sanitizedText = escapeHtml(text);
+
+                function typeWriter() {
+                    if (i < sanitizedText.length) {
+                        // Tunatumia innerHTML hapa au textContent, lakini kwa sababu ya whitespace-pre-line tunatumia kuongeza taratibu
+                        contentDiv.innerHTML += sanitizedText.charAt(i);
+                        i++;
+                        setTimeout(typeWriter, speed);
+                        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                    }
+                }
+                
+                typeWriter();
+            }
+        }
+
+        function clearChatScreen() {
+            document.getElementById('chatHistory').innerHTML = '';
+        }
+
+        function loadQuickStats() {
+            const statsMessage = "RIPOTI YA TAKWIMU ZA MFUMO:\n\n" +
+                                 "• Moduli Zilizosajiliwa: 1500+ Engineering & Tech Modules\n" +
+                                 "• Cloud Ecosystem: Airtable, Make.com, Softr Integration Imara\n" +
+                                 "• Hali ya Mfumo: Inafanya kazi kwa kiwango cha juu (100% Operational)\n" +
+                                 "• Wahandisi Wahusika: Byao Mobile Solution & ByaoIA Master Suite.";
+            appendMessage(statsMessage, 'ai');
+        }
+
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // Ruhusu kitufe cha Enter kuangusha na kutuma ujumbe moja kwa moja
+        document.getElementById('userInputQuery').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendUserQuery();
+            }
+        });
+    </script>
+</body>
+</html>

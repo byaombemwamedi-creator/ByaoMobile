@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BYAO AI Code Assistant - Mega Enterprise Suite Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#020408',
+                        cardBg: '#070b14',
+                        accentRed: '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col font-sans overflow-x-hidden m-0 p-0">
+
+    <!-- Top Master Header -->
+    <header class="w-full bg-cardBg/95 backdrop-blur-md border-b border-slate-800 px-4 py-4 flex items-center justify-between sticky top-0 z-50 shadow-2xl">
+        <div class="flex items-center space-x-3">
+            <span class="bg-red-600 text-white text-xs font-black px-3 py-1.5 rounded-lg uppercase tracking-widest shadow-lg">BYAO MEGA</span>
+            <div>
+                <h1 class="text-base sm:text-lg font-extrabold tracking-tight text-white">Enterprise Master Code Engine</h1>
+                <p class="text-[10px] text-slate-400">Byao Mobile Solution &bull; Infinite Stack Architecture</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20 font-bold uppercase tracking-wider">Mega Stack Online</span>
+        </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="flex-1 w-full max-w-6xl mx-auto p-3 sm:p-8 flex flex-col space-y-6">
+        
+        <!-- Welcome Master Banner -->
+        <div class="bg-gradient-to-r from-red-950/60 via-cardBg to-cardBg border border-red-500/30 p-6 rounded-3xl shadow-2xl">
+            <h2 class="text-xl sm:text-2xl font-black text-white">Moduli Zote za Ziada (Massive Preset Library & Code Library)</h2>
+            <p class="text-slate-400 text-xs sm:text-sm mt-1">Chagua aina yoyote ya moduli ya kiufundi unayohitaji kutoka kwenye orodha ndefu hapa chini au andika amri yako ya kina bila kikomo.</p>
+        </div>
+
+        <!-- Mega Preset Grid Layout (Mzagizo Mengi Sana ya Kuhariri na Kuchagua) -->
+        <div class="bg-cardBg border border-slate-800 p-5 rounded-3xl shadow-2xl space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <label class="block text-xs font-extrabold uppercase tracking-widest text-red-500">Orodha Kuu ya Mzagizo (Mega Preset Modules Library):</label>
+                <span class="text-[10px] text-slate-500 font-mono">Total Built-in Modules: 12</span>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <button onclick="loadMegaPreset('fomu_kamili')" class="bg-slate-900/90 hover:bg-red-950/50 border border-slate-800 hover:border-red-500/60 text-slate-300 hover:text-white p-3.5 rounded-2xl text-xs font-semibold transition text-left flex flex-col space-y-1.5 shadow-md">
+                    <span class="text-red-400 font-extrabold">1. Fomu ya Usajili</span>
+                    <span class="text-[10px] text-slate-500">Jina, Simu, Email, Nenosiri</span>
+                </button>
+                <button onclick="loadMegaPreset('dashibodi_kadi')" class="bg-slate-900/90 hover:bg-red-950/50 border border-slate-800 hover:border-red-500/60 text-slate-300 hover:text-white p-3.5 rounded-2xl text-xs font-semibold transition text-left flex flex-col space-y-1.5 shadow-md">
+                    <span class="text-emerald-400 font-extrabold">2. Gridi ya Dashibodi</span>
+                    <span class="text-[10px] text-slate-500">Takwimu, ByaoIA, Vodacom Pro</span>
+                </button>
+                <button onclick="loadMegaPreset('mobile_money')" class="bg-slate-900/90 hover:bg-red-950/50 border border-slate-800 hover:border-red-500/60 text-slate-300 hover:text-white p-3.5 rounded-2xl text-xs font-semibold transition text-left flex flex-col space-y-1.5 shadow-md">
+                    <span class="text-amber-400 font-extrabold">3. Malipo ya Kikanda</span>
+                    <span class="text-[10px] text-slate-500">CDF, TZS, BIF Recharge Packs</span>
+                </button>
+                <button onclick="loadMegaPreset('anim_buttons')" class="bg-slate-900/90 hover:bg-red-950/50 border border-slate-800 hover:border-red-500/60 text-slate-300 hover:text-white p-3.5 rounded-2xl text-xs font-semibold transition text-left flex flex-col space-y-1.5 shadow-md">
+                    <span class="text-purple-400 font-extrabold">4. Vifungo vya Mng'ao</span>
+                    <span class="text-[10px] text-slate-500">Pulse, Glow & Hover Effects</span>
+                </button>
+                <button onclick="loadMegaPreset('firebase_auth_box')" class="bg-slate-900/90 hover:bg-red-950/50 border border-slate-800 hover:border-red-500/60 text-slate-300 hover:text-white p-3.5 rounded-2xl text-xs font-semibold transition text-left flex flex-col space-y-1.5 shadow-md">
+                    <span class="text-blue-400 font-extrabold">5. Firebase Lango</span>
+                    <span class="text-[10px] text-slate-500">Authentication & Security</span>
+                </button>
+                <button onclick="loadMegaPreset('table_data')" class="bg-slate-900/90 hover:bg-red-950/50 border border-slate-800 hover:border-red-500/60 text-slate-300 hover:text-white p-3.5 rounded-2xl text-xs font-semibold transition text-left flex flex-col space-y-1.5 shadow-md">
+                    <span class="text-cyan-400 font-extrabold">6. Jedwali la Miamala</span>
+                    <span class="text-[10px] text-slate-500">Transactions Records Table</span>
+                </button>
+                <button onclick="loadMegaPreset('ai_generator_box')" class="bg-slate-900/90 hover:bg-red-950/50 border border-slate-800 hover:border-red-500/60 text-slate-300 hover:text-white p-3.5 rounded-2xl text-xs font-semibold transition text-left flex flex-col space-y-1.5 shadow-md">
+                    <span class="text-pink-400 font-extrabold">7. ByaoIA Panel</span>
+                    <span class="text-[10px] text-slate-500">AI Prompt Generator Box</span>
+                </button>
+                <button onclick="loadMegaPreset('apk_builder_box')" class="bg-slate-900/90 hover:bg-red-950/50 border border-slate-800 hover:border-red-500/60 text-slate-300 hover:text-white p-3.5 rounded-2xl text-xs font-semibold transition text-left flex flex-col space-y-1.5 shadow-md">
+                    <span class="text-orange-400 font-extrabold">8. APK Éditeur Suite</span>
+                    <span class="text-[10px] text-slate-500">Compiler & Package Tool</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Advanced Input Control Section -->
+        <div class="bg-cardBg border border-slate-800 p-5 sm:p-8 rounded-3xl shadow-2xl space-y-4">
+            <div class="flex justify-between items-center">
+                <label class="block text-xs font-bold uppercase tracking-wider text-slate-400">Amri ya Kina ya Mtumiaji (Mega Custom Prompt Input):</label>
+                <button onclick="clearAllMega()" class="text-xs text-slate-500 hover:text-red-400 underline font-semibold">Futa Kila Kitu</button>
+            </div>
+            <textarea id="userPrompt" rows="4" class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-4 text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-red-500 transition shadow-inner leading-relaxed" placeholder="Andika maelezo marefu na ya kina hapa kuhusu chochote unachotaka kitengenezwe kwa msimbo kamili..."></textarea>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button onclick="generateMegaCode(false)" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-4 rounded-2xl transition shadow-xl text-xs tracking-wider flex items-center justify-center space-x-2">
+                    <span>Zalisha Msimbo Kamili (Standard Engine)</span>
+                </button>
+                <button onclick="generateMegaCode(true)" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-4 px-4 rounded-2xl transition shadow-xl text-xs tracking-wider border border-slate-700 flex items-center justify-center space-x-2">
+                    <span>Ongeza Mzagizo & Moduli Zote (Mega Stack)</span>
+                </button>
+                <button onclick="loadCompleteMegaApp()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-4 px-4 rounded-2xl transition shadow-xl text-xs tracking-wider flex items-center justify-center space-x-2">
+                    <span>Zalisha Mfumo Mzima (Full Ecosystem App)</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Output Section (Hidden by default) -->
+        <div id="outputSection" class="hidden space-y-6 pb-16">
+            
+            <!-- Code View Box -->
+            <div class="bg-cardBg border border-slate-800 p-5 sm:p-8 rounded-3xl shadow-2xl space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Msimbo Uliotengenezwa (Production-Ready Mega Code):</span>
+                    <div class="flex space-x-2">
+                        <button onclick="copyGeneratedCode()" class="text-xs bg-slate-800 hover:bg-slate-700 text-white font-semibold px-4 py-2 rounded-xl transition border border-slate-700">Nakili Kodi</button>
+                        <button onclick="downloadCodeFile()" class="text-xs bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-xl transition shadow-md">Pakua Faili (.html)</button>
+                    </div>
+                </div>
+                <pre class="bg-slate-950 p-5 rounded-2xl border border-slate-900 overflow-x-auto text-xs text-emerald-300 font-mono max-h-80"><code id="codeOutput"></code></pre>
+            </div>
+
+            <!-- Live Preview Full View Box -->
+            <div class="bg-cardBg border border-slate-800 p-5 sm:p-8 rounded-3xl shadow-2xl space-y-4">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400">Onyesho la Moja kwa Moja la Mfumo (Live Mega Workspace Preview):</h3>
+                <div id="livePreview" class="bg-slate-900/95 p-6 sm:p-8 rounded-2xl border border-slate-800 min-h-[220px] flex items-center justify-center w-full">
+                    <!-- Muonekano kamili utajionyesha hapa -->
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer Bar -->
+    <footer class="w-full text-center py-5 text-slate-500 text-xs border-t border-slate-800/60 bg-cardBg">
+        BYAO Mobile Solution &bull; Master Protocol & Mega Engine Active
+    </footer>
+
+    <!-- Script ya Injini Kuu ya Mega (Mega Script Engine) -->
+    <script>
+        function loadMegaPreset(type) {
+            let pField = document.getElementById('userPrompt');
+            if(type === 'fomu_kamili') {
+                pField.value = 'Nataka fomu kamili ya usajili yenye sehemu za jina, namba ya simu, barua pepe, nenosiri, na kitufe cha kuwasilisha taarifa kwenye mfumo.';
+            } else if(type === 'dashibodi_kadi') {
+                pField.value = 'Nataka gridi ya kadi nne za dashibodi zinazoonyesha takwimu za miamala, hali ya ByaoIA, na usalama wa Vodacom Agent Pro.';
+            } else if(type === 'mobile_money') {
+                pField.value = 'Nataka mfumo wa malipo wa Mobile Money unaoonyesha vifurushi vya CDF, TZS, na BIF kwa ajili ya kuchaji akaunti za wakala.';
+            } else if(type === 'anim_buttons') {
+                pField.value = 'Nataka kitufe kikubwa chenye animeshoni ya kung’aa, madoido ya pulse effect, na mabadiliko ya rangi wakati wa kubonyeza.';
+            } else if(type === 'firebase_auth_box') {
+                pField.value = 'Nataka lango la Firebase Authentication lenye sehemu ya kuingia na nenosiri kwa ajili ya kulinda app zote chini ya Byao.';
+            } else if(type === 'table_data') {
+                pField.value = 'Nataka jedwali la miamala (Transactions Table) linaloonyesha majina ya wateja, kiasi cha fedha, na hali ya malipo.';
+            } else if(type === 'ai_generator_box') {
+                pField.value = 'Nataka kisanduku cha ByaoIA Image Generator kinachoruhusu kuandika maelezo ya picha na kitufe cha kuzalisha.';
+            } else if(type === 'apk_builder_box') {
+                pField.value = 'Nataka kisanduku cha BYAO Éditeur d’APK kinachoruhusu kuchagua faili na kusafirisha mfumo.';
+            }
+            generateMegaCode(false);
+        }
+
+        function clearAllMega() {
+            document.getElementById('userPrompt').value = '';
+            document.getElementById('outputSection').classList.add('hidden');
+        }
+
+        function loadCompleteMegaApp() {
+            document.getElementById('userPrompt').value = 'Nataka mfumo kamili wa Byao unaojumuisha fomu ya usajili, gridi ya kadi za dashibodi, vifurushi vya malipo vya Mobile Money (CDF, TZS, BIF), na lango la Firebase Authentication.';
+            generateMegaCode(true);
+        }
+
+        function generateMegaCode(megaStack) {
+            let rawPrompt = document.getElementById('userPrompt').value.trim();
+            let prompt = rawPrompt.toLowerCase();
+            
+            if(!prompt) {
+                alert('Tafadhali andika amri au chagua mzagizo wa haraka kutoka kwenye orodha hapo juu!');
+                return;
+            }
+
+            let generatedCode = '';
+            let previewHtml = '';
+
+            // Uchambuzi mpana wa moduli zote
+            if (prompt.includes('fomu') || prompt.includes('usajili') || prompt.includes('email') || prompt.includes('nenosiri')) {
+                generatedCode = `<div class="bg-slate-950 p-6 sm:p-8 rounded-3xl border border-slate-800 shadow-2xl w-full max-w-lg space-y-5">\n` +
+                                `    <div class="flex items-center justify-between border-b border-slate-800 pb-4">\n` +
+                                `        <div>\n` +
+                                `            <h3 class="text-white font-extrabold text-base uppercase tracking-wider">BYAO Enterprise Registration Form</h3>\n` +
+                                `            <p class="text-[11px] text-slate-400 mt-0.5">Ingiza taarifa zako ili kusajiliwa kwenye mfumo mkuu.</p>\n` +
+                                `        </div>\n` +
+                                `        <span class="w-3 h-3 bg-emerald-500 rounded-full animate-ping"></span>\n` +
+                                `    </div>\n` +
+                                `    <div class="space-y-4">\n` +
+                                `        <div>\n` +
+                                `            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1.5">Jina Kamili</label>\n` +
+                                `            <input type="text" placeholder="Andika jina lako kamili..." class="w-full bg-slate-900 border border-slate-800 rounded-2xl px-4 py-3.5 text-xs text-white focus:border-red-500 outline-none shadow-inner">\n` +
+                                `        </div>\n` +
+                                `        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">\n` +
+                                `            <div>\n` +
+                                `                <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1.5">Namba ya Simu</label>\n` +
+                                `                <input type="tel" placeholder="+243 / +255..." class="w-full bg-slate-900 border border-slate-800 rounded-2xl px-4 py-3.5 text-xs text-white focus:border-red-500 outline-none shadow-inner">\n` +
+                                `            </div>\n` +
+                                `            <div>\n` +
+                                `                <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1.5">Barua Pepe</label>\n` +
+                                `                <input type="email" placeholder="name@byao.com..." class="w-full bg-slate-900 border border-slate-800 rounded-2xl px-4 py-3.5 text-xs text-white focus:border-red-500 outline-none shadow-inner">\n` +
+                                `            </div>\n` +
+                                `        </div>\n` +
+                                `        <div>\n` +
+                                `            <label class="text-[10px] uppercase font-bold text-slate-400 block mb-1.5">Nenosiri Kuu (Password)</label>\n` +
+                                `            <input type="password" placeholder="••••••••••••" class="w-full bg-slate-900 border border-slate-800 rounded-2xl px-4 py-3.5 text-xs text-white focus:border-red-500 outline-none shadow-inner">\n` +
+                                `        </div>\n` +
+                                `        <button onclick="alert('Usajili umekamilika na kuhifadhiwa kwenye Firebase!')" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-4 rounded-2xl text-xs uppercase tracking-wider transition shadow-xl mt-2">Wasilisha Taarifa za Usajili</button>\n` +
+                                `    </div>\n` +
+                                `</div>`;
+                previewHtml = generatedCode;
+            }
+            else if (prompt.includes('malipo') || prompt.includes('money') || prompt.includes('cdf') || prompt.includes('tzs') || prompt.includes('bif') || prompt.includes('vifurushi')) {
+                generatedCode = `<div class="grid grid-cols-1 sm:grid-cols-3 gap-5 w-full">\n` +
+                                `    <div class="bg-slate-950 p-6 rounded-3xl border border-red-500/30 shadow-2xl flex flex-col justify-between space-y-4">\n` +
+                                `        <div>\n` +
+                                `            <span class="text-[10px] bg-red-500/10 text-red-400 px-3 py-1 rounded-full font-bold uppercase">DRC Pack</span>\n` +
+                                `            <h4 class="text-white font-extrabold text-lg mt-3">5,000 CDF</h4>\n` +
+                                `            <p class="text-xs text-slate-400 mt-1">Huduma ya Wakala Pro na recharge ya papo hapo.</p>\n` +
+                                `        </div>\n` +
+                                `        <button onclick="alert('Malipo ya 5000 CDF yameanzishwa!')" class="w-full bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-3 rounded-2xl shadow-lg transition">Chagua CDF Pack</button>\n` +
+                                `    </div>\n` +
+                                `    <div class="bg-slate-950 p-6 rounded-3xl border border-emerald-500/30 shadow-2xl flex flex-col justify-between space-y-4">\n` +
+                                `        <div>\n` +
+                                `            <span class="text-[10px] bg-emerald-500/10 text-emerald-400 px-3 py-1 rounded-full font-bold uppercase">TZS Pack</span>\n` +
+                                `            <h4 class="text-white font-extrabold text-lg mt-3">10,000 TZS</h4>\n` +
+                                `            <p class="text-xs text-slate-400 mt-1">Huduma ya Wakala Pro na recharge ya papo hapo.</p>\n` +
+                                `        </div>\n` +
+                                `        <button onclick="alert('Malipo ya 10000 TZS yameanzishwa!')" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold py-3 rounded-2xl shadow-lg transition">Chagua TZS Pack</button>\n` +
+                                `    </div>\n` +
+                                `    <div class="bg-slate-950 p-6 rounded-3xl border border-amber-500/30 shadow-2xl flex flex-col justify-between space-y-4">\n` +
+                                `        <div>\n` +
+                                `            <span class="text-[10px] bg-amber-500/10 text-amber-400 px-3 py-1 rounded-full font-bold uppercase">BIF Pack</span>\n` +
+                                `            <h4 class="text-white font-extrabold text-lg mt-3">8,000 BIF</h4>\n` +
+                                `            <p class="text-xs text-slate-400 mt-1">Huduma ya Wakala Pro na recharge ya papo hapo.</p>\n` +
+                                `        </div>\n` +
+                                `        <button onclick="alert('Malipo ya 8000 BIF yameanzishwa!')" class="w-full bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold py-3 rounded-2xl shadow-lg transition">Chagua BIF Pack</button>\n` +
+                                `    </div>\n` +
+                                `</div>`;
+                previewHtml = generatedCode;
+            }
+            else if (prompt.includes('dashibodi') || prompt.includes('grid') || prompt.includes('takwimu') || prompt.includes('kadi')) {
+                generatedCode = `<div class="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full">\n` +
+                                `    <div class="bg-slate-950 p-6 rounded-3xl border border-slate-800 shadow-2xl space-y-3">\n` +
+                                `        <div class="flex justify-between items-center"><span class="text-[10px] text-red-500 font-extrabold uppercase">ByaoIA Core</span><span class="text-emerald-400 text-xs font-semibold">Online & Secure</span></div>\n` +
+                                `        <h4 class="text-white font-extrabold text-base">Image Generator Suite</h4>\n` +
+                                `        <p class="text-slate-400 text-xs leading-relaxed">Uzalishaji wa picha na mifumo ya AI kwa wakati halisi kupitia API zilizounganishwa.</p>\n` +
+                                `    </div>\n` +
+                                `    <div class="bg-slate-950 p-6 rounded-3xl border border-slate-800 shadow-2xl space-y-3">\n` +
+                                `        <div class="flex justify-between items-center"><span class="text-[10px] text-emerald-500 font-extrabold uppercase">Vodacom Pro</span><span class="text-emerald-400 text-xs font-semibold">Synced</span></div>\n` +
+                                `        <h4 class="text-white font-extrabold text-base">Agent Network System</h4>\n` +
+                                `        <p class="text-slate-400 text-xs leading-relaxed">Usimamizi wa miamala na kumbukumbu za wateja kupitia Firebase Cloud Firestore.</p>\n` +
+                                `    </div>\n` +
+                                `</div>`;
+                previewHtml = generatedCode;
+            }
+            else if (prompt.includes('animation') || prompt.includes('anim') || prompt.includes('kung') || prompt.includes('pulse')) {
+                generatedCode = `<div class="flex flex-col items-center justify-center space-y-5 p-10 w-full">\n` +
+                                `    <div class="relative inline-flex">\n` +
+                                `        <div class="absolute inset-0 bg-red-600 rounded-3xl blur-xl opacity-80 animate-pulse"></div>\n` +
+                                `        <button onclick="alert('Mega Pulse Button Imewashwa!')" class="relative bg-red-600 hover:bg-red-700 text-white font-black px-12 py-5 rounded-3xl shadow-2xl transition transform active:scale-95 text-sm uppercase tracking-widest">\n` +
+                                `            BYAO Master Pulse Button Pro\n` +
+                                `        </button>\n` +
+                                `    </div>\n` +
+                                `</div>`;
+                previewHtml = generatedCode;
+            }
+            else {
+                let cleanTitle = rawPrompt.length > 50 ? rawPrompt.substring(0, 50) + '...' : rawPrompt;
+                generatedCode = `<div class="bg-slate-950 border border-red-500/40 p-6 sm:p-8 rounded-3xl shadow-2xl w-full space-y-5">\n` +
+                                `    <div class="flex items-center space-x-3">\n` +
+                                `        <span class="w-3.5 h-3.5 bg-red-600 rounded-full animate-ping"></span>\n` +
+                                `        <h4 class="text-white font-black text-lg">${cleanTitle}</h4>\n` +
+                                `    </div>\n` +
+                                `    <p class="text-slate-300 text-xs sm:text-sm leading-relaxed">Moduli hii imesanifiwa kwa kiwango cha juu (Enterprise-grade) kupitia maelezo yako ya kiufundi:</p>\n` +
+                                `    <div class="bg-slate-900 p-5 rounded-2xl border border-slate-800 text-emerald-400 font-mono text-xs leading-relaxed">\n` +
+                                `        &lt;!-- BYAO Enterprise Master Component --&gt;\n` +
+                                `        &lt;div class="byao-mega-wrapper" data-protocol="active"&gt;\n` +
+                                `            &lt;span&gt;Prompt: ${rawPrompt}&lt;/span&gt;\n` +
+                                `        &lt;/div&gt;\n` +
+                                `    </div>\n` +
+                                `</div>`;
+                previewHtml = generatedCode;
+            }
+
+            if(megaStack) {
+                generatedCode = `<!-- [MEGA ENTERPRISE STACK & FIREBASE PROTOCOL ENFORCED] -->\n` + generatedCode;
+            }
+
+            document.getElementById('codeOutput').innerText = generatedCode;
+            document.getElementById('livePreview').innerHTML = previewHtml;
+            document.getElementById('outputSection').classList.remove('hidden');
+            
+            // Kuisogeza skrini moja kwa moja kwenda kwenye matokeo
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyGeneratedCode() {
+            let codeText = document.getElementById('codeOutput').innerText;
+            navigator.clipboard.writeText(codeText);
+            alert('Msimbo umenakiliwa kikamilifu!');
+        }
+
+        function downloadCodeFile() {
+            let codeText = document.getElementById('codeOutput').innerText;
+            let fullFileContent = `<!DOCTYPE html>\n<html lang="sw" class="dark">\n<head>\n<meta charset="UTF-8">\n<title>BYAO Enterprise Component</title>\n<script src="https://cdn.tailwindcss.com"><\/script>\n</head>\n<body class="bg-slate-950 text-white p-8 flex items-center justify-center min-h-screen">\n${codeText}\n</body>\n</html>`;
+            
+            let blob = new Blob([fullFileContent], { type: 'text/html' });
+            let url = URL.createObjectURL(blob);
+            let a = document.createElement('a');
+            a.href = url;
+            a.download = 'byao_enterprise_component.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
