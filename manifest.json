@@ -1,22 +1,15 @@
 {
-  "name": "BYAO Mobile Solutions",
-  "short_name": "BYAO",
-  "description": "Mfumo wa kisasa wa kusimamia matengenezo ya simu",
-  "start_url": "index.html",
+  "name": "BYAO Mobile Solution Ecosystem",
+  "short_name": "BYAO Pro",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0b5cff",
-  "theme_color": "#0b5cff",
-  "orientation": "portrait",
+  "background_color": "#05070b",
+  "theme_color": "#ef4444",
   "icons": [
     {
-      "src": "Byao-logo.jpg",
-      "sizes": "192x192",
-      "type": "image/jpeg"
-    },
-    {
-      "src": "Byao-logo.jpg",
-      "sizes": "512x512",
-      "type": "image/jpeg"
+      "src": "Byao Pro-logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png"
     }
   ]
 }
