@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="sw" class="dark">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>BYAO AI Studio - Ultimate Command Center</title>
+
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+        darkMode: 'class',
+        theme: {
+            extend: {
+                colors: {
+                    darkBg: '#05070b',
+                    cardBg: '#0f172a',
+                    accentRed: '#ef4444'
+                }
+            }
+        }
+    }
+</script>
+</head>
+
+<body class="bg-darkBg text-slate-100 min-h-screen w-full flex flex-col font-sans p-4 sm:p-6 m-0 overflow-x-hidden">
+
+    <!-- Toast Notification ya Kisasa -->
+    <div id="toastNotification" class="fixed top-5 z-50 hidden bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-4 py-2 rounded-xl text-xs font-bold shadow-2xl backdrop-blur-md">
+        Ujumbe wa Mfumo
+    </div>
+
+    <!-- Kitufe cha Menu na Overlay ya Sidebar -->
+    <button id="menuBtn" class="fixed top-4 left-4 z-50 bg-slate-800 hover:bg-slate-700 text-white font-bold p-2.5 rounded-xl border border-slate-700 shadow-lg transition">
+        ☰ Menu
+    </button>
+    <div id="overlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-40"></div>
+
+    <!-- Sidebar ya Pamoja ya Kibabe -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-cardBg border-r border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+        <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
+            <div class="flex items-center space-x-2">
+                <span class="bg-red-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded uppercase">BYAO Pro</span>
+                <span class="text-sm font-bold text-white">Navigation</span>
+            </div>
+            <button id="closeSidebar" class="text-slate-400 hover:text-white text-lg font-bold">&times;</button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4 space-y-1.5 text-xs">
+            <a href="index.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🏠 Mwanzo</a>
+            <a href="studio.html" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-800 text-white font-bold transition">💻 Studio Kubwa</a>
+            <a href="ide.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚡ Master IDE</a>
+            <a href="masterfinishproject.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">🛠️ Zana za Mwisho</a>
+            <a href="profile.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📄 Utambulisho & Mwongozo</a> 
+            <a href="repair.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📱 Pokea Simu</a>
+            <a href="phones.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📋 Simu Zangu</a>
+            <a href="spares.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📦 Spares & Stock</a>
+            <a href="payments.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💰 Payments Tracker</a>
+            <a href="tools.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Quick Tools</a>
+            <a href="wateja.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">👥 Wateja</a>
+            <a href="report.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📈 Master Report</a>
+            <a href="mipangilio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Mipangilio</a>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="w-full max-w-2xl mx-auto space-y-6 pt-12 sm:pt-4">
+
+        <!-- HEADER -->
+        <div class="bg-cardBg border border-slate-800 p-6 sm:p-8 rounded-2xl shadow-2xl text-center space-y-3">
+            <div class="w-16 h-16 bg-slate-950 p-2 rounded-2xl border border-slate-800 mx-auto flex items-center justify-center shadow-inner">
+                <span class="text-2xl">🚀</span>
+            </div>
+            <h1 class="text-xl sm:text-2xl font-extrabold text-white">BYAO AI COMMAND CENTER</h1>
+            <p class="text-xs sm:text-sm text-slate-400">Kituo cha Juu cha Ubunifu, Usimamizi na Uchambuzi wa Kiufundi</p>
+            <div class="w-20 h-1 bg-red-600 mx-auto rounded-full"></div>
+        </div>
+
+        <!-- Fomu Kuu ya AI Studio -->
+        <div class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-4 text-xs sm:text-sm">
+            
+            <div class="space-y-1">
+                <label class="block font-semibold text-slate-300">Chagua Aina ya Kazi ya AI</label>
+                <select id="aiTask" class="w-full bg-slate-950 border border-slate-800 text-white p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+                    <option value="ujumbe_tayari">📱 Ujumbe wa Mteja: Simu Imeiva (Tayari Kuchukuliwa)</option>
+                    <option value="ujumbe_fedha">💰 Ujumbe wa Kukumbusha Malipo au Balance</option>
+                    <option value="tangazo_social">🔥 Tangazo Kubwa la Duka (Social Media Marketing)</option>
+                    <option value="ushauri_kiufundi">🛠️ Uchambuzi na Ushauri wa Kiufundi (Tech Diagnostic)</option>
+                    <option value="bei_kadirio">💵 Makadirio ya Bei na Ushauri wa Mauzo ya Simu</option>
+                    <option value="garanti_terms">📜 Sheria na Masharti Rasmi ya Udhamini (Warranty Terms)</option>
+                </select>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="space-y-1">
+                    <label class="block font-semibold text-slate-300">Mtindo wa Lugha (Tone)</label>
+                    <select id="aiTone" class="w-full bg-slate-950 border border-slate-800 text-white p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+                        <option value="kiofisi">Wa Kiofisi na Kiheshima</option>
+                        <option value="kirafiki">Wa Kitajiri/Kirafiki Zaidi</option>
+                        <option value="mkali">Wa Kibiashara na Kusisitiza</option>
+                    </select>
+                </div>
+                <div class="space-y-1">
+                    <label class="block font-semibold text-slate-300">Lugha ya Matokeo</label>
+                    <select id="aiLang" class="w-full bg-slate-950 border border-slate-800 text-white p-3 rounded-xl focus:outline-none focus:border-red-500 transition">
+                        <option value="sw">Kiswahili Sanifu</option>
+                        <option value="en">English</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <label class="block font-semibold text-slate-300">Weka Maelezo Husika (Jina, Aina ya Simu, au Tatizo)</label>
+                <textarea id="aiPrompt" placeholder="Mf. Jina: Boss Juma, Simu: Samsung S21, Tatizo: Badilisha kioo na betri..." class="w-full bg-slate-950 border border-slate-800 text-white placeholder-slate-600 p-3 rounded-xl h-24 focus:outline-none focus:border-red-500 transition resize-y"></textarea>
+            </div>
+
+            <button onclick="zalishaAI()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 rounded-xl text-xs sm:text-sm transition shadow-lg shadow-red-900/20">Zalisha kwa Uwezo wa AI ⚡</button>
+        </div>
+
+        <!-- Matokeo yenye Auto-Type -->
+        <div id="resultSection" class="bg-cardBg border border-slate-800 p-5 sm:p-6 rounded-2xl shadow-xl space-y-4 hidden">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">✨ Matokeo Yaliyochakatwa</h3>
+                <span id="typingStatus" class="text-xs text-slate-400"></span>
+            </div>
+            
+            <div id="aiResult" class="bg-slate-950 border border-slate-800 p-4 rounded-xl text-xs sm:text-sm text-slate-200 leading-relaxed whitespace-pre-wrap min-h-[80px]"></div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-bold">
+                <button onclick="shareWhatsApp()" class="bg-emerald-600 hover:bg-emerald-700 text-white p-3 rounded-xl transition shadow-md">💬 Tuma WhatsApp</button>
+                <button onclick="shareFacebook()" class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl transition shadow-md">📘 Shiriki Facebook</button>
+                <button onclick="shareInstagram()" class="bg-pink-600 hover:bg-pink-700 text-white p-3 rounded-xl transition shadow-md">📸 Nakili kwa Instagram</button>
+                <button onclick="shareTelegram()" class="bg-sky-600 hover:bg-sky-700 text-white p-3 rounded-xl transition shadow-md">✈️ Tuma Telegram</button>
+                <button onclick="copyText()" class="sm:col-span-2 bg-slate-800 hover:bg-slate-700 text-white p-3 rounded-xl transition border border-slate-700 shadow-md">📋 Nakili Kila Kitu Kwenye Kumbukumbu</button>
+            </div>
+        </div>
+
+        <!-- Sehemu ya Historia ya Hivi Karibuni -->
+        <div id="historyBox" class="bg-cardBg border border-slate-800 p-5 rounded-2xl shadow-xl space-y-3 hidden">
+            <h4 class="text-red-400 font-bold text-xs uppercase tracking-wider border-l-4 border-red-500 pl-3">📂 Historia ya Kazi Zilizozalishwa</h4>
+            <div id="historyList" class="space-y-2 text-xs"></div>
+        </div>
+
+        <a href="index.html" class="block text-center bg-cardBg hover:bg-slate-800 border border-slate-800 text-slate-300 font-bold p-3.5 rounded-xl text-xs transition shadow-xl">⬅️ Rudi kwenye Mwanzo (Ecosystem Hub)</a>
+    </main>
+
+    <!-- Script ya Uendeshaji -->
+    <script>
+        // BYAO SECURITY CHECK
+        let ameLogin = localStorage.getItem("byaoLogin");
+        if(ameLogin !== "ndiyo"){
+            localStorage.setItem("ukurasaUliotaka", window.location.pathname.split("/").pop());
+            window.location.href="login.html";
+        }
+
+        let generatedText = "";
+        let historyArray = JSON.parse(localStorage.getItem('byao_ai_history') || '[]');
+
+        function showNotification(msg) {
+            let toast = document.getElementById('toastNotification');
+            toast.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 2500);
+        }
+
+        function zalishaAI() {
+            let task = document.getElementById('aiTask').value;
+            let tone = document.getElementById('aiTone').value;
+            let lang = document.getElementById('aiLang').value;
+            let prompt = document.getElementById('aiPrompt').value.trim();
+            let resultSection = document.getElementById('resultSection');
+            let resultBox = document.getElementById('aiResult');
+            let statusBox = document.getElementById('typingStatus');
+
+            if(!prompt) {
+                showNotification("⚠️ Tafadhali jaza maelezo husika kwanza!");
+                return;
+            }
+
+            resultSection.style.display = "block";
+            resultBox.innerHTML = "";
+            statusBox.innerHTML = "Inachakata...";
+
+            if (lang === "en") {
+                generatedText = `[BYAO AI SYSTEM]\nHello dear client, regarding your device (${prompt}), the service has been successfully completed with high quality standards. Welcome back to BYAO Mobile Solutions!`;
+            } else {
+                if (task === "ujumbe_tayari") {
+                    if (tone === "kiofisi") {
+                        generatedText = `Ndugu mteja, tunapenda kukutaarifu rasmi kuwa huduma ya ukarabati wa kifaa chako (${prompt}) imekamilika kwa ubora wa hali ya juu. Unaweza kufika dukani kuchukua kifaa chako. Ahsante kwa kuchagua BYAO Mobile Solutions.`;
+                    } else if (tone === "kirafiki") {
+                        generatedText = `Mambo vipi mkuu! Habari njema ni kwamba simu yako (${prompt}) imekamilika kabisa na inang'ara kama mpya. Karibu nionje kahawa huku ukichukua chuma chako! 📱✨`;
+                    } else {
+                        generatedText = `MSAADA / TAARIFA KUTOKA BYAO: Simu yako (${prompt}) imetengenezwa na iko tayari kuchukuliwa mara moja! Fika tukukabidhi kifaa chako haraka iwezekanavyo. 🚀`;
+                    }
+                } 
+                else if (task === "ujumbe_fedha") {
+                    generatedText = `Hujambo ndugu mteja, tunakukumbusha kufanya malipo ya huduma ya ukarabati wa simu yako (${prompt}) ili tuweze kukamilisha ukabidhi rasmi. Tunashukuru kwa ushirikiano wako na uaminifu mkubwa! 💳`;
+                }
+                else if (task === "tangazo_social") {
+                    generatedText = `🔥 HUDUMA YA KIBABE KUTOKA BYAO MOBILE SOLUTIONS! 🔥\n\nJe, simu yako (${prompt}) inasumbua au kioo kimevunjika? Usihangaike! Tunatengeneza kwa vipuri halisi, bei nafuu kabisa, na tunatoa risiti ya kidigitali. Fika leo ujionee ubingwa wa vitendo! 🛠️📱`;
+                }
+                else if (task === "ushauri_kiufundi") {
+                    generatedText = `🛠️ BYAO TECH DIAGNOSTIC: Uchambuzi wa kina kwa ajili ya (${prompt}). Hakikisha unakagua mfumo wa betri na viunganishi vya umeme (IC) kabla ya kufunga rasmi ili kuhakikisha uimara wa muda mrefu wa kifaa. 💡🔬`;
+                }
+                else if (task === "bei_kadirio") {
+                    generatedText = `💵 BYAO PRICING & MARKET GUIDE: Makadirio ya thamani na huduma kwa (${prompt}). Bei inazingatia ubora wa vipuri halisi na udhamini wa huduma ili kumpa mteja thamani halisi ya pesa yake. 📈`;
+                }
+                else if (task === "garanti_terms") {
+                    generatedText = `📜 BYAO WARRANTY TERMS: Kifaa (${prompt}) kimewekewa udhamini wa huduma kwa eneo lililotengenezwa pekee kuanzia siku ya makabidhiano, isipokuwa kwa uharibifu wa maji au kuanguka. Ahsante kwa kuamini huduma zetu! 🛡️`;
+                }
+            }
+
+            // Auto-typing animation effect
+            let i = 0;
+            let speed = 10;
+            function typeWriter() {
+                if (i < generatedText.length) {
+                    resultBox.innerHTML += generatedText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, speed);
+                } else {
+                    statusBox.innerHTML = "Imekamilika ✔️";
+                    addToHistory(generatedText);
+                }
+            }
+            typeWriter();
+        }
+
+        function addToHistory(text) {
+            let historyBox = document.getElementById('historyBox');
+            let historyList = document.getElementById('historyList');
+            historyBox.style.display = "block";
+            
+            historyArray.unshift(text);
+            if(historyArray.length > 5) historyArray.pop();
+            localStorage.setItem('byao_ai_history', JSON.stringify(historyArray));
+            
+            renderHistory();
+        }
+
+        function renderHistory() {
+            let historyBox = document.getElementById('historyBox');
+            let historyList = document.getElementById('historyList');
+            if(historyArray.length > 0) {
+                historyBox.style.display = "block";
+                let html = "";
+                for(let item of historyArray) {
+                    let shortText = item.length > 60 ? item.substring(0, 60) + "..." : item;
+                    html += `<div class="bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-slate-300">📌 ${shortText}</div>`;
+                }
+                historyList.innerHTML = html;
+            }
+        }
+
+        function shareWhatsApp() {
+            window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(generatedText), '_blank');
+        }
+
+        function shareFacebook() {
+            window.open("https://www.facebook.com/sharer/sharer.php?u=" + encodeURIComponent(window.location.href), '_blank');
+        }
+
+        function shareInstagram() {
+            navigator.clipboard.writeText(generatedText);
+            showNotification("Ujumbe umenakiliwa kwa ajili ya Instagram!");
+        }
+
+        function shareTelegram() {
+            window.open("https://t.me/share/url?url=" + encodeURIComponent(window.location.href) + "&text=" + encodeURIComponent(generatedText), '_blank');
+        }
+
+        function copyText() {
+            navigator.clipboard.writeText(generatedText);
+            showNotification("Ujumbe umenakiliwa kikamilifu kwenye kumbukumbu!");
+        }
+
+        window.onload = function() {
+            renderHistory();
+        };
+
+        // SIDEBAR TOGGLE
+        let menuBtn = document.getElementById("menuBtn");
+        let closeSidebar = document.getElementById("closeSidebar");
+        let sidebar = document.getElementById("sidebar");
+        let overlay = document.getElementById("overlay");
+
+        function toggleMenu(){
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+
+        menuBtn.addEventListener("click", toggleMenu);
+        closeSidebar.addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", toggleMenu);
+    </script>
+</body>
+</html>
