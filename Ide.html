@@ -305,10 +305,16 @@
                 currentLoadedFile = folder.items.find(i => i.name === activeFileInfo.name);
             }
             
-            if(!currentLoadedFile && fileSystem.length > 0 && fileSystem[0].items.length > 0) {
-                activeFileInfo.folder = fileSystem[0].name;
-                activeFileInfo.name = fileSystem[0].items[0].name;
-                currentLoadedFile = fileSystem[0].items[0];
+            // Fallback ikawa active file haipatikani
+            if(!currentLoadedFile && fileSystem.length > 0) {
+                for(let f of fileSystem) {
+                    if(f.items && f.items.length > 0) {
+                        activeFileInfo.folder = f.name;
+                        activeFileInfo.name = f.items[0].name;
+                        currentLoadedFile = f.items[0];
+                        break;
+                    }
+                }
             }
 
             renderFileExplorer();
@@ -349,7 +355,6 @@
             }
         }
 
-        // 1. POP-OUT EXTERNAL PREVIEW WINDOW (Hakiki Salama)
         function openExternalPreviewWindow() {
             let code = document.getElementById('userPrompt').value;
             let format = document.getElementById('fileFormat').value;
@@ -364,14 +369,12 @@
             }
         }
 
-        // 2. FEATURE: Zoom Font Size Control
         function changeEditorFontSize(delta) {
             currentFontSize = Math.max(10, Math.min(24, currentFontSize + delta));
             document.getElementById('userPrompt').style.fontSize = currentFontSize + 'px';
             showNotification(`Ukubwa wa maandishi: ${currentFontSize}px`);
         }
 
-        // 3. FEATURE: Syntax Validation (JS & JSON)
         function validateSyntax() {
             let code = document.getElementById('userPrompt').value;
             let format = document.getElementById('fileFormat').value;
@@ -391,7 +394,6 @@
             }
         }
 
-        // 4. FEATURE: Code Minifier
         function minifyActiveCode() {
             let code = document.getElementById('userPrompt').value;
             if(!code.trim()) return;
@@ -404,8 +406,11 @@
             showNotification('Msimbo umefupishwa (Minified) kikamilifu!');
         }
 
-        // 5. FEATURE: Multi-File Zip Export (JSZip)
         function exportProjectZip() {
+            if(typeof JSZip === 'undefined') {
+                showNotification('Maktaba ya JSZip haijapatikana!');
+                return;
+            }
             let zip = new JSZip();
             fileSystem.forEach(folder => {
                 let folderFolder = zip.folder(folder.name);
@@ -427,7 +432,6 @@
             });
         }
 
-        // 6. FEATURE: Backup & Restore VFS JSON
         function backupRestoreVFS() {
             let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(fileSystem));
             let downloadAnchor = document.createElement('a');
@@ -439,7 +443,6 @@
             showNotification('Backup ya VFS imetengenezwa!');
         }
 
-        // 7. FEATURE: Find & Replace Executor
         function executeFindReplace() {
             let findText = document.getElementById('findInputText').value;
             let replaceText = document.getElementById('replaceInputText').value;
@@ -452,7 +455,6 @@
             showNotification('Maneno yamebadilishwa kote!');
         }
 
-        // 8. FEATURE: Snippets Adder
         function insertSnippet(type) {
             let snippet = '';
             if(type === 'html5') {
@@ -526,11 +528,21 @@
                 folder.items = folder.items.filter(i => i.name !== currentLoadedFile.name);
                 persistFileSystem();
                 closeModal('deleteModal');
-                let remainingFile = folder.items[0] || (fileSystem[0] && fileSystem[0].items[0]);
-                if(remainingFile) {
-                    activeFileInfo.folder = folder.items.length > 0 ? folder.name : fileSystem[0].name;
-                    activeFileInfo.name = remainingFile.name;
+                
+                let remainingFile = null;
+                for(let f of fileSystem) {
+                    if(f.items && f.items.length > 0) {
+                        activeFileInfo.folder = f.name;
+                        activeFileInfo.name = f.items[0].name;
+                        remainingFile = f.items[0];
+                        break;
+                    }
                 }
+                
+                if(!remainingFile) {
+                    currentLoadedFile = null;
+                }
+                
                 loadFileIntoIDE();
                 showNotification('Faili limefutwa!');
             }
@@ -625,7 +637,10 @@
         function startVoiceRecognition() {
             try {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-                if(!SpeechRecognition) return;
+                if(!SpeechRecognition) {
+                    showNotification('Ujumuishaji wa sauti hautumiki na kivinjari chako.');
+                    return;
+                }
                 const recognition = new SpeechRecognition();
                 recognition.lang = 'sw-TZ';
                 document.getElementById('micBtn').innerText = '🎙️ Inasikiliza...';
@@ -638,7 +653,9 @@
                 recognition.onerror = () => { document.getElementById('micBtn').innerText = '🎙️ Sauti'; };
                 recognition.onend = () => { document.getElementById('micBtn').innerText = '🎙️ Sauti'; };
                 recognition.start();
-            } catch(e) {}
+            } catch(e) {
+                showNotification('Hitilafu imetokea kwenye mfumo wa sauti.');
+            }
         }
 
         window.onload = function() {
