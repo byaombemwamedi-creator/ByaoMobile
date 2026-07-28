@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Developer Suite </title>
+    <title>Master Developer Suite - BYAO Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -33,7 +33,7 @@
     </button>
     <div id="overlay" class="fixed inset-0 bg-black/60 backdrop-blur-xs hidden z-40"></div>
 
-    <!-- Sidebar ya Pamoja ya Kibabe -->
+    <!-- Sidebar ya Pamoja ya Kibabe (Imesawazishwa Majina Sahihi) -->
     <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-cardBg border-r border-slate-800 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
         <div class="p-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/50">
             <div class="flex items-center space-x-2">
@@ -52,7 +52,7 @@
             <a href="phones.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📋 Simu Zangu</a>
             <a href="spares.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📦 Spares & Stock</a>
             <a href="payments.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">💰 Payments Tracker</a>
-            <a href="tools.html" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-800 text-white font-bold transition">⚙️ Master Developer Suite</a>
+            <a href="developer-suite.html" class="flex items-center space-x-3 p-2.5 rounded-xl bg-slate-800 text-white font-bold transition">⚙️ Master Developer Suite</a>
             <a href="wateja.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">👥 Wateja</a>
             <a href="report.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">📈 Master Report</a>
             <a href="mipangilio.html" class="flex items-center space-x-3 p-2.5 rounded-xl hover:bg-slate-800 text-slate-300 transition">⚙️ Mipangilio</a>
@@ -68,6 +68,330 @@
             <h1 class="text-2xl sm:text-4xl font-extrabold mt-3 tracking-tight text-white">Master Developer Suite</h1>
             <p class="text-slate-400 text-xs sm:text-sm mt-1">Zana za kibingwa za kusimamia App, Ikoni, na Rasilimali za Kidigitali.</p>
         </div>
+
+        <!-- Navigation Tabs -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 text-xs sm:text-sm">
+            <button onclick="switchTab('compressor')" id="tab-compressor" class="tab-btn py-2.5 px-3 rounded-xl font-semibold transition bg-red-600 text-white shadow-lg">1. Image & Icon</button>
+            <button onclick="switchTab('generator')" id="tab-generator" class="tab-btn py-2.5 px-3 rounded-xl font-semibold transition text-slate-400 hover:text-white">2. Multi-Icon Pack</button>
+            <button onclick="switchTab('base64')" id="tab-base64" class="tab-btn py-2.5 px-3 rounded-xl font-semibold transition text-slate-400 hover:text-white">3. Base64 Tool</button>
+            <button onclick="switchTab('manifest')" id="tab-manifest" class="tab-btn py-2.5 px-3 rounded-xl font-semibold transition text-slate-400 hover:text-white">4. PWA Manifest</button>
+        </div>
+
+        <!-- ================= SECTION 1: IMAGE & ICON COMPRESSOR ================= -->
+        <div id="section-compressor" class="space-y-5">
+            <div class="border-2 border-slate-800 border-dashed rounded-2xl p-4 text-center bg-slate-950/50 hover:bg-slate-950 transition cursor-pointer relative">
+                <input type="file" id="compInput" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                <p class="text-sm font-medium text-slate-300"><span class="text-red-400 font-bold">Bonyeza kupakia</span> picha au ikoni</p>
+                <p id="compFileName" class="text-xs text-slate-500 mt-1">PNG, JPG, WEBP zinaruhusiwa</p>
+            </div>
+
+            <div id="compControls" class="hidden space-y-4 bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                <div class="grid grid-cols-3 gap-2">
+                    <button type="button" onclick="setFormat('image/jpeg')" id="fmt-jpeg" class="fmt-btn py-2 rounded-xl text-xs font-bold bg-red-600 text-white">JPG</button>
+                    <button type="button" onclick="setFormat('image/png')" id="fmt-png" class="fmt-btn py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-300">PNG</button>
+                    <button type="button" onclick="setFormat('image/webp')" id="fmt-webp" class="fmt-btn py-2 rounded-xl text-xs font-bold bg-slate-900 text-slate-300">WEBP</button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-[10px] text-slate-400 uppercase font-bold">Upana (Width px)</label>
+                        <input type="number" id="compW" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-red-500">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-slate-400 uppercase font-bold">Urefu (Height px)</label>
+                        <input type="number" id="compH" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-red-500">
+                    </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2">
+                    <button type="button" onclick="setCompSize(512,512)" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-2 py-1 rounded-lg">512x512</button>
+                    <button type="button" onclick="setCompSize(256,256)" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-2 py-1 rounded-lg">256x256</button>
+                    <button type="button" onclick="setCompSize(192,192)" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-2 py-1 rounded-lg">192x192</button>
+                    <button type="button" onclick="setCompSize(128,128)" class="text-xs bg-slate-900 hover:bg-slate-800 border border-slate-800 text-slate-300 px-2 py-1 rounded-lg">128x128</button>
+                </div>
+
+                <div>
+                    <div class="flex justify-between text-xs text-slate-400 mb-1">
+                        <span>Quality / Uzito</span>
+                        <span id="compQVal" class="text-red-400 font-bold">85%</span>
+                    </div>
+                    <input type="range" id="compQ" min="10" max="100" value="85" class="w-full accent-red-500 h-2 bg-slate-900 rounded-lg">
+                </div>
+
+                <div>
+                    <label class="text-[10px] text-slate-400 uppercase font-bold">Kikomo cha Ukubwa (Max Size Cap)</label>
+                    <select id="compLimit" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-red-500">
+                        <option value="none">Bila Kikomo (Tumia Quality)</option>
+                        <option value="256">Chini ya 256 KB (WebIntoApp Standard)</option>
+                        <option value="512">Chini ya 512 KB</option>
+                        <option value="1024">Chini ya 1 MB</option>
+                    </select>
+                </div>
+
+                <button onclick="processCompression()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition shadow-lg text-sm shadow-red-900/20">Chakata na Pakua Picha ⚡</button>
+            </div>
+
+            <div id="compResult" class="hidden bg-slate-950 p-4 rounded-2xl border border-emerald-500/30 text-center space-y-2">
+                <p class="text-emerald-400 font-bold text-sm">Imefanikiwa! ✔️</p>
+                <div class="text-xs text-slate-300">Zamani: <span id="resOld" class="text-white font-semibold">0</span> | Mpya: <span id="resNew" class="text-green-400 font-semibold">0</span></div>
+                <a id="compDownload" class="block w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-sm transition shadow-lg">Pakua Faili 📥</a>
+            </div>
+        </div>
+
+        <!-- ================= SECTION 2: MULTI-ICON PACK GENERATOR ================= -->
+        <div id="section-generator" class="space-y-5 hidden">
+            <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 text-center space-y-4">
+                <p class="text-sm text-slate-300">Weka picha moja ya kuanzia (Master Icon), mfumo utazalisha saizi zote za App kwa mpigo.</p>
+                <input type="file" id="multiInput" accept="image/*" class="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-red-600 file:text-white hover:file:bg-red-700 cursor-pointer">
+                <button onclick="generateMultiIcons()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition shadow-lg text-sm">Zalisha Ukubwa Wote (512, 192, 144, 96, 48) 🚀</button>
+            </div>
+            <div id="multiResults" class="hidden space-y-3 bg-slate-950 p-4 rounded-2xl border border-slate-800">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Matokeo Yaliyotengenezwa:</h3>
+                <div id="multiLinks" class="space-y-2"></div>
+            </div>
+        </div>
+
+        <!-- ================= SECTION 3: BASE64 TOOL ================= -->
+        <div id="section-base64" class="space-y-4 hidden">
+            <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                <label class="text-xs font-bold uppercase text-slate-400">Geuza Picha iwe Base64 String</label>
+                <input type="file" id="b64Input" accept="image/*" class="block w-full text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-red-600 file:text-white cursor-pointer">
+                <textarea id="b64Output" readonly placeholder="Hapa patatokea maandishi ya Base64..." class="w-full h-32 bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-slate-300 font-mono focus:outline-none"></textarea>
+                <button onclick="copyBase64()" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-800 text-white font-bold py-2.5 rounded-xl text-sm transition">Nakili Maandishi (Copy Base64) 📋</button>
+            </div>
+        </div>
+
+        <!-- ================= SECTION 4: PWA MANIFEST GENERATOR ================= -->
+        <div id="section-manifest" class="space-y-4 hidden">
+            <div class="bg-slate-950 p-5 rounded-2xl border border-slate-800 space-y-3">
+                <h3 class="text-xs font-bold uppercase text-slate-400">Jaza Taarifa za App Yako</h3>
+                <input type="text" id="mName" placeholder="Jina Kamili (Mf: BYAO App)" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-red-500">
+                <input type="text" id="mShortName" placeholder="Jina Fupi (Mf: BYAO)" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-red-500">
+                <input type="text" id="mTheme" value="#0f172a" placeholder="Rangi ya Mandhari (Theme Color Hex)" class="w-full bg-slate-900 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-red-500">
+                <textarea id="mOutput" readonly class="w-full h-32 bg-slate-900 border border-slate-800 rounded-xl p-3 text-xs text-slate-300 font-mono focus:outline-none"></textarea>
+                <button onclick="generateManifest()" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-sm transition shadow-lg">Zalisha manifest.json 📝</button>
+            </div>
+        </div>
+
+        <div class="mt-6">
+            <a href="index.html" class="block text-center bg-slate-950 hover:bg-slate-900 border border-slate-800 text-slate-300 font-bold p-3.5 rounded-xl text-xs transition shadow-xl">⬅️ Rudi kwenye Ecosystem Hub</a>
+        </div>
+    </main>
+
+    <!-- JavaScript Master Engine & Sidebar Logic -->
+    <script>
+        // BYAO SECURITY CHECK
+        let ameLogin = localStorage.getItem("byaoLogin");
+        if(ameLogin !== "ndiyo"){
+            localStorage.setItem("ukurasaUliotaka", window.location.pathname.split("/").pop());
+            window.location.href="login.html";
+        }
+
+        function showNotification(msg) {
+            let toast = document.getElementById('toastNotification');
+            toast.innerText = msg;
+            toast.classList.remove('hidden');
+            setTimeout(() => { toast.classList.add('hidden'); }, 2500);
+        }
+
+        function switchTab(tabId) {
+            ['compressor', 'generator', 'base64', 'manifest'].forEach(t => {
+                document.getElementById('section-' + t).classList.add('hidden');
+                document.getElementById('tab-' + t).classList.remove('bg-red-600', 'text-white', 'shadow-lg');
+                document.getElementById('tab-' + t).classList.add('text-slate-400');
+            });
+            document.getElementById('section-' + tabId).classList.remove('hidden');
+            document.getElementById('tab-' + tabId).classList.add('bg-red-600', 'text-white', 'shadow-lg');
+            document.getElementById('tab-' + tabId).classList.remove('text-slate-400');
+            showNotification("Umebadilisha sehemu ya kazi (Tab) ✔️");
+        }
+
+        // Section 1 Logic
+        let compFile = null, compImg = new Image(), selFormat = 'image/jpeg';
+        const compInput = document.getElementById('compInput');
+        
+        function setFormat(fmt) {
+            selFormat = fmt;
+            document.querySelectorAll('.fmt-btn').forEach(b => {
+                b.classList.remove('bg-red-600', 'text-white');
+                b.classList.add('bg-slate-900', 'text-slate-300');
+            });
+            event.target.classList.remove('bg-slate-900', 'text-slate-300');
+            event.target.classList.add('bg-red-600', 'text-white');
+        }
+
+        function setCompSize(w, h) {
+            document.getElementById('compW').value = w;
+            document.getElementById('compH').value = h;
+            showNotification(`Vipimo vimesetiwa: ${w}x${h}`);
+        }
+
+        document.getElementById('compQ').addEventListener('input', e => {
+            document.getElementById('compQVal').innerText = e.target.value + '%';
+        });
+
+        compInput.addEventListener('change', e => {
+            compFile = e.target.files[0];
+            if(!compFile) return;
+            document.getElementById('compFileName').innerText = compFile.name + ' (' + (compFile.size/1024).toFixed(1) + ' KB)';
+            let reader = new FileReader();
+            reader.readAsDataURL(compFile);
+            reader.onload = ev => {
+                compImg.src = ev.target.result;
+                compImg.onload = () => {
+                    document.getElementById('compW').value = compImg.width;
+                    document.getElementById('compH').value = compImg.height;
+                    document.getElementById('compControls').classList.remove('hidden');
+                    document.getElementById('compResult').classList.add('hidden');
+                    showNotification("Picha imepakiwa kikamilifu! 🖼️");
+                }
+            }
+        });
+
+        function processCompression() {
+            if(!compFile) return;
+            let w = parseInt(document.getElementById('compW').value) || compImg.width;
+            let h = parseInt(document.getElementById('compH').value) || compImg.height;
+            let canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            let ctx = canvas.getContext('2d');
+            if(selFormat === 'image/jpeg') {
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0,0,w,h);
+            }
+            ctx.drawImage(compImg, 0, 0, w, h);
+
+            let q = parseInt(document.getElementById('compQ').value) / 100;
+            let limit = document.getElementById('compLimit').value;
+            let dataUrl = canvas.toDataURL(selFormat, q);
+
+            function getBytes(b64) {
+                return 4 * Math.ceil((b64.length - (b64.indexOf(',')+1)) / 3) * 0.75;
+            }
+
+            if(limit !== 'none' && selFormat !== 'image/png') {
+                let limitBytes = parseInt(limit) * 1024;
+                while(getBytes(dataUrl) > limitBytes && q > 0.05) {
+                    q -= 0.05;
+                    dataUrl = canvas.toDataURL(selFormat, q);
+                }
+            }
+
+            let finalBytes = getBytes(dataUrl);
+            document.getElementById('resOld').innerText = (compFile.size/1024).toFixed(1) + ' KB';
+            document.getElementById('resNew').innerText = (finalBytes/1024).toFixed(1) + ' KB';
+            let ext = selFormat.split('/')[1]; if(ext==='jpeg') ext='jpg';
+            
+            let dl = document.getElementById('compDownload');
+            dl.href = dataUrl;
+            dl.download = `byao-optimized.${ext}`;
+            document.getElementById('compResult').classList.remove('hidden');
+            showCompressionSuccess();
+        }
+
+        function showCompressionSuccess() {
+            showNotification("Picha imebadilishwa na kufinywa kikamilifu! ✔️");
+        }
+
+        // Section 2 Logic (Multi Icons)
+        document.getElementById('multiInput').addEventListener('change', e => {
+            let file = e.target.files[0];
+            if(!file) return;
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = ev => {
+                let img = new Image();
+                img.src = ev.target.result;
+                img.onload = () => {
+                    window.multiImg = img;
+                    showNotification("Master Icon imepokelewa! 🎨");
+                }
+            }
+        });
+
+        function generateMultiIcons() {
+            if(!window.multiImg) {
+                alert('Tafadhali chagua picha kwanza!');
+                return;
+            }
+            let sizes = [512, 192, 144, 96, 48];
+            let container = document.getElementById('multiLinks');
+            container.innerHTML = '';
+            
+            sizes.forEach(sz => {
+                let canvas = document.createElement('canvas');
+                canvas.width = sz; canvas.height = sz;
+                let ctx = canvas.getContext('2d');
+                ctx.drawImage(window.multiImg, 0, 0, sz, sz);
+                let url = canvas.toDataURL('image/png');
+                
+                let div = document.createElement('div');
+                div.className = 'flex justify-between items-center bg-slate-900 p-2.5 rounded-xl text-xs';
+                div.innerHTML = `<span>Icon ${sz}x${sz} px</span> <a href="${url}" download="icon-${sz}x${sz}.png" class="bg-red-600 hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded-lg">Pakua</a>`;
+                container.appendChild(div);
+            });
+            document.getElementById('multiResults').classList.remove('hidden');
+            showNotification("Ikoni zote zimetengenezwa kwa mafanikio! 📱");
+        }
+
+        // Section 3 Logic (Base64)
+        document.getElementById('b64Input').addEventListener('change', e => {
+            let file = e.target.files[0];
+            if(!file) return;
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = ev => {
+                document.getElementById('b64Output').value = ev.target.result;
+                showNotification("Imetengenezwa kuwa Base64! 📝");
+            }
+        });
+
+        function copyBase64() {
+            let txt = document.getElementById('b64Output');
+            txt.select();
+            navigator.clipboard.writeText(txt.value);
+            showNotification('Imenakiliwa kwenye clipboard! 📋');
+        }
+
+        // Section 4 Logic (Manifest)
+        function generateManifest() {
+            let name = document.getElementById('mName').value || 'My App';
+            let shortName = document.getElementById('mShortName').value || 'App';
+            let theme = document.getElementById('mTheme').value || '#0f172a';
+
+            let manifestData = {
+                "name": name,
+                "short_name": shortName,
+                "start_url": "/",
+                "display": "standalone",
+                "background_color": theme,
+                "theme_color": theme,
+                "icons": [
+                    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+                    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+                ]
+            };
+            document.getElementById('mOutput').value = JSON.stringify(manifestData, null, 2);
+            showNotification("manifest.json imetengenezwa kikamilifu! ⚙️");
+        }
+
+        // SIDEBAR TOGGLE LOGIC
+        let menuBtn = document.getElementById("menuBtn");
+        let closeSidebar = document.getElementById("closeSidebar");
+        let sidebar = document.getElementById("sidebar");
+        let overlay = document.getElementById("overlay");
+
+        function toggleMenu(){
+            sidebar.classList.toggle("-translate-x-full");
+            overlay.classList.toggle("hidden");
+        }
+
+        menuBtn.addEventListener("click", toggleMenu);
+        closeSidebar.addEventListener("click", toggleMenu);
+        overlay.addEventListener("click", toggleMenu);
+    </script>
+</body>
+</html>
 
         <!-- Navigation Tabs -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 text-xs sm:text-sm">
